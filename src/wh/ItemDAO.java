@@ -37,7 +37,7 @@ public class ItemDAO extends DAO {
 		return cnt; 
 	} 
 	
-	public String pasing(String data) { 
+	public String incoding(String data) { 
 		try { 
 			data = new String(data.getBytes("8859_1"), "euc-kr"); 
 		}catch (Exception e){ } 
@@ -51,17 +51,55 @@ public class ItemDAO extends DAO {
 		ArrayList<Item> alist = new ArrayList<Item>(); 
 		
 		try { 
-			sql = "SELECT ITEM_NO, ITEM_NM, INSERT_USER_NO, INSERT_DATETIME from item order by ITEM_NO"; 
+			sql = "select * from item order by itemId "; //LIMIT 11
 			pstmt = con.prepareStatement(sql); 
-			rs = pstmt.executeQuery(); 
+			rs = pstmt.executeQuery();
+			
+			/*
+			private int itemNo;
+			private String itemId;
+			private String itemNm;
+			private String itemNmKor;
+			private String sku;
+			
+			private String vendorId;
+			private int price;
+			private String curCd;
+			private int priceMeta;
+			private int priceFactory;
+			
+			private int priceCenter;
+			private int priceClient;
+			private float serviceHour;
+			private int moqVendor;
+			private int moqCenter;
+			
+			private int requiredStockCnt;
+			private int defectStockCnt;
+			private String linkItem;
+			private String linkInvoice;
+			private String note;
+			
+			private String insertUserId;
+			private String insertDatetime;
+			private String updateUserId;
+			private String updateDatetime;
+			*/
+			
 			while(rs.next()) { 
-				Item item = new Item(); 
-				//boolean dayNew = false; 
+				
+				//note:vincent:20170518:filtering price_client
+				
+				if(rs.getInt(7) == 0)
+					continue;
+				
+				Item item = new Item(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), rs.getString(8), rs.getInt(9), rs.getInt(10), rs.getInt(11), rs.getInt(12), rs.getFloat(13), rs.getInt(14), rs.getInt(15), rs.getInt(16), rs.getInt(17), rs.getString(18), rs.getString(19), rs.getString(20), rs.getString(21), rs.getString(22), rs.getString(23), rs.getString(24) ); 
+				/*
 				item.setItemNo(rs.getInt(1)); 
 				item.setItemNm(rs.getString(2)); 
-				item.setInsertUserNo(rs.getInt(3)); 
+				item.setInsertUserId(rs.getString(3)); 
 				item.setInsertDatetime(rs.getString(4).toString()); 
-				
+				*/
 				//Date date = new Date(); 
 				//SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd"); 
 				//String year = (String)simpleDate.format(date); 
@@ -110,13 +148,15 @@ public class ItemDAO extends DAO {
 		PreparedStatement pstmt = null; 
 		
 		try { 
-			sql = "INSERT INTO item (ITEM_NO, ITEM_NM, INSERT_USER_NO, INSERT_DATETIME) VALUES (?,?,?, current_timestamp())"; 
+			
+			sql = "insert into item (itemNo, itemId, itemNm, itemNmKor, insertDatetime) VALUES (?,?,?,?, current_timestamp())"; 
 			pstmt = con.prepareStatement(sql); 
-			pstmt.setInt(1, max+1); 
-			pstmt.setString(2, pasing(item.getItemNm())); 
-			pstmt.setInt(3, item.getInsertUserNo()); 
-			//pstmt.setString(3, pasing(item.getTitle())); 
-			//pstmt.setString(4, pasing(item.getMemo())); 
+
+			pstmt.setInt(1, max+1);
+			pstmt.setString(2, incoding(item.getItemId())); 
+			pstmt.setString(3, incoding(item.getItemNm())); 
+			pstmt.setString(4, incoding(item.getItemNmKor()));
+			
 			pstmt.execute(); 
 		}catch(Exception e) { 
 			
@@ -125,24 +165,27 @@ public class ItemDAO extends DAO {
 		} 
 	} 
 	
-	public Item getItemInfo(int idx) { 
+	public Item getItemInfo(int itemNo) { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
 		Item item = null; 
 		
 		try { 
-			sql = "SELECT ITEM_NO, ITEM_NM, INSERT_USER_NO, INSERT_DATETIME FROM item WHERE ITEM_NO = ?"; 
+			sql = "select * from item where itemNo = ?"; 
 			pstmt = con.prepareStatement(sql); 
-			pstmt.setInt(1, idx); 
+			pstmt.setInt(1, itemNo); 
 			rs = pstmt.executeQuery(); 
 			
 			if(rs.next()) { 
+				item = new Item(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)); 
+				/*
 				item = new Item(); 
 				item.setItemNo(rs.getInt(1)); 
 				item.setItemNm(rs.getString(2)); 
-				item.setInsertUserNo(rs.getInt(3)); 
-				item.setInsertDatetime(rs.getString(4).toString()); 
+				item.setInsertUserId(rs.getInt(3)); 
+				item.setInsertDatetime(rs.getString(4).toString());
+				*/ 
 				/*item.set(rs.getString(3)); 
 				item.setTime(rs.getString(4)); 
 				item.setHit(rs.getInt(5)+1); 
@@ -160,13 +203,13 @@ public class ItemDAO extends DAO {
 		return item; 
 	} 
 	
-	public void deleteItem(int idx) { 
+	public void deleteItem(int itemNo) { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		try { 
-			sql = "DELETE FROM item WHERE item_no = ?"; 
+			sql = "delete from item where itemNo = ?"; 
 			pstmt = con.prepareStatement(sql); 
-			pstmt.setInt(1, idx); 
+			pstmt.setInt(1, itemNo); 
 			pstmt.executeUpdate(); 
 		}catch(Exception e) { 
 		
@@ -175,15 +218,14 @@ public class ItemDAO extends DAO {
 		} 
 	} 
 	
-	public void modifyItem(Item item, int idx) { 
+	public void modifyItem(Item item, int itemNo) { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		try { 
-			sql = "UPDATE item SET ITEM_NM=? where item_no=?"; 
+			sql = "update item set itemNm=? where itemNo=?"; 
 			pstmt = con.prepareStatement(sql); 
-			pstmt.setString(1, pasing(item.getItemNm())); 
-			//pstmt.setString(2, pasing(item.getMemo())); 
-			pstmt.setInt(2, idx); 
+			pstmt.setString(1, incoding(item.getItemNm())); 
+			pstmt.setInt(2, itemNo); 
 			pstmt.executeUpdate(); 
 		}catch(Exception e) { 
 			
@@ -215,10 +257,10 @@ public class ItemDAO extends DAO {
 		try { 
 			sql = "INSERT INTO board1(USERNAME, PASSWORD, TITLE, MEMO, REF, INDENT, STEP) "+ "VALUES(?,?,?,?,?,?,?)"; 
 			pstmt = con.prepareStatement(sql); 
-			pstmt.setString(1, pasing(item.getName())); 
-			pstmt.setString(2, pasing(item.getPassword())); 
-			pstmt.setString(3, pasing(item.getTitle())); 
-			pstmt.setString(4, pasing(item.getMemo())); 
+			pstmt.setString(1, incoding(item.getName())); 
+			pstmt.setString(2, incoding(item.getPassword())); 
+			pstmt.setString(3, incoding(item.getTitle())); 
+			pstmt.setString(4, incoding(item.getMemo())); 
 			pstmt.setInt(5, ref); pstmt.setInt(6, indent+1); 
 			pstmt.setInt(7, step+1); 
 			pstmt.execute(); 

@@ -13,9 +13,26 @@ function chk(f)
            {alert("password..");f.password.focus();return false;} 
      return true;
   }
+
 </script>
 </head>
 <body onload="javascript:document.frm.id.focus()">
+
+<%	
+	if(session.getAttribute("userId") != null)
+	{
+%>
+
+<script>
+	document.location.href = "./wh/itemList.jsp";
+</script>
+
+<% 
+
+}
+	
+%>
+
 <div>
   <div class="form">
     <form name=frm class="login-form" action="login.jsp" method="post" onSubmit="return chk(this)">

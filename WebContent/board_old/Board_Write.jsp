@@ -18,6 +18,12 @@ body {
 	}
 	function boardWriteCheck() {
 		var form = document.BoardWriteForm;
+		
+		if(form.name.value == '')
+			{
+			alert('name !');
+			return false;
+			}
 		return true;
 	}
 </script>

@@ -2,8 +2,8 @@
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
-
-
+ 
+<jsp:include page = "/loginChk.jsp"/>
 <jsp:useBean id="dao" class="wh.ItemDAO"/>
 
 <%	
@@ -12,7 +12,7 @@
 	int size = alist.size();
 	int size2 = size;
 	
-	final int ROWSIZE = 4;
+	final int ROWSIZE = 10;
 	final int BLOCK = 5;
 	int indent = 0;
 
@@ -47,29 +47,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>자재 목록</title>
-<link rel="stylesheet" href="../css/mr.css">
+ 	<link rel="stylesheet" href="../css/mr.css">
+	<!--  <script type="text/javascript" src="../js/mr.js"></script>--> 
 </head>
+
 <body translate="no" >
-<div class="table-title">
-<h3>자재 목록</h3>
-</div>
+
+   <div class="table-title"><h1>Item 목록</h1></div>
 
 <table class="table-fill" width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr><td class="cell-r">total : <%= size %></td></tr></table>
 <table class="table-fill" border="1">
 <tr class="header">
-	<th width="10%" class="text-center">ItemNo</th>
+	<th width="10%" class="text-center">품목번호</th>
+	<th width="10%" class="text-center">품목ID</th>
 	<th width="40%" class="text-center">품목명</th>
-	<th width="20%" class="text-center">등록자</th>
-	<th width="30%" class="text-center">등록일시</th>
+	<th width="40%" class="text-center">품목명(한글)</th>
 </tr>
 <tbody class="table-hover">
 <%
 	if(total==0) {
 %>
-		<tr>
-	 	   <td colspan="4" class="text-center">등록된 품목이 없습니다.</td>
+		<tr class="row">
+	 	   <td colspan="4" class="cell-c">등록된 내역이 없습니다.</td>
 		</tr>
 	 <%
 	 	} else {
@@ -86,9 +86,9 @@
 
 <tr class="row">
 <td class="cell-c"><%=item.getItemNo()%></td>
-<td class="cell-c"><a href="itemView.jsp?idx=<%=item.getItemNo()%>&pg=<%=pg%>"><%=item.getItemNm()%></td>
-<td class="cell-c"><%=item.getInsertUserNo()%></td>
-<td class="cell-c"><%=item.getInsertDatetime().toString()%></td>
+<td class="cell-c"><%=item.getItemId()%></td>
+<td class="cell-l"><a href="itemDtl.jsp?mode=R&idx=<%=item.getItemNo()%>&pg=<%=pg%>"><%=item.getItemNm()%></td>
+<td class="cell-l"><%=item.getItemNmKor()%></td>
 </tr>
 
 <%
@@ -99,7 +99,7 @@
 
 </table>
 <br>
-<table class="table-fill" width="100%" cellpadding="0" cellspacing="0" border="0">
+<table class="table-fill2" width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr>
 	<td align="center">
 		<%
@@ -136,7 +136,7 @@
 		</td>
 		</tr>
 	<tr align="right">
-   		<td ><input type=button value="글쓰기" OnClick="window.location='write.jsp'"></td>
+   		<td ><input type=button class="myButton" value="등록" OnClick="window.location='itemDtl.jsp?mode=C&pg=<%=pg%>'"></td>
   </tr>
 
 
@@ -145,3 +145,4 @@
 
 </body>
 </html>
+

@@ -15,7 +15,7 @@ public class UserDAO extends DAO {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public String pasing(String data) { 
+	public String incoding(String data) { 
 		try { 
 			data = new String(data.getBytes("8859_1"), "euc-kr"); 
 		}catch (Exception e){ } 
@@ -29,7 +29,7 @@ public class UserDAO extends DAO {
 		User user = null; 
 		
 		try { 
-			sql = "SELECT USER_NO, USER_NM FROM user WHERE user_id = ? AND pwd = ?"; 
+			sql = "select userNo, userNm from user where userId = ? AND pwd = ?"; 
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setString(1, id); 
 			pstmt.setString(2, pwd); 
@@ -79,8 +79,8 @@ public class UserDAO extends DAO {
 		try { 
 			sql = "UPDATE item SET ITEM_NM=? where item_no=?"; 
 			pstmt = con.prepareStatement(sql); 
-			pstmt.setString(1, pasing(item.getItemNm())); 
-			//pstmt.setString(2, pasing(item.getMemo())); 
+			pstmt.setString(1, incoding(item.getItemNm())); 
+			//pstmt.setString(2, incoding(item.getMemo())); 
 			pstmt.setInt(2, idx); 
 			pstmt.executeUpdate(); 
 		}catch(Exception e) { 
@@ -114,10 +114,10 @@ public class UserDAO extends DAO {
 		try { 
 			sql = "INSERT INTO board1(USERNAME, PASSWORD, TITLE, MEMO, REF, INDENT, STEP) "+ "VALUES(?,?,?,?,?,?,?)"; 
 			pstmt = con.prepareStatement(sql); 
-			pstmt.setString(1, pasing(item.getName())); 
-			pstmt.setString(2, pasing(item.getPassword())); 
-			pstmt.setString(3, pasing(item.getTitle())); 
-			pstmt.setString(4, pasing(item.getMemo())); 
+			pstmt.setString(1, incoding(item.getName())); 
+			pstmt.setString(2, incoding(item.getPassword())); 
+			pstmt.setString(3, incoding(item.getTitle())); 
+			pstmt.setString(4, incoding(item.getMemo())); 
 			pstmt.setInt(5, ref); pstmt.setInt(6, indent+1); 
 			pstmt.setInt(7, step+1); 
 			pstmt.execute(); 
