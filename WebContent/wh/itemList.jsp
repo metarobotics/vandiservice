@@ -12,7 +12,7 @@
 	int size = alist.size();
 	int size2 = size;
 	
-	final int ROWSIZE = 10;
+	final int ROWSIZE = 1000;
 	final int BLOCK = 5;
 	int indent = 0;
 
@@ -59,10 +59,27 @@
 <tr><td class="cell-r">total : <%= size %></td></tr></table>
 <table class="table-fill" border="1">
 <tr class="header">
-	<th width="10%" class="text-center">품목번호</th>
-	<th width="10%" class="text-center">품목ID</th>
-	<th width="40%" class="text-center">품목명</th>
-	<th width="40%" class="text-center">품목명(한글)</th>
+	<th class="text-center">itemNo</th>
+	<th class="text-center">itemId</th>
+	<th class="text-center">itemNm</th>
+	<th class="text-center">itemNmKor</th>
+	
+	<th class="text-center">sku</th>
+	<th class="text-center">vendorId</th>
+	<th class="text-center">price</th>
+	<th class="text-center">curCd</th>
+	<th class="text-center">priceMeta</th>
+	<th class="text-center">priceFactory</th>
+	<th class="text-center">priceCenter</th>
+	<th class="text-center">priceClient</th>
+	<th class="text-center">serviceHour</th>
+	<th class="text-center">moqVendor</th>
+	<th class="text-center">moqCenter</th>
+	<th class="text-center">requiredStockCnt</th>
+	<th class="text-center">defectStockCnt</th>
+	<th class="text-center">linkItem</th>
+	<th class="text-center">linkInvoice</th>
+	<th class="text-center">note</th>
 </tr>
 <tbody class="table-hover">
 <%
@@ -89,6 +106,24 @@
 <td class="cell-c"><%=item.getItemId()%></td>
 <td class="cell-l"><a href="itemDtl.jsp?mode=R&idx=<%=item.getItemNo()%>&pg=<%=pg%>"><%=item.getItemNm()%></td>
 <td class="cell-l"><%=item.getItemNmKor()%></td>
+
+<td class="cell-l"><%=item.getSku()%></td>
+<td class="cell-l"><%=item.getVendorId()%></td>
+<td class="cell-l"><%=item.getPrice()%></td>
+<td class="cell-l"><%=item.getCurCd()%></td>
+<td class="cell-l"><%=item.getPriceMeta()%></td>
+<td class="cell-l"><%=item.getPriceFactory()%></td>
+<td class="cell-l"><%=item.getPriceCenter()%></td>
+<td class="cell-l"><%=item.getPriceClient()%></td>
+<td class="cell-l"><%=item.getServiceHour()%></td>
+<td class="cell-l"><%=item.getMoqVendor()%></td>
+<td class="cell-l"><%=item.getMoqCenter()%></td>
+<td class="cell-l"><%=item.getRequiredStockCnt()%></td>
+<td class="cell-l"><%=item.getDefectStockCnt()%></td>
+<td class="cell-l"><%=item.getLinkItem()%></td>
+<td class="cell-l"><%=item.getLinkInvoice()%></td>
+<td class="cell-l"><%=item.getNote()%></td>
+
 </tr>
 
 <%
@@ -135,14 +170,14 @@
 		%>
 		</td>
 		</tr>
-	<tr align="right">
+	<!-- <tr align="right">
    		<td ><input type=button class="myButton" value="등록" OnClick="window.location='itemDtl.jsp?mode=C&pg=<%=pg%>'"></td>
-  </tr>
-
+  </tr> -->
 
 </tbody>
 </table>
-
+<br>
+# moq : minimum order quantity 판매,포장 단위
 </body>
 </html>
 
