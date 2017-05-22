@@ -47,34 +47,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
- 	<link rel="stylesheet" href="../css/mr.css">
-	<!--  <script type="text/javascript" src="../js/mr.js"></script>--> 
+ 	<link rel="stylesheet" href="../css/vandiservice.css">
 </head>
 
 <body translate="no" >
 
-   <div class="table-title"><h1>Item 목록</h1></div>
+   <div class="table-title"><h1>Vandi materials</h1></div>
 
-<table class="table-fill" width="100%" cellpadding="0" cellspacing="0" border="0">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr><td class="cell-r">total : <%= size %></td></tr></table>
-<table class="table-fill" border="1">
-<tr class="header">
-	<th class="text-center">itemNo</th>
-	<th class="text-center">itemId</th>
-	<th class="text-center">itemNm</th>
-	<th class="text-center">itemNmKor</th>
-	
-	<th class="text-center">sku</th>
-	<th class="text-center">priceCenter</th>
-	<th class="text-center">priceClient</th>
-	<th class="text-center">serviceHour</th>
-	<th class="text-center">moqVendor</th>
-	<th class="text-center">moqCenter</th>
-	<th class="text-center">requiredStockCnt</th>
-	<th class="text-center">defectStockCnt</th>
-	<th class="text-center">linkItem</th>
-	<th class="text-center">linkInvoice</th>
-	<th class="text-center">note</th>
+<table border="1">
+<tr>
+	<th class="text-center">Part no.</th>
+	<th class="text-center">Description</th>
+	<th class="text-center">SKU</th>
+	<th class="text-center">Center Price</th>
+	<th class="text-center">List price</th>
+	<th class="text-center">Service hour</th>
 </tr>
 <tbody class="table-hover">
 <%
@@ -97,22 +86,12 @@
 
 
 <tr class="row">
-<td class="cell-c"><%=item.getItemNo()%></td>
 <td class="cell-c"><%=item.getItemId()%></td>
 <td class="cell-l"><a href="itemDtl.jsp?mode=R&idx=<%=item.getItemNo()%>&pg=<%=pg%>"><%=item.getItemNm()%></td>
-<td class="cell-l"><%=item.getItemNmKor()%></td>
-
-<td class="cell-l"><%=item.getSku()%></td>
-<td class="cell-l"><%=item.getPriceCenter()%></td>
-<td class="cell-l"><%=item.getPriceClient()%></td>
-<td class="cell-l"><%=item.getServiceHour()%></td>
-<td class="cell-l"><%=item.getMoqVendor()%></td>
-<td class="cell-l"><%=item.getMoqCenter()%></td>
-<td class="cell-l"><%=item.getRequiredStockCnt()%></td>
-<td class="cell-l"><%=item.getDefectStockCnt()%></td>
-<td class="cell-l"><%=item.getLinkItem()%></td>
-<td class="cell-l"><%=item.getLinkInvoice()%></td>
-<td class="cell-l"><%=item.getNote()%></td>
+<td class="cell-c"><%=item.getSku()%></td>
+<td class="cell-r"><%=item.getPriceCenterStr()%></td>
+<td class="cell-r"><%=item.getPriceClientStr()%></td>
+<td class="cell-c"><%=item.getServiceHour()%></td>
 
 </tr>
 

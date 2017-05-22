@@ -1,5 +1,8 @@
 package wh;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class Item {
 	
 	private int itemNo;
@@ -204,6 +207,10 @@ public class Item {
 	public void setPriceFactory(int priceFactory) {
 		this.priceFactory = priceFactory;
 	}
+	
+	public String getPriceCenterStr() {
+		return NumberFormat.getCurrencyInstance(Locale.KOREA).format(priceCenter);
+	}
 
 	public int getPriceCenter() {
 		return priceCenter;
@@ -211,6 +218,10 @@ public class Item {
 
 	public void setPriceCenter(int priceCenter) {
 		this.priceCenter = priceCenter;
+	}
+	
+	public String getPriceClientStr() {
+		return NumberFormat.getCurrencyInstance(Locale.KOREA).format(priceClient);
 	}
 
 	public int getPriceClient() {
