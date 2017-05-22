@@ -65,11 +65,6 @@
 	<th class="text-center">itemNmKor</th>
 	
 	<th class="text-center">sku</th>
-	<th class="text-center">vendorId</th>
-	<th class="text-center">price</th>
-	<th class="text-center">curCd</th>
-	<th class="text-center">priceMeta</th>
-	<th class="text-center">priceFactory</th>
 	<th class="text-center">priceCenter</th>
 	<th class="text-center">priceClient</th>
 	<th class="text-center">serviceHour</th>
@@ -91,7 +86,7 @@
 	 <%
 	 	} else {
 	 		for(int i=ROWSIZE*(pg-1); i<end;i++){
-				Item item = alist.get(i);
+				Item item = alist.get(i);	
 	//			indent = item.getIndent();
 				/*int itemNo = item.getItemNo();
 				String itemNm = item.getItemNm();
@@ -108,11 +103,6 @@
 <td class="cell-l"><%=item.getItemNmKor()%></td>
 
 <td class="cell-l"><%=item.getSku()%></td>
-<td class="cell-l"><%=item.getVendorId()%></td>
-<td class="cell-l"><%=item.getPrice()%></td>
-<td class="cell-l"><%=item.getCurCd()%></td>
-<td class="cell-l"><%=item.getPriceMeta()%></td>
-<td class="cell-l"><%=item.getPriceFactory()%></td>
 <td class="cell-l"><%=item.getPriceCenter()%></td>
 <td class="cell-l"><%=item.getPriceClient()%></td>
 <td class="cell-l"><%=item.getServiceHour()%></td>
