@@ -12,15 +12,17 @@ String userId =  (String)session.getAttribute("userId");
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Insert title here</title>
-	<link rel="stylesheet" href="../css/mr.css">
+	<link rel="stylesheet" href="css/vandiservice.css">
 </head>
 <body>
 	<table border="0" width="100%">
 		<tr>
-			<td>
-   				<img src="http://ec2-52-78-5-93.ap-northeast-2.compute.amazonaws.com/images/vandi_inventoryManager.jpg">
-			</td>
-			<td valign="bottom" align="right">
+			<td class="td_railway_h0">Vandi Service</td>
+			<td># <a href="./wh/toList.jsp" target="main">Transfer Order</a></td>
+			<td># <a href="./wh/soList.jsp" target="main">Sales Order</a></td>
+			<td># <a href="./wh/clientList.jsp" target="main">Client</a></td>
+			
+			<td class="td_railway_13" valign="bottom" align="right">
 			
 				<% if(userId != null) { %> 
 				

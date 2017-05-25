@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="css/vandiservice.css">
 <script>
 function chk(f)
   {
@@ -33,20 +34,25 @@ function chk(f)
 	
 %>
 
-<div>
+<div class="div_centered">
   <div class="form">
     <form name=frm class="login-form" action="login.jsp" method="post" onSubmit="return chk(this)">
+<!--
       <p class="message">Already registered? <a href="#">Sign In</a></p>
-      <input type="text" placeholder="id" name="id">
-      <input type="password" placeholder="pwd" name="pwd">
-      <button type="submit">login</button>
+-->
+	  <p class="message_h1">VANDI service</p>
+      <p><input class="input_style" type="text" placeholder="ID" name="id"></p>
+      <p><input class="input_style" type="password" placeholder="Password" name="pwd"></p>
+      <p><button class="submit_style" type="submit">Sign in</button></p>
     </form>
     <form class="register-form" action="register.jsp" method="post" onSubmit="return chk(this)">
-      <p class="message">Not registered? <a href="#">Create an account</a></p>
+      <p class="message_h2">Not registered? <a href="#">Create an account</a></p>
+<!--
       <input type="text" placeholder="id">
       <input type="password" placeholder="pwd">
       <input type="text" placeholder="email address">
       <button>create</button>
+-->
     </form>
   </div>
 </div>

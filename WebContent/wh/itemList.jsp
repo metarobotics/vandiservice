@@ -4,6 +4,7 @@
 <%@ page import="java.util.*" %>
  
 <jsp:include page = "/loginChk.jsp"/>
+<jsp:include page = "../top.jsp"/>
 <jsp:useBean id="dao" class="wh.ItemDAO"/>
 
 <%	
@@ -52,10 +53,13 @@
 
 <body translate="no" >
 
-   <div class="table-title"><h1>Vandi materials</h1></div>
-
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr><td class="cell-r">total : <%= size %></td></tr></table>
+<tr>
+	<td class="cell-l"><h1>Materials</h1></td>
+	<td class="cell-r">total : <%= size %></td>
+</tr>
+</table>
+
 <table border="1">
 <tr>
 	<th class="text-center">Part no.</th>

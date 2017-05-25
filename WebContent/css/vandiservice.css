@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway:100');
+@import url('https://fonts.googleapis.com/css?family=Raleway:200');
 @import url('https://fonts.googleapis.com/css?family=Oxygen_Mono:100');
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:100');
 
@@ -40,6 +40,24 @@ th {
 tr {
 	line-height: 20px;
 	padding : 2px;
+}
+
+.td_railway_h0 {
+	font-family: Raleway;
+	font-size: 36px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 28px;
+}
+
+.td_railway_13 {
+	font-family: Raleway;
+	font-size: 14px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 15.4px;
 }
 
 .cell-c {
@@ -120,4 +138,127 @@ pre {
 	font-variant: normal;
 	font-weight: 400;
 	line-height: 18.5714px;
+}
+
+
+.div_centered {
+  position:absolute;
+  top:50%;
+  left:50%;
+  padding:15px;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+
+input { background-color: yellow }
+
+input[type=text] {
+    margin-bottom:20px;
+    position: relative;
+    cursor: pointer !important;
+    border-radius:2px;
+    background: #fff;
+	padding: 10px 20px;
+	border: 2px solid #6ccaa5;
+	color: #6ccaa5;
+}
+
+input[type=password] {
+    margin-bottom:20px;
+    position: relative;
+    cursor: pointer !important;
+    border-radius:2px;
+    background: #fff;
+	padding: 10px 20px;
+	border: 2px solid #6ccaa5;
+	color: #6ccaa5;
+}
+
+input[type=button] {
+	margin-bottom:20px;
+    position: relative;
+    background: #6ccaa5;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    color: #fff;
+    border-radius:2px;
+}
+
+.message_h1 {
+	font-family: Raleway;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 1px;
+	color: #6ccaa5;
+	height: 30px;
+	margin: 1px 0;
+}
+
+.message_h2 {
+	font-family: Raleway;
+	font-size: 14px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 1px;
+	color: #6ccaa5;
+	margin: 0em;
+}
+
+.input_style {
+	font-family: Raleway;
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 1px;
+	color: #6ccaa5;
+	height: 30px;
+	margin-top: -1.5em;
+}
+
+.submit_style {
+	font-family: Raleway;
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 1px;
+	background: #6ccaa5;
+	border: none;
+	color: #FFFFFF;
+	height: 45px;
+	margin-top: -1.5em;
+	width: 220px;
+}
+
+.submit_style:hover {
+	font-family: Raleway;
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 1px;
+	background: #FFFFFF;
+	border: 2px solid #6ccaa5;
+	color: #6ccaa5;
+	height: 45px;
+	margin-top: -1.5em;
+	width: 220px;
+}
+
+.submit_style2 {
+	font-family: Raleway;
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 1px;
+	color: #000000;
+	height: 30px;
+	margin-top: -1.5em;
+	width: 220px;
 }
