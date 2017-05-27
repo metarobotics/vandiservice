@@ -8,12 +8,9 @@
 </head>
 
 <body style="font-size:12">
-<%@ include file="/top.jsp"%>
-<%@ include file="/loginForm.jsp"%>
-<table height=100>
-<tr><td></td></tr>
-</table>
-<%@ include file="/bottom.jsp"%>
+<%@ include file="wh/top.jsp"%>
+<%@ include file="loginForm.jsp"%>
+<%@ include file="bottom.jsp"%>
 </body>
 
 

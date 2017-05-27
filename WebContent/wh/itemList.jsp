@@ -4,7 +4,7 @@
 <%@ page import="java.util.*" %>
  
 <jsp:include page = "/loginChk.jsp"/>
-<jsp:include page = "../top.jsp"/>
+<jsp:include page = "top.jsp"/>
 <jsp:useBean id="dao" class="wh.ItemDAO"/>
 
 <%	

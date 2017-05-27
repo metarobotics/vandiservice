@@ -154,25 +154,49 @@ pre {
 input { background-color: yellow }
 
 input[type=text] {
-    margin-bottom:20px;
+    margin-bottom:10px;
     position: relative;
     cursor: pointer !important;
     border-radius:2px;
     background: #fff;
-	padding: 10px 20px;
+	padding: 5px 10px;
 	border: 2px solid #6ccaa5;
+
+	font-family: Raleway;
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 16px;
 	color: #6ccaa5;
+	height: 30px;
+	
+	margin-top: -1.0em;
+	
+	width: 155px;
 }
 
 input[type=password] {
-    margin-bottom:20px;
+    margin-bottom:10px;
     position: relative;
     cursor: pointer !important;
     border-radius:2px;
     background: #fff;
-	padding: 10px 20px;
+	padding: 5px 10px;
 	border: 2px solid #6ccaa5;
+
+	font-family: Raleway;
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 16px;
 	color: #6ccaa5;
+	height: 30px;
+	
+	margin-top: -1.0em;
+	
+	width: 155px;
 }
 
 input[type=button] {
@@ -208,18 +232,6 @@ input[type=button] {
 	margin: 0em;
 }
 
-.input_style {
-	font-family: Raleway;
-	font-size: 16px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: 500;
-	line-height: 1px;
-	color: #6ccaa5;
-	height: 30px;
-	margin-top: -1.5em;
-}
-
 .submit_style {
 	font-family: Raleway;
 	font-size: 16px;
@@ -231,8 +243,8 @@ input[type=button] {
 	border: none;
 	color: #FFFFFF;
 	height: 45px;
-	margin-top: -1.5em;
-	width: 220px;
+	margin-top: -1.0em;
+	width: 180px;
 }
 
 .submit_style:hover {
@@ -246,8 +258,8 @@ input[type=button] {
 	border: 2px solid #6ccaa5;
 	color: #6ccaa5;
 	height: 45px;
-	margin-top: -1.5em;
-	width: 220px;
+	margin-top: -1.0em;
+	width: 180px;
 }
 
 .submit_style2 {

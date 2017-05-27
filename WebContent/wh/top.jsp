@@ -18,9 +18,9 @@ String userId =  (String)session.getAttribute("userId");
 	<table border="0" width="100%">
 		<tr>
 			<td class="td_railway_h0">Vandi Service</td>
-			<td># <a href="./wh/toList.jsp" target="main">Transfer Order</a></td>
-			<td># <a href="./wh/soList.jsp" target="main">Sales Order</a></td>
-			<td># <a href="./wh/clientList.jsp" target="main">Client</a></td>
+			<td># <a href="toList.jsp" target="main">Transfer Order</a></td>
+			<td># <a href="soList.jsp" target="main">Sales Order</a></td>
+			<td># <a href="clientList.jsp" target="main">Client</a></td>
 			
 			<td class="td_railway_13" valign="bottom" align="right">
 			
@@ -28,7 +28,7 @@ String userId =  (String)session.getAttribute("userId");
 				
 					Welcome <%= userId %>~ :) 
 					<br>
-					<a target="center" href="logout.jsp">logout</a>
+					<a target="center" href="../logout.jsp">logout</a>
 				
 				<% } %>
 
