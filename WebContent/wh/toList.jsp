@@ -55,10 +55,15 @@
 </head>
 
 <body translate="no" >
-   <div class="table-title"><h1>Transfer Order 格废</h1></div>
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr><td class="cell-r">total : <%= size %></td></tr></table>
+<table width="100%" cellpadding="0" cellspacing="0">
+	<tr style="border-bottom: 1px solid #AAAAAA" height="20">
+		<td class="cell-l">备概 夸没 格废</td>
+		<td class="cell-r">total : <%= size %></td>
+	</tr>
+	<tr height="10"></tr>
+</table>
+
 <table border="1">
 <tr class="header">
 	<th width="10%" class="text-center">Order #</th>

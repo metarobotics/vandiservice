@@ -51,15 +51,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
- 	<link rel="stylesheet" href="../css/mr.css">
+ 	<link rel="stylesheet" href="../css/vandiservice.css">
 </head>
 
-<body translate="no" >
-   <div class="table-title"><h1>Sales Order 목록</h1></div>
-
-<table class="table-fill" width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr><td class="cell-r">total : <%= size %></td></tr></table>
-<table class="table-fill" border="1">
+<table width="100%" cellpadding="0" cellspacing="0">
+	<tr style="border-bottom: 1px solid #AAAAAA" height="20">
+		<td class="cell-l">견적서 목록</td>
+		<td class="cell-r">total : <%= size %></td>
+	</tr>
+	<tr height="10"></tr>
+</table>
+<table border="1">
 <tr class="header">
 	<th width="10%" class="text-center">Order #</th>
 	<th width="10%" class="text-center">Date</th>
