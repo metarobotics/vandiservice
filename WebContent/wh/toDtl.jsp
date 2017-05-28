@@ -19,7 +19,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Insert title here</title>
+<title>Transfer Order</title>
 <link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
 <script type="text/javascript" src="../js/chkValid.js"></script>
@@ -137,7 +137,8 @@
 			document.getElementById("tdTax").innerHTML = '<%=tax%>';
 			document.getElementById("tdTotalAmt").innerHTML = '<%=totalAmt%>';
 			
-<%if (orderItemList != null) {
+<%
+			if (orderItemList != null) {
 				int size = orderItemList.size();
 				OrderItem orderItem = null;
 
@@ -145,13 +146,13 @@
 					orderItem = orderItemList.get(j);
 					int itemId = orderItem.getItemNo();
 					int itemCnt = orderItem.getItemCnt();
-					//out.print(itemId + ":" + itemCnt);%>
-								
-				
+%>
+			
 					// 수량 setting
 					var idList = document.getElementsByName("selItem");
 					var priceList = document.getElementsByName("txtPrice");
 					var cntList = document.getElementsByName("txtCnt");
+					var trList = document.getElementsByName("trItem");
 					
 					var tot = idList.length;
 					
@@ -159,11 +160,14 @@
 						
 						if(idList[i].value == '<%=itemId%>')
 						{
+						
 							cntList[i].value = '<%=itemCnt%>';
 						}
 					}		
-<%}
-			}%>
+<%
+				}//for
+			}//if orderItemList
+%>
 		}//if(mode == "R")
 	}//setPage
 	

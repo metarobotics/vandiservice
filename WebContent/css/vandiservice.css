@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:200');
-@import url('https://fonts.googleapis.com/css?family=Oxygen_Mono:100');
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans:100');
+@import url('https://fonts.googleapis.com/css?family=Oxygen_Mono');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
 .table-title h1 {
 	font-family: Raleway;
@@ -14,14 +15,15 @@
 table {
 	/* font-family: Inconsolata, monospace; */
 	/* font-family: Oxygen Mono, monospace; */
-	font-family: Noto Sans, sans-serif;
+	/* font-family: Noto Sans, sans-serif; */
+	font-family: 'Nanum Gothic', serif;
 	font-size: 13px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 15.4px;
 	border-collapse: collapse;
-	width: 100%;
+	width: 100%;	
 }
 
 th {
