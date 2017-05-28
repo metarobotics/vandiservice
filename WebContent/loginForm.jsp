@@ -36,12 +36,12 @@ function chk(f)
 
 <div class="div_centered">
   <div class="form">
-    <form name=frm class="login-form" action="login.jsp" method="post" onSubmit="return chk(this)">
+    <form name=form_login class="form_login" action="login.jsp" method="post" onSubmit="return chk(this)">
 <!--
       <p class="message">Already registered? <a href="#">Sign In</a></p>
 -->
 	  <p class="message_h1">VANDI service</p>
-      <p><input class="input_style" type="text" placeholder="ID" name="id"></p>
+      <p><input id="form_login" type="text" placeholder="ID" name="id"></p>
       <p><input class="input_style" type="password" placeholder="Password" name="pwd"></p>
       <p><button class="submit_style" type="submit">Sign in</button></p>
     </form>
