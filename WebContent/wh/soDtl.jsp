@@ -17,8 +17,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Insert title here</title>
-<link rel="stylesheet" href="../css/mr.css">
+<title>Service sheet</title>
+<link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
 <script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -138,9 +138,11 @@
 			document.getElementById("tdSubtotal").innerHTML = '<%= subtotal %>';
 			document.getElementById("tdTax").innerHTML = '<%= tax %>';
 			document.getElementById("tdTotalAmt").innerHTML = '<%= totalAmt %>';
-			
 <%			
 			if(orderItemList != null){
+				
+				int totalSum = 0;
+				
 				int size = orderItemList.size();
 				OrderItem orderItem = null;
 				
@@ -149,6 +151,7 @@
 					orderItem = orderItemList.get(j);
 					int itemId = orderItem.getItemNo();
 					int itemCnt = orderItem.getItemCnt();
+					int itemSum = orderItem.getItemCnt() * orderItem.getItemPrice();
 //out.print(itemId + ":" + itemCnt);				
 %>
 								
@@ -157,6 +160,9 @@
 					var idList = document.getElementsByName("selItem");
 					var priceList = document.getElementsByName("txtPrice");
 					var cntList = document.getElementsByName("txtCnt");
+					var serviceTimeList = document.getElementsByName("txtServiceTime");
+					var itemSumList = document.getElementsByName("txtItemSum");
+					var subSumList = document.getElementsByName("txtSubSum");
 					
 					var tot = idList.length;
 					
@@ -164,11 +170,44 @@
 						
 						if(idList[i].value == '<%= itemId %>')
 						{
+							<%
+							
+							float serviceTime = 0;
+							for (int i = 0; i < itemLength; i++) {
+								Item item = itemList.get(i);
+								if(item.getItemNo() == itemId)
+								{
+									serviceTime = item.getServiceHour();
+									break;
+								}
+							}
+							
+							int itemSubSum = (int)(orderItem.getItemCnt() * (orderItem.getItemPrice() + serviceTime *34700));
+							totalSum += itemSubSum;
+							%>
+							
 							cntList[i].value = '<%=itemCnt%>';
+							itemSumList[i].value = '<%= MrUtil.FormatCurrent(itemSum) %>';
+							subSumList[i].value = '<%= MrUtil.FormatCurrent(itemSubSum) %>';
+
 						}
-					}		
+					}					
 <%
 				}
+				
+				String strTotalSum = MrUtil.FormatCurrent(totalSum);
+				String strTotalTax = MrUtil.FormatCurrent((int)(totalSum*0.1));
+				String strTotalPrice = MrUtil.FormatCurrent((int)(totalSum*1.1));
+%>
+
+				document.getElementById("tdSubtotal").innerHTML = '<%=strTotalSum%>';
+				document.getElementById("tdTax").innerHTML = '<%=strTotalTax%>';
+				document.getElementById("tdTotalAmt").innerHTML = '<%=strTotalPrice%>';
+				
+				document.getElementById("subtotal").value = '<%=strTotalSum%>';
+				document.getElementById("tax").value = '<%=strTotalTax%>';
+				document.getElementById("totalAmt").value = '<%=strTotalPrice%>';
+<%				
 			}
 %>
 		}//if(mode == "R")
@@ -184,6 +223,7 @@
 	    var idList = document.getElementsByName("selItem");
 	    var priceList = document.getElementsByName("txtPrice");
 	    var cntList = document.getElementsByName("txtCnt");
+	    var subSumList = document.getElementsByName("txtSubSum");
 	    
 	    var tot = idList.length;
 	    
@@ -195,10 +235,10 @@
 	    			str = idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value;
 	    		else
 	    			str = str + "/" + idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value; // seperator | 는 사용하면 안됨. 변형되는지 split이 안돼 
-	    		subtotal = subtotal + parseInt(priceList[i].value) * parseInt(cntList[i].value);
+	    		subtotal = subtotal + parseInt(subSumList[i].value);
 	    	}
 	    }
-	    
+/*
 		document.getElementById("tdSubtotal").innerHTML = subtotal;
 		document.getElementById("tdTax").innerHTML = parseInt(subtotal * 0.1);
 		document.getElementById("tdTotalAmt").innerHTML = parseInt(subtotal * 1.1);
@@ -206,7 +246,7 @@
 		document.getElementById("subtotal").value = subtotal;
 		document.getElementById("tax").value = parseInt(subtotal * 0.1);
 		document.getElementById("totalAmt").value = parseInt(subtotal * 1.1);
-		
+*/
 		document.getElementById("orderStr").value = str;
 	}
 	
@@ -225,57 +265,50 @@
 </script>
 </head>
 
-<body>
-<center>
 
+<body class="A4">
+
+<center>
   
    
 	<% if(mode.equals("R")) { %>   
-   		<div class="table-title"><h1>Sales Order 상세</h1></div>
+   		<div class="table-title"><h1>Sales Order #<%= orderNo %></h1></div>
 	<% } else { %>
-   		<div class="table-title"><h1>Sales Order 등록</h1></div>
+   		<div class="table-title"><h1>New sales order</h1></div>
 	<% } %>   		
    	
 
 		<form name="form1" method="post" action="soWrite_action.jsp?mode=<%= writeMode %>" onsubmit="return soWriteCheck();">
 
 
-		<table border=1 class='table-fill'>
-    		<tr>
-				<td width="30%" class="cell-hd">주문번호</td>
-				<td width="70%" class="cell-l">
-	<% if(mode.equals("C")) { %>   
-					<input type=text size=10 disabled value='' >
+		<table width="500">
+    		<tr class="row_bottom_only">
+				<td width="100" class="cell-hd">주문번호</td>
+					<td width="100" class="cell-l">
+ 
+ <% if(mode.equals("C")) { %>   
+					<input type=text size=10 disabled value='' style="border: 0px; text-align: left;" >
 					<input type=hidden name=orderNo id=orderNo >
 	<% } else { %>
-					<input type=text size=10 disabled value='<%= MrUtil.getSOrderNoStr(orderNo) %>' >
+					<input type=text size=10 disabled value='<%= MrUtil.getTOrderNoStr(orderNo) %>'  style="border: 0px; text-align: left;" >
 					<input type=hidden name=orderNo id=orderNo value='<%= orderNo %>' >
-	<% } %>   		
-				</td>
+	<% } %>
+ 
+					</td>
+					<td width="100" class="cell-l"/>
+					<td width="100" class="cell-l"/>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">주문일자</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="100" class="cell-hd">주문일자</td>
+				<td width="100" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=date name=orderDt id=orderDt size=10 value='<%= MrUtil.getDateStr() %>' >
 	<% } else { %>
 					<input type=date name=orderDt id=orderDt size=10 value='<%= orderDt %>' >
 	<% } %>   		
 				</td>
-			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">작성자</td>
-				<td width="70%" class="cell-l">
-	<% if(mode.equals("C")) { %>   
-					<input type=text name=userId id=userId size=10 disabled value='<%= (String)session.getAttribute("userId") %>' >
-	<% } else { %>
-					<input type=text name=userId id=userId size=10 disabled value='<%= insertUserId %>' >
-	<% } %>   		
-				</td>
-			</tr>
-    		<tr>
-     			<td class="cell-hd">Service Center</td>
-     			<td class="cell-l">
+				<td width="100"  class="cell-r">Service Center</td>
+     			<td width="100"  class="cell-l">
      				<select name=center id=center>
 	     				<option value=''>선택</option>
 		   				<%
@@ -288,10 +321,18 @@
 		     			%>
      				</select>
      			</td>
-    		</tr>
-    		<tr>
-     			<td class="cell-hd">Product</td>
-     			<td class="cell-l">
+			</tr>
+    		<tr class="row_bottom_only">
+				<td width="100" class="cell-hd">작성자</td>
+				<td width="100" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=userId id=userId size=10 disabled value='<%= (String)session.getAttribute("userId") %>' >
+	<% } else { %>
+					<input type=text name=userId id=userId size=10 disabled value='<%= insertUserId %>' >
+	<% } %>   		
+				</td>
+				<td width="100" class="cell-r">Product</td>
+     			<td width="100" class="cell-l">
      				<select id=productEach name=productEach>
 	     				<option value=''>선택</option>
 		   				<%
@@ -304,56 +345,78 @@
 		     			%>
      				</select>
      			</td>
-     		</tr>
-    		<tr>
-     			<td class="cell-hd">Item</td>
-     			<td class="cell-l">
-						<!-- <h3 align="left">
-						    <a href="#" id="addItem">Add Item</a>
-						</h3>-->
-						<table class="dynatable" width="600" border=0>
-						    <thead>
-						        <tr>
-						            <th width="400">Item</th>
-						            <th width="100">가격</th>
-						            <th width="100">수량</th>
-						        </tr>
-						    </thead>
-						    <tbody id="p_item">
-						    
-							   				<%
-										 		for(int i=0; i<itemLength;i++){
-													Item item = itemList.get(i);
-							     			%>
-						    
-						        <tr>
-						            <td>
-					     				<select style="width:400;" name="selItem" disabled><!-- onChange="javascript:setItemPrice(this)" -->
-							      			    <option value=<%= item.getItemNo() %>>[<%= item.getItemId() %>] <%= item.getItemNm() %></option>
-					     				</select>
-						            </td>
-					  	            <td>
-						                <input type="text" name="txtPrice" style="text-align:right" value='<%= item.getPriceCenter() %>' disabled />
-						            </td>
-						            <td>
-						                <input type="text" name="txtCnt" style="text-align:right" onchange="setSelectResult();" onKeypress="if(event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" />
-						            </td>
-						        </tr>
+			</tr>
+    		<tr height="20"/>
+     		</table>
 
-							     			<%
-							     				}
-							     			%>
-						        
-						    </tbody>
-						</table>
-						<table width="200" height="50" border="0">
-							<tr><td align="right" width="100">subtotal : </td><td id="tdSubtotal" align="right"></td></tr>
-							<tr><td align="right" >tax : </td><td id="tdTax" align="right"></td></tr>
-							<tr><td align="right" >total price : </td><td id="tdTotalAmt" align="right"></td></tr>
-						</table>
-     			</td>
-    		</tr>
+			<table id="order_item_table" border=0>
+				<thead>
+					<tr>
+						<th width="100mm">Description</th>
+						<th width="20mm" class="cell-r">수량</th>
+						<th width="20mm" class="cell-r">부품단가</th>
+						<th width="20mm" class="cell-r">정비시간</th>
+						<th width="20mm" class="cell-r">부품비</th>
+						<th width="20mm" class="cell-r">합계</th>
+					</tr>
+				</thead>
+				<tbody id="p_item">
+
+					<%
+						for (int i = 0; i < itemLength; i++) {
+							Item item = itemList.get(i);
+					%>
+
+					<tr id="order_item_info">
+						<td><input type=hidden name="selItem" value=<%=item.getItemNo()%>>
+						<!-- <select name="selItem" disabled>
+								<option value=<%=item.getItemNo()%>> </option></select>-->
+								<%=item.getItemNmKor()%>
+						</td>
+						<td class="cell-r"><input type="text" name="txtCnt"
+							style="text-align: right" onchange="setSelectResult();"
+							onKeypress="if(event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" />
+						</td>
+						<td class="cell-r"><input type="text" name="txtPrice"
+							style="border: 0px; text-align: right;" value='<%= MrUtil.FormatCurrent(item.getPriceCenter()) %>'
+							disabled />
+						</td>
+						<td class="cell-r"><input type="text" name="txtServiceTime"
+							style="border: 0px; text-align: right;" value='<%=item.getServiceHour()%>'
+							disabled />
+						</td>
+						<td class="cell-r"><input type="text" name="txtItemSum"
+							style="border: 0px; text-align: right;" value='<%=0%>'
+							disabled />
+						</td>
+						<td class="cell-r"><input type="text" name="txtSubSum"
+							style="border: 0px; text-align: right;" value='<%=0%>'
+							disabled />
+						</td>
+					</tr>
+
+					<%
+						}
+					%>
+
+				</tbody>
+			</table>
+
+			<table width="200" height="50" border="0">
+			<tr>
+				<td align="right" width="100">subtotal :</td>
+				<td id="tdSubtotal" align="right"></td>
+			</tr>
+			<tr>
+				<td align="right">tax :</td>
+				<td id="tdTax" align="right"></td>
+			</tr>
+			<tr>
+				<td align="right">total price :</td>
+				<td id="tdTotalAmt" align="right"></td>
+			</tr>
 		</table>
+
 		<input type="hidden" id="subtotal" name="subtotal"/>
 		<input type="hidden" id="tax" name="tax"/>
 		<input type="hidden" id="totalAmt" name="totalAmt"/>
@@ -374,10 +437,13 @@
     		</tr>
 		</table>    		 
 	</form> 
-</center>
 <script>
 	setPage();
 	setSelectResult();
 </script>
+
+</center>
 </body>
+
+
 </html>

@@ -3,6 +3,8 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans');
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
+
+
 .table-title h1 {
 	font-family: Raleway;
 	font-size: 24px;
@@ -23,7 +25,7 @@ table {
 	font-weight: 500;
 	line-height: 15.4px;
 	border-collapse: collapse;
-	width: 100%;	
+	/* width: 100%; */	
 }
 
 th {
@@ -297,4 +299,27 @@ input[type=button] {
 	color: #6ccaa5;
 	height: 20px;
 	width: 155px;	
+}
+
+
+body {
+  /* background: rgb(204,204,204); */ 
+}
+
+page[size="A4"] {
+  background: white;
+  width: 21cm;
+  height: 29.7cm;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.5cm;
+  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+  border: 1.25cm solid #000;
+}
+
+@media print {
+  body, page[size="A4"] {
+    margin: 0;
+    box-shadow: 0;
+  }
 }

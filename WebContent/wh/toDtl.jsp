@@ -168,7 +168,35 @@
 				}//for
 			}//if orderItemList
 %>
+			
+/*
+			var tbl = document.getElementById("order_item_table");
+			var numRows = tbl.rows.length;
+			
+			for (var i = 1; i < numRows; i++) {
+			    var ID = tbl.rows[i].id;
+			    if(ID != "order_item_info")
+			    	continue;
+			    
+			    alert(tbl.rows[i].find("input"));
+			    
+			    tbl.rows[i].find("input").each(function(){
+			    	alert(this.value);
+			    })
+			
+			    var cells = tbl.rows[i].find("input");
+			    
+			    alert(cells[0].innerHTML);
+			    
+			    if(cells[2].value == 0)
+			    	tbl.rows[i].style.display = none;
+			    else
+			    	tbl.rows[i].style.display = visible;
+			}
+*/
+			
 		}//if(mode == "R")
+			
 	}//setPage
 	
 	
@@ -320,7 +348,7 @@
 				<tr height="20" />
 			</table>
 
-			<table border=0>
+			<table id="order_item_table" border=0>
 				<thead>
 					<tr>
 						<th width="60%">Item</th>
@@ -335,7 +363,7 @@
 							Item item = itemlist.get(i);
 					%>
 
-					<tr>
+					<tr id="order_item_info">
 						<td><input type=hidden name="selItem" value=<%=item.getItemNo()%>>
 						<!-- <select name="selItem" disabled>
 								<option value=<%=item.getItemNo()%>> </option></select>-->

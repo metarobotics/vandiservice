@@ -1,5 +1,6 @@
 package wh;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 public class MrUtil {
@@ -9,7 +10,7 @@ public class MrUtil {
 		
 	}
 	
-	// return : ÁÖ¹®Á¾·ù + ÁÖ¹®¹øÈ£(¼ýÀÚ 7ÀÚ¸®) 
+	// return : ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ + ï¿½Ö¹ï¿½ï¿½ï¿½È£(ï¿½ï¿½ï¿½ï¿½ 7ï¿½Ú¸ï¿½) 
 	// orderFg : "T", "S", "P"
 	private static String getOrderNoStr(String orderFg, int orderNo)
 	{
@@ -38,7 +39,7 @@ public class MrUtil {
 	
 	public static String getDateStr()
 	{
-		// ÇöÀç³¯Â¥ 
+		// ï¿½ï¿½ï¿½ç³¯Â¥ 
 		/*
 	     Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 	      //getTime() returns the current date in default time zone
@@ -60,5 +61,10 @@ public class MrUtil {
 		String dateStr = now.get(Calendar.YEAR) + "-" + monthStr + "-" + dayOfMonthStr;		
 		
 		return dateStr;
+	}
+	
+	public static String FormatCurrent(int price)
+	{
+		return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
 	}
 }
