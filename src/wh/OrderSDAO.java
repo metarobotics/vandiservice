@@ -231,19 +231,22 @@ public class OrderSDAO extends DAO {
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		try { 
-			sql = "update orderS set orderDt=?, centerNo=?, productSerialNo=?, updateUserId=?, updateDatetime=current_timestamp() where orderNo=?";
+			sql = "update orderS set centerNo=?, productSerialNo=?, subtotal=?, tax=?, totalAmt=?, updateDatetime=current_timestamp() where orderNo=?";
 			
 			pstmt = con.prepareStatement(sql);
 			
-			pstmt.setString(1, orderS.getOrderDt());
-			pstmt.setInt(2, orderS.getCenterNo()); 
-			pstmt.setString(3, orderS.getProductSerialNo()); 
-			pstmt.setString(4, orderS.getUpdateUserId());
-			pstmt.setInt(5, orderS.getOrderNo());
+			pstmt.setInt(1, orderS.getCenterNo()); 
+			pstmt.setString(2, orderS.getProductSerialNo()); 
+			pstmt.setInt(3, orderS.getSubtotal());
+			pstmt.setInt(4, orderS.getTax());
+			pstmt.setInt(5, orderS.getTotalAmt());
+			pstmt.setInt(6, orderS.getOrderNo());
+			
+			System.out.println("[L] Total amout : " + orderS.getTotalAmt());
 						
 			pstmt.executeUpdate(); 
 		}catch(Exception e) { 
-			throw e;
+			System.out.println(e.toString());
 		}finally { 
 			DBClose.close(con,pstmt); 
 		} 

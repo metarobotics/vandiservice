@@ -11,31 +11,29 @@ String userId =  (String)session.getAttribute("userId");
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-	<title>Insert title here</title>
+	<title>Vandi service</title>
 	<link rel="stylesheet" href="css/vandiservice.css">
 </head>
 <body>
-	<table border="0" width="100%">
-		<tr>
-			<td class="td_railway_h0">Vandi Service</td>
-			<td># <a href="toList.jsp" target="main">Transfer Order</a></td>
-			<td># <a href="soList.jsp" target="main">Sales Order</a></td>
-			<td># <a href="clientList.jsp" target="main">Client</a></td>
+<center>
+	<table border="0">
+		<tr style="border-bottom: 1px solid #AAAAAA" height="20">
+			<td class="cell-l"># <a href="toList.jsp" target="main">Transfer Order</a></td>
+			<td class="cell-l"># <a href="soList.jsp" target="main">Sales Order</a></td>
+			<td class="cell-l"># <a href="clientList.jsp" target="main">Client</a></td>
 			
-			<td class="td_railway_13" valign="bottom" align="right">
+			<td class="cell-r" valign="bottom" align="right">
 			
 				<% if(userId != null) { %> 
 				
-					Welcome <%= userId %>~ :) 
-					<br>
-					<a target="center" href="../logout.jsp">logout</a>
+					<%= userId %>~ :)<a target="center" href="../logout.jsp">logout</a>
 				
 				<% } %>
-
 			</td>
 		</tr>
 	</table>
    <p>
   </p>
+</center>
 </body>
 </html>

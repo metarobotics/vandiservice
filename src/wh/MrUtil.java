@@ -63,8 +63,14 @@ public class MrUtil {
 		return dateStr;
 	}
 	
-	public static String FormatCurrent(int price)
+	public static String FormatCurrentDisplay(int price)
 	{
 		return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
+	}
+	
+	public static String FormatCurrent(int price)
+	{
+		return String.valueOf( price );
+		//return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
 	}
 }

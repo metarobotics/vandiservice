@@ -55,8 +55,8 @@
 </head>
 
 <body translate="no" >
-
-<table width="100%" cellpadding="0" cellspacing="0">
+<center>
+<table width="600">
 	<tr style="border-bottom: 1px solid #AAAAAA" height="20">
 		<td class="cell-l">구매 요청 목록</td>
 		<td class="cell-r">total : <%= size %></td>
@@ -66,11 +66,11 @@
 
 <table border="1">
 <tr class="header">
-	<th width="10%" class="text-center">Order #</th>
-	<th width="10%" class="text-center">Date</th>
+	<th width="15%" class="text-center">Order #</th>
+	<th width="15%" class="text-center">Date</th>
 	<th width="20%" class="text-center">Source Warehouse</th>
 	<th width="20%" class="text-center">Destination Warehouse</th>
-	<th width="30%" class="text-center">Total Price</th>
+	<th width="20%" class="text-center">Total Price</th>
 	<th width="10%" class="text-center">Status</th>
 </tr>
 <tbody class="table-hover">
@@ -84,6 +84,9 @@
 	 	} else {
 	 		for(int i=ROWSIZE*(pg-1); i<end;i++){
 				OrderT orderT = alist.get(i);
+				
+				System.out.println(orderT.getTotalAmt());
+				
 	//			indent = item.getIndent();
 				/*int itemNo = item.getItemNo();
 				String itemNm = item.getItemNm();
@@ -108,7 +111,7 @@
 
 </table>
 <br>
-<table class="table-fill2" width="100%" cellpadding="0" cellspacing="0" border="0">
+<table cellpadding="0" cellspacing="0" border="0">
   <tr>
 	<td align="center">
 		<%
@@ -152,5 +155,6 @@
 </tbody>
 </table>
 
+</center>
 </body>
 </html>

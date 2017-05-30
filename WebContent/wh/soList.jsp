@@ -12,6 +12,7 @@
 <%	
 	int total = dao.countOrderS();
 	ArrayList<OrderS> alist = dao.getOrderSList();
+	System.out.println("read again");
 	int size = alist.size();
 	int size2 = size;
 	
@@ -54,12 +55,13 @@
  	<link rel="stylesheet" href="../css/vandiservice.css">
 </head>
 
-<table width="100%" cellpadding="0" cellspacing="0">
-	<tr style="border-bottom: 1px solid #AAAAAA" height="20">
-		<td class="cell-l">견적서 목록</td>
-		<td class="cell-r">total : <%= size %></td>
+<body>
+<center>
+<table>
+	<tr>
+		<td class="td_railway_h0">Quotations</td>
 	</tr>
-	<tr height="10"></tr>
+	<tr height="20"></tr>
 </table>
 <table border="1">
 <tr class="header">
@@ -83,6 +85,7 @@
 	 	} else {
 	 		for(int i=ROWSIZE*(pg-1); i<end;i++){
 				OrderS orderS = alist.get(i);
+				System.out.println(orderS.getTotalAmt());
 	//			indent = item.getIndent();
 				/*int itemNo = item.getItemNo();
 				String itemNm = item.getItemNm();
@@ -153,5 +156,6 @@
 </tbody>
 </table>
 
+</center>
 </body>
 </html>

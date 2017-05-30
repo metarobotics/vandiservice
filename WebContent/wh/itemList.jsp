@@ -52,10 +52,10 @@
 </head>
 
 <body translate="no" >
-
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<center>
+<table width="540" cellpadding="0" cellspacing="0" border="0">
 <tr>
-	<td class="cell-l"><h1>Materials</h1></td>
+	<td class="cell-l"><h1>Materials 20170529</h1></td>
 	<td class="cell-r">total : <%= size %></td>
 </tr>
 </table>
@@ -149,8 +149,7 @@
 
 </tbody>
 </table>
-<br>
-# moq : minimum order quantity 판매,포장 단위
+</center>
 </body>
 </html>
 

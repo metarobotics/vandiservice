@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=euc_kr" %>
 <% request.setCharacterEncoding("euc-kr"); %>
 
-<%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
+<%@ page import = "java.sql.*" %>
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
  
@@ -10,8 +10,6 @@
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
 <jsp:useBean id="orderSDao" class="wh.OrderSDAO"/>
 <jsp:include page = "/loginChk.jsp"/>
-
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -23,8 +21,22 @@
 <script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
+<script>
+function printContent(el){
+var restorepage = $('body').html();
+var printcontent = $('#' + el).clone();
+$('body').empty().html(printcontent);
+window.print();
+$('body').html(restorepage);
+}
+</script>
 
 <%
+	// write mode
+	// C : Create
+	// R : Repair
+	// P : Paper
+	// V : View
 
 	String mode = request.getParameter("mode");
 	String pg = request.getParameter("pg");
@@ -40,6 +52,7 @@
 	int orderNo = 0;
 	String orderDt = "";
 	int centerNo=0;
+	String centerName = "";
 	String productSerialNo="";
 	String statusCd = "";
 	int subtotal=0;
@@ -49,7 +62,7 @@
 
 	ArrayList<OrderItem> orderItemList = null;
 	
-	if(mode.equals("R"))
+	if(mode.equals("R") || mode.equals("V"))
 	{
 		orderNo = Integer.parseInt(request.getParameter("orderNo"));
 	
@@ -77,14 +90,23 @@
 	}
 
 
-	// mode C/R
+	// mode C/R/V
 
 	ArrayList<Wh> whList = mrDao.getWhList();
 	int whLength = whList.size();
+	
+	for(int i=0; i<whLength;i++){
+		Wh wh = whList.get(i);
+		if(wh.getWhNo() == centerNo)
+		{
+			centerName = wh.getWhNm();
+			break;
+		}
+	}
 
 	ArrayList<ProductEach> productEachList = productEachDao.getProductEachList();
 	int productEachLength = productEachList.size();
-
+	
 	ArrayList<Item> itemList = itemDao.getItemList();
 	int itemLength = itemList.size();
 	
@@ -96,8 +118,6 @@
 <script type="text/javascript">
 
 	var mode = '<%= mode %>';
-	//alert(mode);
-	
 
 	function soWriteCheck() {
 		
@@ -120,7 +140,6 @@
 		
 		return true;
 	}
-
 
 	function setPage()
 	{
@@ -194,20 +213,6 @@
 					}					
 <%
 				}
-				
-				String strTotalSum = MrUtil.FormatCurrent(totalSum);
-				String strTotalTax = MrUtil.FormatCurrent((int)(totalSum*0.1));
-				String strTotalPrice = MrUtil.FormatCurrent((int)(totalSum*1.1));
-%>
-
-				document.getElementById("tdSubtotal").innerHTML = '<%=strTotalSum%>';
-				document.getElementById("tdTax").innerHTML = '<%=strTotalTax%>';
-				document.getElementById("tdTotalAmt").innerHTML = '<%=strTotalPrice%>';
-				
-				document.getElementById("subtotal").value = '<%=strTotalSum%>';
-				document.getElementById("tax").value = '<%=strTotalTax%>';
-				document.getElementById("totalAmt").value = '<%=strTotalPrice%>';
-<%				
 			}
 %>
 		}//if(mode == "R")
@@ -218,12 +223,15 @@
 	{
 		var str = "";
 		var cnt = 0;
-	    var subtotal = 0;
+		var subtotal = 0;
 	    
 	    var idList = document.getElementsByName("selItem");
 	    var priceList = document.getElementsByName("txtPrice");
 	    var cntList = document.getElementsByName("txtCnt");
-	    var subSumList = document.getElementsByName("txtSubSum");
+	    
+	    var serviceTimeList = document.getElementsByName("txtServiceTime");
+		var itemSumList = document.getElementsByName("txtItemSum");
+		var subSumList = document.getElementsByName("txtSubSum");
 	    
 	    var tot = idList.length;
 	    
@@ -235,10 +243,20 @@
 	    			str = idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value;
 	    		else
 	    			str = str + "/" + idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value; // seperator | 는 사용하면 안됨. 변형되는지 split이 안돼 
-	    		subtotal = subtotal + parseInt(subSumList[i].value);
+	    			
+	    		var price = parseInt(priceList[i].value);
+	    		
+	    		var cnt = parseInt(cntList[i].value);
+	    		var serviceTime = parseFloat(serviceTimeList[i].value);
+	    		
+	    		
+	    		itemSumList[i].value = price*cnt;
+				subSumList[i].value = (price + 34700*serviceTime)*cnt;
+				
+				subtotal = subtotal + (price + 34700*serviceTime)*cnt;
 	    	}
 	    }
-/*
+
 		document.getElementById("tdSubtotal").innerHTML = subtotal;
 		document.getElementById("tdTax").innerHTML = parseInt(subtotal * 0.1);
 		document.getElementById("tdTotalAmt").innerHTML = parseInt(subtotal * 1.1);
@@ -246,10 +264,9 @@
 		document.getElementById("subtotal").value = subtotal;
 		document.getElementById("tax").value = parseInt(subtotal * 0.1);
 		document.getElementById("totalAmt").value = parseInt(subtotal * 1.1);
-*/
+		
 		document.getElementById("orderStr").value = str;
 	}
-	
 
 	function confirmDelete() {
 		
@@ -266,32 +283,39 @@
 </head>
 
 
-<body class="A4">
-
+<body>
 <center>
-  
-   
-	<% if(mode.equals("R")) { %>   
-   		<div class="table-title"><h1>Sales Order #<%= orderNo %></h1></div>
+
+	<!-- TITLE -->
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<% if(mode.equals("R") || mode.equals("V")) { %>
+		<div><h4>Smart robots for agriculture</h4></div>
+   		<div class="table-title"><h1>VANDI SERVICE</h1></div>
 	<% } else { %>
-   		<div class="table-title"><h1>New sales order</h1></div>
-	<% } %>   		
-   	
+   		<div class="table-title"><h1>New quotation</h1></div>
+	<% } %>
+
+	<!-- FORM -->
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
 
 		<form name="form1" method="post" action="soWrite_action.jsp?mode=<%= writeMode %>" onsubmit="return soWriteCheck();">
 
+	<!-- ORDER INFO -->
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
 
-		<table width="500">
+		<table>
     		<tr class="row_bottom_only">
-				<td width="100" class="cell-hd">주문번호</td>
+				<td width="100" class="cell-hd">접수번호 : </td>
 					<td width="100" class="cell-l">
  
- <% if(mode.equals("C")) { %>   
+ 	<% if(mode.equals("C")) { %>
 					<input type=text size=10 disabled value='' style="border: 0px; text-align: left;" >
 					<input type=hidden name=orderNo id=orderNo >
-	<% } else { %>
+	<% } else if(mode.equals("R")) { %>
 					<input type=text size=10 disabled value='<%= MrUtil.getTOrderNoStr(orderNo) %>'  style="border: 0px; text-align: left;" >
 					<input type=hidden name=orderNo id=orderNo value='<%= orderNo %>' >
+	<% } else if(mode.equals("V")) { %><%= MrUtil.getTOrderNoStr(orderNo) %>
 	<% } %>
  
 					</td>
@@ -299,16 +323,20 @@
 					<td width="100" class="cell-l"/>
 			</tr>
     		<tr class="row_bottom_only">
-				<td width="100" class="cell-hd">주문일자</td>
+				<td width="100" class="cell-hd">작성일자 : </td>
 				<td width="100" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=date name=orderDt id=orderDt size=10 value='<%= MrUtil.getDateStr() %>' >
-	<% } else { %>
+	<% } else if(mode.equals("R")) { %>
 					<input type=date name=orderDt id=orderDt size=10 value='<%= orderDt %>' >
+	<% } else if(mode.equals("V")) { %><%= orderDt %>
 	<% } %>   		
 				</td>
-				<td width="100"  class="cell-r">Service Center</td>
+				<td width="100"  class="cell-r">센 터 명 : </td>
      			<td width="100"  class="cell-l">
+     <% if(mode.equals("V")) { %><%= centerName %>
+     				
+     <% } else { %>
      				<select name=center id=center>
 	     				<option value=''>선택</option>
 		   				<%
@@ -320,20 +348,24 @@
 		     				}
 		     			%>
      				</select>
+     <% } %>
      			</td>
 			</tr>
     		<tr class="row_bottom_only">
-				<td width="100" class="cell-hd">작성자</td>
+				<td width="100" class="cell-hd">작 성 자 : </td>
 				<td width="100" class="cell-l">
-	<% if(mode.equals("C")) { %>   
+	<% if(mode.equals("C")) { %>
 					<input type=text name=userId id=userId size=10 disabled value='<%= (String)session.getAttribute("userId") %>' >
 	<% } else { %>
-					<input type=text name=userId id=userId size=10 disabled value='<%= insertUserId %>' >
-	<% } %>   		
+					<%= insertUserId %>
+	<% } %>
 				</td>
-				<td width="100" class="cell-r">Product</td>
+				<td width="100" class="cell-r">제품번호 : </td>
      			<td width="100" class="cell-l">
+     <% if(mode.equals("V")) { %><%= productSerialNo %>
+     <% } else { %>
      				<select id=productEach name=productEach>
+     
 	     				<option value=''>선택</option>
 		   				<%
 					 		for(int i=0; i<productEachLength;i++){
@@ -344,20 +376,26 @@
 		     				}
 		     			%>
      				</select>
+     <% } %> 
      			</td>
 			</tr>
-    		<tr height="20"/>
+    		<tr height="40"/>
      		</table>
 
+
+	<!-- ORDER ITEM -->
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
+
+			<% int nTotalAmount = 0; %>
 			<table id="order_item_table" border=0>
 				<thead>
 					<tr>
-						<th width="100mm">Description</th>
-						<th width="20mm" class="cell-r">수량</th>
-						<th width="20mm" class="cell-r">부품단가</th>
-						<th width="20mm" class="cell-r">정비시간</th>
-						<th width="20mm" class="cell-r">부품비</th>
-						<th width="20mm" class="cell-r">합계</th>
+						<th width="55%" class="cell-l">정비내용</th>
+						<th width="5%" class="cell-c">수량</th>
+						<th width="10%" class="cell-r">부품단가</th>
+						<th width="10%" class="cell-r">정비시간</th>
+						<th width="10%" class="cell-r">부품비</th>
+						<th width="10%" class="cell-r">합계</th>
 					</tr>
 				</thead>
 				<tbody id="p_item">
@@ -365,57 +403,143 @@
 					<%
 						for (int i = 0; i < itemLength; i++) {
 							Item item = itemList.get(i);
+							
+							// View Only
+							//////////////////////////////////////////////////////////////////////////
+							int nOrderItemCnt = 0;
+							if(mode.equals("V")){
+								for(int j = 0; j < orderItemList.size(); j++)
+								{
+									OrderItem oItem = orderItemList.get(j); 
+									if(item.getItemNo() == oItem.getItemNo())
+										nOrderItemCnt = oItem.getItemCnt();
+								}
+								
+								if(nOrderItemCnt == 0)
+									continue;
+							}
+							//////////////////////////////////////////////////////////////////////////
 					%>
 
 					<tr id="order_item_info">
-						<td><input type=hidden name="selItem" value=<%=item.getItemNo()%>>
+						<td width="30%"><input type=hidden name="selItem" value=<%=item.getItemNo()%>>
 						<!-- <select name="selItem" disabled>
 								<option value=<%=item.getItemNo()%>> </option></select>-->
 								<%=item.getItemNmKor()%>
 						</td>
-						<td class="cell-r"><input type="text" name="txtCnt"
-							style="text-align: right" onchange="setSelectResult();"
+						
+						
+			<% if(mode.equals("V")) { %>
+						<td width="10%" class="cell-c"><%=nOrderItemCnt%></td>
+						<td width="15%" class="cell-r"><%= MrUtil.FormatCurrentDisplay(item.getPriceCenter()) %></td>
+						<td width="15%" class="cell-c"><%=item.getServiceHour()%></td>
+						<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceCenter()*nOrderItemCnt)) %></td>
+						<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceCenter() + item.getServiceHour()*34700)*nOrderItemCnt) %></td>
+						<% nTotalAmount += (int)(item.getPriceCenter() + item.getServiceHour()*34700)*nOrderItemCnt; %>
+			<% } else { %>
+						<td width="10%" class="cell-r">
+							<input type="text" name="txtCnt" size=3
+							style="text-align: right"
+							onchange="setSelectResult();"
 							onKeypress="if(event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" />
 						</td>
-						<td class="cell-r"><input type="text" name="txtPrice"
+						<td width="10%" class="cell-r">
+						<input type="text" name="txtPrice" size=8
 							style="border: 0px; text-align: right;" value='<%= MrUtil.FormatCurrent(item.getPriceCenter()) %>'
 							disabled />
 						</td>
-						<td class="cell-r"><input type="text" name="txtServiceTime"
+						<td width="10%" class="cell-r">
+						<input type="text" name="txtServiceTime" size=4
 							style="border: 0px; text-align: right;" value='<%=item.getServiceHour()%>'
 							disabled />
 						</td>
-						<td class="cell-r"><input type="text" name="txtItemSum"
+						<td width="10%" class="cell-r">
+						<input type="text" name="txtItemSum" size=8
 							style="border: 0px; text-align: right;" value='<%=0%>'
 							disabled />
 						</td>
-						<td class="cell-r"><input type="text" name="txtSubSum"
+						<td width="10%" class="cell-r">
+						<input type="text" name="txtSubSum" size=8
 							style="border: 0px; text-align: right;" value='<%=0%>'
 							disabled />
 						</td>
+			<% } %>
 					</tr>
-
 					<%
 						}
 					%>
-
 				</tbody>
 			</table>
 
-			<table width="200" height="50" border="0">
+	<!-- TOTAL AMOUNT -->
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<% if(mode.equals("V")) { %>
+		<table border="0">
+			<tr height="30"/>
+			<tr class="row_top_only">
+				<td align="right" width="100">합계 : </td>
+				<td id="tdSubtotal" align="right"><%= MrUtil.FormatCurrentDisplay(nTotalAmount) %></td>
+			</tr>
+			<tr class="row_top_only">
+				<td align="right">부가가치세 :</td>
+				<td id="tdTax" align="right"><%= MrUtil.FormatCurrentDisplay((int)(nTotalAmount*0.1)) %></td>
+			</tr>
+			<tr class="row_top_only">
+				<td align="right">총액 :</td>
+				<td id="tdTotalAmt" align="right"><%= MrUtil.FormatCurrentDisplay((int)(nTotalAmount*1.1)) %></td>
+			</tr>
+			<tr height="10"/>
+		</table>
+		
+		
+		<table border = "1">
+			<tr height="30"/>
+			<tr class="row_top_only">
+				<td align="center">
+				위의 내용을 확인합니다
+				<br>
+				2017년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일
+				<br>
+				고 객 명&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명)
+				</td>
+			</tr>
 			<tr>
-				<td align="right" width="100">subtotal :</td>
+				<td align="left">
+				1. 납부기한 : 출고시 납부
+				<br>
+				2. 입금계좌 : 서비스센터별 확인 요망
+				</td>
+			</tr>
+			<tr class="row_bottom_only">
+				<td align="left">
+				1. 점검 정비의 잘못으로 점검정비일로부터 30일 이내 발생하는 고장등에 대해서는 무상점검/정비를 합니다.
+				<br>
+				2. 본 내역서는 2부를 작성, 정비 의뢰자에게 1부를 교부하고, 서비스센터는 1부를 1년간 보관합니다.
+				<br>
+				3. 공임은 한국엔지니어링협회에서 발표하는 고급기술자(산업공장) 임금을 기준으로 적용합니다. (34,700원) 
+				</td>
+			</tr>
+		</table>
+		
+<% } else { %>
+		<table border="0">
+			<tr height="3"/>
+			<tr class="row_top_only">
+				<td align="right" width="100">합계 : </td>
 				<td id="tdSubtotal" align="right"></td>
 			</tr>
-			<tr>
-				<td align="right">tax :</td>
+			<tr class="row_top_only">
+				<td align="right">부가가치세 :</td>
 				<td id="tdTax" align="right"></td>
 			</tr>
-			<tr>
-				<td align="right">total price :</td>
+			<tr class="row_top_only">
+				<td align="right">총액 :</td>
 				<td id="tdTotalAmt" align="right"></td>
 			</tr>
 		</table>
+<% } %>
+		
 
 		<input type="hidden" id="subtotal" name="subtotal"/>
 		<input type="hidden" id="tax" name="tax"/>
@@ -426,24 +550,38 @@
      			<td colspan="2">
      				<div align="center">
      				<% if(mode.equals("C")) { %>
-     					<input type="submit" class="myButton" value="등록">&nbsp;
+     					<input type="submit" class="dtlBtn" value="등록">&nbsp;
+     				<% }else if(mode.equals("P")){ %>
+     					<input type="button" class="dtlBtn" value="편집" onclick="moveTo('soList.jsp?mode=R&orderNo=<%=orderNo%>');">&nbsp;
+     				<% }else if(mode.equals("R")){ %>
+     					<input type="submit" class="dtlBtn" value="수정 완료" onclick="moveTo('soList.jsp?mode=R&orderNo=<%=orderNo%>');">&nbsp;
+     					<input type="button" class="dtlBtn" value="Print" onclick="moveTo('soDtl.jsp?mode=V&orderNo=<%=orderNo%>');">&nbsp;
+     					<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
+     				<% }else if(mode.equals("V")){ %>
+     					
      				<% }else{ %>
-     					<input type="submit" class="myButton" value="수정">&nbsp;
-     					<input type="button" class="myButton" value="삭제" onclick="confirmDelete();">&nbsp;
+     					<input type="button" class="dtlBtn" value="목록" onclick="moveTo('soList.jsp?pg=<%=pg %>');">
      				<% } %>
-         				<input type="button" class="myButton" value="목록" onclick="moveTo('soList.jsp?pg=<%=pg %>');">
+         				
          			</div>
      			</td>
     		</tr>
-		</table>    		 
-	</form> 
+		</table>
+	</form>
 <script>
+<% if(!mode.equals("V")) { %>
 	setPage();
 	setSelectResult();
+<% } %>
 </script>
 
 </center>
 </body>
 
+<footer>
+	<center>
+		<h2>metaRobotics, Inc.</h3>
+	</center>
+</footer>
 
 </html>
