@@ -16,7 +16,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
-<link rel="stylesheet" href="../css/mr.css">
+<link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
 <script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -104,9 +104,9 @@
 <center>
 
 	<% if(mode.equals("R")) { %>   
-   		<div class="table-title"><h1>Product 생산품 상세</h1></div>
+   		<div class="table-title"><h1>Product information</h1></div>
 	<% } else { %>
-   		<div class="table-title"><h1>Product 생산품 등록</h1></div>
+   		<div class="table-title"><h1>Product registration</h1></div>
 	<% } %>   		
    	
 
@@ -114,45 +114,46 @@
 
 
 
-		<table border=1 class='table-fill'>
-    		<tr>
-				<td width="30%" class="cell-hd">productNo</td>
-				<td width="70%" class="cell-l">
+		<table width = "300">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r" style="margin-left: 2px">productNo</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text size=10 disabled value='<%= productNo %>' >
 					<input type=hidden name=productNo id=productNo value='<%= productNo %>' >
 	<% } else { %>
-					<input type=text size=10 disabled value='<%= productEach.getProductNo() %>' >
+					<%= productEach.getProductNo() %>
 					<input type=hidden name=productNo id=productNo value='<%= productEach.getProductNo() %>' >
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">serialNo</td>
-				<td width="70%" class="cell-l">
+			
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">일련번호</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
-					<input type=text name=serialNo id=serialNo size=20 value='' >
+					<input type=text name=serialNo id=serialNo size=15 value='' >
 	<% } else { %>
-					<input type=text name=serialNo id=serialNo size=20 readonly value='<%= productEach.getSerialNo() %>' >
+					<input type=text name=serialNo id=serialNo size=15 readonly value='<%= productEach.getSerialNo() %>' >
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">prodDt</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">제작일자</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
-					<input type=date name=prodDt id=prodDt size=20 value='' >
+					<input type=date name=prodDt id=prodDt size=15 value='' >
 	<% } else { %>
-					<input type=date name=prodDt id=prodDt size=20 value='<%= productEach.getProdDt() %>' >
+					<input type=date name=prodDt id=prodDt size=15 value='<%= productEach.getProdDt() %>' >
 	<% } %>   		
 				</td>
 			</tr>
 			
 		
 			
-    		<tr>
-				<td width="30%" class="cell-hd">certDt</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">인증검사일</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=date name=certDt id=certDt size=20 value='' >
 	<% } else { %>
@@ -160,9 +161,10 @@
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">registerNo</td>
-				<td width="70%" class="cell-l">
+			
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">항공청 등록번호</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=registerNo id=registerNo size=20 value='' >
 	<% } else { %>
@@ -171,8 +173,8 @@
 				</td>
 			</tr>
 			
-    		<tr>
-     			<td class="cell-hd">Client</td>
+    		<tr class="row_bottom_only">
+     			<td class="cell-r">Client</td>
      			<td class="cell-l">
      				<select id=clientNo name=clientNo>
 	     				<option value=''>선택</option>
@@ -187,19 +189,19 @@
      				</select>
      			</td>
      		</tr>
-
+			<tr height="30"/>
 		</table>
 		<table>
     		<tr height="40" valign="bottom">
      			<td colspan="2">
      				<div align="center">
      				<% if(mode.equals("C")) { %>
-     					<input type="submit" class="myButton" value="등록">&nbsp;
+     					<input type="submit" class="dtlBtn" value="등록">&nbsp;
      				<% }else{ %>
-     					<input type="submit" class="myButton" value="수정">&nbsp;
-     					<input type="button" class="myButton" value="삭제" onclick="confirmDelete();">&nbsp;
+     					<input type="submit" class="dtlBtn" value="수정">&nbsp;
+     					<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
      				<% } %>
-         				<input type="button" class="myButton" value="목록" onclick="moveTo('productEachList.jsp?pg=<%=pg %>');">
+         				<input type="button" class="dtlBtn" value="목록" onclick="moveTo('productEachList.jsp?pg=<%=pg %>');">
          			</div>
      			</td>
     		</tr>

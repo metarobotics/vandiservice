@@ -52,25 +52,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
- 	<link rel="stylesheet" href="../css/mr.css">
+ 	<link rel="stylesheet" href="../css/vandiservice.css">
 </head>
 
 <body translate="no" >
-   <div class="table-title"><h1>Product 생산 목록</h1></div>
+<center>
+   <div class="table-title"><h1>Products</h1></div>
 
-<table class="table-fill" width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr><td class="cell-r">total : <%= size %></td></tr></table>
-<table class="table-fill" border="1">
+<table border="1">
 <tr class="header">
-	<th width="15%" class="text-center">productNo</th>
-	<th width="15%" class="text-center">serialNo</th>
-	<th width="10%" class="text-center">prodDt</th>
-	<th width="10%" class="text-center">certDt</th>
+	<th width="20%" class="text-center">serialNo</th>
+	<th width="20%" class="text-center">prodDt</th>
+	<th width="20%" class="text-center">certDt</th>
 	<th width="20%" class="text-center">registerNo</th>
 	<th width="10%" class="text-center">clientNo</th>
-	<th width="20%" class="text-center">clientNm</th>
+	<th width="10%" class="text-center">clientNm</th>
 </tr>
-<tbody class="table-hover">
+
 <%
 	if(productEachListSize==0) {
 %>
@@ -89,7 +87,6 @@
 %>
 
 <tr class="row">
-<td class="cell-c"><%=productEach.getProductNo()%></td>
 <td class="cell-c"><a href="productEachDtl.jsp?mode=R&productNo=<%=productEach.getProductNo()%>&serialNo=<%=productEach.getSerialNo()%>&pg=<%=pg%>"><%= productEach.getSerialNo() %></a></td>
 <td class="cell-c"><%=productEach.getProdDt()%></td>
 <td class="cell-c"><%=productEach.getCertDt()%></td>
@@ -105,8 +102,9 @@
 %>
 
 </table>
+
 <br>
-<table class="table-fill2" width="100%" cellpadding="0" cellspacing="0" border="0">
+<table cellpadding="0" cellspacing="0" border="0">
   <tr>
 	<td align="center">
 		<%
@@ -150,5 +148,6 @@
 </tbody>
 </table>
 
+</center>
 </body>
 </html>

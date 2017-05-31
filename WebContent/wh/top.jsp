@@ -18,9 +18,10 @@ String userId =  (String)session.getAttribute("userId");
 <center>
 	<table border="0">
 		<tr style="border-bottom: 1px solid #AAAAAA" height="20">
-			<td class="cell-l"># <a href="toList.jsp" target="main">Transfer Order</a></td>
-			<td class="cell-l"># <a href="soList.jsp" target="main">Sales Order</a></td>
-			<td class="cell-l"># <a href="clientList.jsp" target="main">Client</a></td>
+			<td class="cell-l"># <a href="toList.jsp" target="main">T/O</a></td>
+			<td class="cell-l"># <a href="soList.jsp" target="main">Quotations</a></td>
+			<td class="cell-l"># <a href="productEachList.jsp" target="main">Products</a></td>
+			<td class="cell-l"># <a href="clientList.jsp" target="main">Clients</a></td>
 			
 			<td class="cell-r" valign="bottom" align="right">
 			

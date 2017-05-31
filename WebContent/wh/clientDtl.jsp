@@ -14,8 +14,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Insert title here</title>
-<link rel="stylesheet" href="../css/mr.css">
+<title>Vandi clients</title>
+<link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
 <script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -83,19 +83,19 @@
 <center>
 
 	<% if(mode.equals("R")) { %>   
-   		<div class="table-title"><h1>Client 상세</h1></div>
+   		<div class="table-title"><h1>Client information</h1></div>
 	<% } else { %>
-   		<div class="table-title"><h1>Client 등록</h1></div>
+   		<div class="table-title"><h1>Client registration</h1></div>
 	<% } %>   		
    	
 
 		<form name="form1" method="post" action="clientWrite_action.jsp?mode=<%= writeMode %>" onsubmit="return chkValid();">
 
 
-		<table border=1 class='table-fill'>
+		<table>
     		<tr>
-				<td width="30%" class="cell-hd">고객번호</td>
-				<td width="70%" class="cell-l">
+				<td width="40%" class="cell-r">고객번호</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text size=10 disabled value='' >
 					<input type=hidden name=clientNo id=clientNo value='' >
@@ -105,9 +105,9 @@
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">고객명</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">고객명</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=clientNm id=clientNm size=20 value='' >
 	<% } else { %>
@@ -115,9 +115,9 @@
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">전화번호</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">전화번호</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=phoneNo id=phoneNo size=20 value='' >
 	<% } else { %>
@@ -125,9 +125,9 @@
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">핸드폰번호</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">휴대폰번호</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=mobileNo id=mobileNo size=20 value='' >
 	<% } else { %>
@@ -135,9 +135,9 @@
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">이메일</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">이메일</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=email id=email size=20 value='' >
 	<% } else { %>
@@ -145,9 +145,9 @@
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">거주지</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">거주지</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=location id=location size=20 value='' placeholder="ex)나주">
 	<% } else { %>
@@ -155,9 +155,9 @@
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">주소</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">주소</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=addr id=addr size=20 value='' >
 	<% } else { %>
@@ -165,19 +165,9 @@
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">메모</td>
-				<td width="70%" class="cell-l">
-	<% if(mode.equals("C")) { %>   
-					<textarea name=note id=note cols="95" rows="10"></textarea>
-	<% } else { %>
-					<textarea name=note id=note cols="100" rows="10" ><%= client.getNote() %></textarea>
-	<% } %>   		
-				</td>
-			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">등록자</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">등록자</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=insertUserId id=insertUserId size=20 disabled value='<%= (String)session.getAttribute("userId") %>' >
 	<% } else { %>
@@ -185,9 +175,9 @@
 	<% } %>   		
 				</td>
 			</tr>
-    		<tr>
-				<td width="30%" class="cell-hd">등록일시</td>
-				<td width="70%" class="cell-l">
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">등록일시</td>
+				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=insertDatetime id=insertDatetime size=20 disabled value='javascript:today();' >
 	<% } else { %>
@@ -195,26 +185,25 @@
 	<% } %>   		
 				</td>
 			</tr>
+			<tr height="20"/>
 		</table>
+		
 		<table>
     		<tr height="40" valign="bottom">
      			<td colspan="2">
      				<div align="center">
      				<% if(mode.equals("C")) { %>
-     					<input type="submit" class="myButton" value="등록">&nbsp;
+     					<input type="submit" class="dtlBtn" value="등록">&nbsp;
      				<% }else{ %>
-     					<input type="submit" class="myButton" value="수정">&nbsp;
-     					<input type="button" class="myButton" value="삭제" onclick="confirmDelete();">&nbsp;
+     					<input type="submit" class="dtlBtn" value="수정">&nbsp;
+     					<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
      				<% } %>
-         				<input type="button" class="myButton" value="목록" onclick="moveTo('clientList.jsp?pg=<%=pg %>');">
+         				<input type="button" class="dtlBtn" value="목록" onclick="moveTo('clientList.jsp?pg=<%=pg %>');">
          			</div>
      			</td>
     		</tr>
 		</table>    		 
 	</form> 
 </center>
-<script>
-	setPage();
-</script>
 </body>
 </html>

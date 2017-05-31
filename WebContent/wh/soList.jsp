@@ -65,14 +65,13 @@
 </table>
 <table border="1">
 <tr class="header">
-	<th width="10%" class="text-center">Order #</th>
-	<th width="10%" class="text-center">Date</th>
-	<th width="20%" class="text-center">Service Center</th>
-	<th width="20%" class="text-center">Product Serial #</th>
-	<th width="10%" class="text-center">ClientNo</th>
-	<th width="10%" class="text-center">ClientNm</th>
-	<th width="10%" class="text-center">Total Price</th>
-	<th width="10%" class="text-center">Status</th>
+	<th width="10%" class="text-center">접수일</th>
+	<th width="10%" class="text-center">날짜</th>
+	<th width="20%" class="text-center">서비스센터</th>
+	<th width="20%" class="text-center">제품번호</th>
+	<th width="10%" class="text-center">고객명</th>
+	<th width="10%" class="text-center">합계금액</th>
+	<th width="10%" class="text-center">상태</th>
 </tr>
 <tbody class="table-hover">
 <%
@@ -98,9 +97,8 @@
 <td class="cell-c"><%=orderS.getOrderDt()%></td>
 <td class="cell-c"><%=orderS.getCenterNm()%></td>
 <td class="cell-c"><%=orderS.getProductSerialNo()%></td>
-<td class="cell-c"><%=orderS.getClientNo()%></td>
 <td class="cell-c"><%=orderS.getClientNm()%></td>
-<td class="cell-c"><%=orderS.getTotalAmt()%>원</td>
+<td class="cell-r"><%=MrUtil.FormatCurrentDisplay(orderS.getTotalAmt()) %></td>
 <td class="cell-c"><%=orderS.getStatusNm()%></td>
 </tr>
 
@@ -128,7 +126,7 @@
 			for(int i=startPage; i<= endPage; i++){
 				if(i==pg){
 		%>
-					<u><b>[<%=i %>]</b></u>
+					<h3>pages [<%=i %>]</h3>
 		<%
 				}else{
 		%>
@@ -148,9 +146,10 @@
 		%>
 		</td>
 		</tr>
-	<tr align="right">
-   		<td ><input type=button class="myButton" value="등록" OnClick="window.location='soDtl.jsp?mode=C&pg=<%=pg%>'"></td>
-  </tr>
+	<tr height="20"/>
+	<tr>
+   		<td class="cell-c"><input type=button class="myButton" value="등록" OnClick="window.location='soDtl.jsp?mode=C&pg=<%=pg%>'"></td>
+	</tr>
 
 
 </tbody>

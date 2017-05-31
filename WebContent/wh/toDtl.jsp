@@ -411,17 +411,16 @@
 							<%
 								if (mode.equals("C")) {
 							%>
-							<input type="submit" class="myButton" value="등록">&nbsp;
+							<input type="submit" class="dtlBtn" value="등록">&nbsp;
 							<%
 								} else {
 							%>
-							<input type="submit" class="myButton" value="수정">&nbsp; <input
-								type="button" class="myButton" value="삭제"
-								onclick="confirmDelete();">&nbsp;
+							<input type="submit" class="dtlBtn" value="수정">&nbsp;
+							<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
 							<%
 								}
 							%>
-							<input type="button" class="myButton" value="목록"
+							<input type="button" class="dtlBtn" value="목록"
 								onclick="moveTo('toList.jsp?pg=<%=pg%>');">
 						</div>
 					</td>

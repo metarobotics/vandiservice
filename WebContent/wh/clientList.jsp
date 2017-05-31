@@ -51,23 +51,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
- 	<link rel="stylesheet" href="../css/mr.css">
+ 	<link rel="stylesheet" href="../css/vandiservice.css">
 </head>
 
 <body translate="no" >
-   <div class="table-title"><h1>Client 목록</h1></div>
+<center>
+   <div class="table-title"><h1>Clients</h1></div>
 
-<table class="table-fill" width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr><td class="cell-r">total : <%= size %></td></tr></table>
-<table class="table-fill" border="1">
-<tr class="header">
-	<th width="20%" class="text-center">Client #</th>
-	<th width="20%" class="text-center">Name</th>
-	<th width="20%" class="text-center">Location</th>
-	<th width="20%" class="text-center">등록일시</th>
+<table border="1" width="600">
+<tr>
+	<th width="15%" class="text-center">고객번호</th>
+	<th width="15%" class="text-center">고객명</th>
+	<th width="50%" class="text-center">거주지</th>
 	<th width="20%" class="text-center">거래건수</th>
 </tr>
-<tbody class="table-hover">
 <%
 	if(total==0) {
 %>
@@ -89,7 +86,6 @@
 <td class="cell-c"><a href="clientDtl.jsp?mode=R&clientNo=<%=client.getClientNo()%>&pg=<%=pg%>"><%= MrUtil.getClientNoStr(client.getClientNo()) %></a></td>
 <td class="cell-c"><%=client.getClientNm()%></td>
 <td class="cell-c"><%=client.getLocation()%></td>
-<td class="cell-c"><%=client.getInsertDatetime()%></td>
 <td class="cell-c"><%=client.getDealCnt()%>건</td>
 </tr>
 
@@ -100,8 +96,8 @@
 %>
 
 </table>
-<br>
-<table class="table-fill2" width="100%" cellpadding="0" cellspacing="0" border="0">
+<table cellpadding="0" cellspacing="0" border="0">
+	<tr height="10"/>
   <tr>
 	<td align="center">
 		<%
@@ -137,7 +133,8 @@
 		%>
 		</td>
 		</tr>
-	<tr align="right">
+		<tr height="10"/>
+	<tr align="center">
    		<td ><input type=button class="myButton" value="등록" OnClick="window.location='clientDtl.jsp?mode=C&pg=<%=pg%>'"></td>
   </tr>
 
@@ -145,5 +142,6 @@
 </tbody>
 </table>
 
+</center>
 </body>
 </html>

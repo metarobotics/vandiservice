@@ -54,24 +54,23 @@
  	<link rel="stylesheet" href="../css/vandiservice.css">
 </head>
 
-<body translate="no" >
+<body>
 <center>
-<table width="600">
-	<tr style="border-bottom: 1px solid #AAAAAA" height="20">
-		<td class="cell-l">구매 요청 목록</td>
-		<td class="cell-r">total : <%= size %></td>
+<table>
+	<tr>
+		<td class="td_railway_h0">T.O.(Transfer order)</td>
 	</tr>
 	<tr height="10"></tr>
 </table>
 
-<table border="1">
+<table width="600" border="1">
 <tr class="header">
-	<th width="15%" class="text-center">Order #</th>
-	<th width="15%" class="text-center">Date</th>
-	<th width="20%" class="text-center">Source Warehouse</th>
-	<th width="20%" class="text-center">Destination Warehouse</th>
-	<th width="20%" class="text-center">Total Price</th>
-	<th width="10%" class="text-center">Status</th>
+	<th width="15%" class="text-center">주문번호</th>
+	<th width="15%" class="text-center">날짜</th>
+	<th width="20%" class="text-center">출고지</th>
+	<th width="20%" class="text-center">배송지</th>
+	<th width="20%" class="text-center">합계금액</th>
+	<th width="10%" class="text-center">상태</th>
 </tr>
 <tbody class="table-hover">
 <%
@@ -99,7 +98,7 @@
 <td class="cell-c"><%=orderT.getOrderDt()%></td>
 <td class="cell-c"><%=orderT.getSrcWhNm()%></td>
 <td class="cell-c"><%=orderT.getDestWhNm()%></td>
-<td class="cell-c"><%=orderT.getTotalAmt()%>원</td>
+<td class="cell-r"><%=MrUtil.FormatCurrentDisplay(orderT.getTotalAmt()) %></td>
 <td class="cell-c"><%=orderT.getStatusNm()%></td>
 </tr>
 

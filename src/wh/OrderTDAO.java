@@ -222,19 +222,21 @@ public class OrderTDAO extends DAO {
 		PreparedStatement pstmt = null; 
 		
 		try { 
-			sql = "update orderT set orderDt=?, srcWhNo=?, destWhNo=?, updateUserId=?, updateDatetime=current_timestamp() where orderNo=?";
+			sql = "update orderT set orderDt=?, srcWhNo=?, destWhNo=?, subtotal=?, tax=?, totalAmt=?, updateDatetime=current_timestamp() where orderNo=?";
 			
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setString(1, orderT.getOrderDt());
 			pstmt.setInt(2, orderT.getSrcWhNo()); 
-			pstmt.setInt(3, orderT.getDestWhNo()); 
-			pstmt.setString(4, orderT.getUpdateUserId());
-			pstmt.setInt(5, orderT.getOrderNo());
+			pstmt.setInt(3, orderT.getDestWhNo());
+			pstmt.setInt(4, orderT.getSubtotal()); 
+			pstmt.setInt(5, orderT.getTax()); 
+			pstmt.setInt(6, orderT.getTotalAmt()); 
+			pstmt.setInt(7, orderT.getOrderNo());
 						
 			pstmt.executeUpdate(); 
 		}catch(Exception e) { 
-			
+			System.out.println(e.toString());
 		}finally { 
 			DBClose.close(con,pstmt); 
 		} 

@@ -379,8 +379,16 @@ $('body').html(restorepage);
      <% } %> 
      			</td>
 			</tr>
-    		<tr height="40"/>
+			<tr height="10"/>
      		</table>
+
+	<!-- NOTE -->
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
+		<h3>Note</h3>
+		<table border="0">
+			<tr><td><textarea rows="3" cols="80" name="tacontents">입고/정비 관련 특이사항을 입력합니다.</textarea></td></tr>
+			<tr height="15"/>
+		</table>
 
 
 	<!-- ORDER ITEM -->
@@ -489,9 +497,8 @@ $('body').html(restorepage);
 				<td align="right">총액 :</td>
 				<td id="tdTotalAmt" align="right"><%= MrUtil.FormatCurrentDisplay((int)(nTotalAmount*1.1)) %></td>
 			</tr>
-			<tr height="10"/>
+			<tr height="30"/>
 		</table>
-		
 		
 		<table border = "1">
 			<tr height="30"/>
