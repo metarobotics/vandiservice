@@ -103,7 +103,7 @@ public class ProductEachDAO extends DAO {
 
 			sqlBuf.append("		select a.*, ifnull(b.clientNm, '') ");
 			sqlBuf.append("		from productEach a ");
-			sqlBuf.append("		left join client b ");
+			sqlBuf.append("		left outer join client b ");
 			sqlBuf.append("		on a.clientNo = b.clientNo ");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 

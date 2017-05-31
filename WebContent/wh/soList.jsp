@@ -12,7 +12,6 @@
 <%	
 	int total = dao.countOrderS();
 	ArrayList<OrderS> alist = dao.getOrderSList();
-	System.out.println("read again");
 	int size = alist.size();
 	int size2 = size;
 	

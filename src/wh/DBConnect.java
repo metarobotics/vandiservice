@@ -19,7 +19,7 @@ public class DBConnect {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(url,id,pass);
 		}catch(Exception e) {
-			System.out.println(e);
+			System.out.println(e.toString());
 		}
 		
 		return con;

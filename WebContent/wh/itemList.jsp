@@ -64,7 +64,6 @@
 <tr>
 	<th class="text-center">Part no.</th>
 	<th class="text-center">Description</th>
-	<th class="text-center">SKU</th>
 	<th class="text-center">Center Price</th>
 	<th class="text-center">List price</th>
 	<th class="text-center">Service hour</th>
@@ -92,7 +91,6 @@
 <tr class="row">
 <td class="cell-c"><%=item.getItemId()%></td>
 <td class="cell-l"><a href="itemDtl.jsp?mode=R&idx=<%=item.getItemNo()%>&pg=<%=pg%>"><%=item.getItemNm()%></td>
-<td class="cell-c"><%=item.getSku()%></td>
 <td class="cell-r"><%=item.getPriceCenterStr()%></td>
 <td class="cell-r"><%=item.getPriceClientStr()%></td>
 <td class="cell-c"><%=item.getServiceHour()%></td>

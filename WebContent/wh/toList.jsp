@@ -57,10 +57,24 @@
 <body>
 <center>
 <table>
+	<tr height="20"></tr>
 	<tr>
 		<td class="td_railway_h0">T.O.(Transfer order)</td>
 	</tr>
-	<tr height="10"></tr>
+	<tr height="20"></tr>
+</table>
+
+<table width="600">
+<tr>
+<td>
+<h2>주문관련 주의사항</h2>
+<br>
+주문후에 본사에 연락을 하고, 견적서를 요청하시면 됩니다.
+<br>
+입금계좌 : 농협 301-0212-5189-11 예금주: 메타로보틱스 주식회사
+</td>
+</tr>
+<tr height="30"/>
 </table>
 
 <table width="600" border="1">
@@ -83,14 +97,6 @@
 	 	} else {
 	 		for(int i=ROWSIZE*(pg-1); i<end;i++){
 				OrderT orderT = alist.get(i);
-				
-				System.out.println(orderT.getTotalAmt());
-				
-	//			indent = item.getIndent();
-				/*int itemNo = item.getItemNo();
-				String itemNm = item.getItemNm();
-				String regUserId = item.getInsertUserId();
-				String regDt = item.getInsertDatetime.toString();*/
 %>
 
 <tr class="row">
@@ -146,8 +152,9 @@
 		%>
 		</td>
 		</tr>
-	<tr align="right">
-   		<td ><input type=button class="myButton" value="등록" OnClick="window.location='toDtl.jsp?mode=C&pg=<%=pg%>'"></td>
+	<tr height="10"></tr>
+	<tr>
+   		<td ><input type=button class="dtlBtn" value="등록" OnClick="window.location='toDtl.jsp?mode=C&pg=<%=pg%>'"></td>
   </tr>
 
 

@@ -50,7 +50,7 @@ public class UserDAO extends DAO {
 				item.setStep(rs.getInt(9)); */
 			} 
 		}catch(Exception e) { 
-			System.out.println(e);
+			System.out.println(e.toString());
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 

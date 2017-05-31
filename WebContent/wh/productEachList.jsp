@@ -59,14 +59,13 @@
 <center>
    <div class="table-title"><h1>Products</h1></div>
 
-<table border="1">
+<table border="1" width="600">
 <tr class="header">
-	<th width="20%" class="text-center">serialNo</th>
-	<th width="20%" class="text-center">prodDt</th>
-	<th width="20%" class="text-center">certDt</th>
-	<th width="20%" class="text-center">registerNo</th>
-	<th width="10%" class="text-center">clientNo</th>
-	<th width="10%" class="text-center">clientNm</th>
+	<th width="25%" class="text-center">일련번호</th>
+	<th width="18%" class="text-center">제작일</th>
+	<th width="15%" class="text-center">등록번호</th>
+	<th width="24%" class="text-center">고객명</th>
+	<th width="18%" class="text-center">검사일</th>
 </tr>
 
 <%
@@ -89,10 +88,9 @@
 <tr class="row">
 <td class="cell-c"><a href="productEachDtl.jsp?mode=R&productNo=<%=productEach.getProductNo()%>&serialNo=<%=productEach.getSerialNo()%>&pg=<%=pg%>"><%= productEach.getSerialNo() %></a></td>
 <td class="cell-c"><%=productEach.getProdDt()%></td>
-<td class="cell-c"><%=productEach.getCertDt()%></td>
 <td class="cell-c"><%=productEach.getRegisterNo()%></td>
-<td class="cell-c"><%=productEach.getClientNo()%></td>
 <td class="cell-c"><%=productEach.getClientNm()%></td>
+<td class="cell-c"><%=productEach.getCertDt()%></td>
 </tr>
 
 <%

@@ -241,8 +241,6 @@ public class OrderSDAO extends DAO {
 			pstmt.setInt(4, orderS.getTax());
 			pstmt.setInt(5, orderS.getTotalAmt());
 			pstmt.setInt(6, orderS.getOrderNo());
-			
-			System.out.println("[L] Total amout : " + orderS.getTotalAmt());
 						
 			pstmt.executeUpdate(); 
 		}catch(Exception e) { 
