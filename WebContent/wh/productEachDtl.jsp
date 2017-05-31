@@ -116,13 +116,11 @@
 
 		<table width = "300">
     		<tr class="row_bottom_only">
-				<td width="40%" class="cell-r" style="margin-left: 2px">productNo</td>
-				<td width="60%" class="cell-l">
+				<td width="40%" class="cell-r" style="margin-left: 2px">Α¦Η°Έν</td>
+				<td width="60%" class="cell-l">VANDI-A1
 	<% if(mode.equals("C")) { %>   
-					<input type=text size=10 disabled value='<%= productNo %>' >
 					<input type=hidden name=productNo id=productNo value='<%= productNo %>' >
 	<% } else { %>
-					<%= productEach.getProductNo() %>
 					<input type=hidden name=productNo id=productNo value='<%= productEach.getProductNo() %>' >
 	<% } %>   		
 				</td>
