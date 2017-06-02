@@ -9,6 +9,7 @@ String pwd = request.getParameter("pwd");
 %>
 
 <jsp:useBean id="dao" class="wh.UserDAO"/>
+<jsp:useBean id="mRdao" class="wh.MrDAO"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -24,6 +25,21 @@ String pwd = request.getParameter("pwd");
 	{
 		session.setAttribute("userId",id);
 		session.setAttribute("userNo",user.getUserNo());
+		session.setAttribute("userName",user.getUserNm());
+		session.setAttribute("centerName","Not defined");
+		
+		ArrayList<Wh> wareHouses = mRdao.getWhList();
+		for(int i = 0; i < wareHouses.size(); i++)
+		{
+			Wh wh = wareHouses.get(i);
+			if(user.getUserWhNo() == wh.getWhNo())
+			{
+				System.out.print("[D] WhName:" + wh.getWhNm() + " WhNo:" + user.getUserWhNo());
+				session.setAttribute("centerName",wh.getWhNm());
+				break;
+			}
+		}
+		
 		session.setMaxInactiveInterval(60 * 60);
 
  		out.print("Welcome " + id + " !!  ^^");

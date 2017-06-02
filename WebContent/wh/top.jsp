@@ -1,10 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <%
 String session_id=null;
 session_id = (String)session.getAttribute("session_id");
 
 String userId =  (String)session.getAttribute("userId");
+String userName =  (String)session.getAttribute("userName");
+String centerName =  (String)session.getAttribute("centerName");
+
 
 %>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -12,27 +13,38 @@ String userId =  (String)session.getAttribute("userId");
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Vandi service</title>
-	<link rel="stylesheet" href="css/vandiservice.css">
+	<link rel="stylesheet" href="../css/vandiservice.css">
 </head>
 <body>
 <center>
-	<table border="0">
-		<tr style="border-bottom: 1px solid #AAAAAA" height="20">
-			<td class="cell-l"># <a href="toList.jsp" target="main">T/O</a></td>
-			<td class="cell-l"># <a href="soList.jsp" target="main">Quotations</a></td>
-			<td class="cell-l"># <a href="productEachList.jsp" target="main">Products</a></td>
-			<td class="cell-l"># <a href="clientList.jsp" target="main">Clients</a></td>
-			
-			<td class="cell-r" valign="bottom" align="right">
-			
-				<% if(userId != null) { %> 
+	
+	<div><h4>Smart robots for agriculture</h4></div>
+   	<div class="table-title"><h1>VANDI SERVICE</h1></div>
+   	
+   	<table border="0">
+   	<tr class="row_bottom_only">
+   		<td class="cell-l">
+   		
+   		<ul>
+		  <li><a href="toList.jsp">자재구매요청</a></li>
+		  <li><a href="soList.jsp">견적서</a></li>
+		  <li><a href="productEachList.jsp">제품관리</a></li>
+		  <li><a href="clientList.jsp">고객관리</a></li>
+		</ul>
+   		
+   		</td>
+   		
+   		<td class="cell-r">
+				<% if(userName != null) { %> 
 				
-					<%= userId %>~ :)<a target="center" href="../logout.jsp">logout</a>
+					[<%=centerName%>]&nbsp<%= userName %>&nbsp&nbsp&nbsp&nbsp<a target="center" href="../logout.jsp">로그아웃</a>
 				
 				<% } %>
-			</td>
-		</tr>
-	</table>
+		</td>
+   	</tr>
+   	<tr class="row_bottom_only"></tr>
+   	</table>
+
    <p>
   </p>
 </center>

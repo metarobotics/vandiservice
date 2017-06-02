@@ -7,16 +7,18 @@ public class User {
 	private String userNm;
 	private int insertUserNo;
 	private String insertDatetime;
+	private int whNo;
 	
 	public User() {
 	}
 	
-	public User(int userNo, String userId, String userNm, int insertUserNo, String insertDatetime) {
+	public User(int userNo, String userId, String userNm, int insertUserNo, String insertDatetime, int whNo) {
 		this.userNo = userNo;
 		this.userId = userId;
 		this.userNm = userNm;
 		this.insertUserNo = insertUserNo;
 		this.insertDatetime = insertDatetime;
+		this.whNo = whNo;
 	}
 
 	public int getUserNo() {
@@ -43,6 +45,10 @@ public class User {
 		this.userNm = userNm;
 	}
 	
+	public void setUserWhNo(int whNo) {
+		this.whNo = whNo;
+	}
+	
 	public int getInsertUserNo() {
 		return insertUserNo;
 	}
@@ -59,5 +65,8 @@ public class User {
 		this.insertDatetime = insertDatetime;
 	}
 	
+	public int getUserWhNo() {
+		return whNo;
+	}
 }
 

@@ -29,7 +29,7 @@ public class UserDAO extends DAO {
 		User user = null; 
 		
 		try { 
-			sql = "select userNo, userNm from user where userId = ? AND pwd = ?"; 
+			sql = "select userNo, userNm, whNo from user where userId = ? AND pwd = ?"; 
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setString(1, id); 
 			pstmt.setString(2, pwd); 
@@ -39,6 +39,7 @@ public class UserDAO extends DAO {
 				user = new User(); 
 				user.setUserNo(rs.getInt(1)); 
 				user.setUserNm(rs.getString(2)); 
+				user.setUserWhNo(rs.getInt(3)); 
 				//item.setInsertUserNo(rs.getInt(3)); 
 				//item.setInsertDatetime(rs.getString(4).toString()); 
 				/*item.set(rs.getString(3)); 
