@@ -21,7 +21,8 @@ String centerName =  (String)session.getAttribute("centerName");
 <center>
 	
 	<div><h4>Smart robots for agriculture</h4></div>
-   	<div class="table-title"><h1>VANDI SERVICE</h1></div>
+   	<div class="vandi_title_style">VANDI SERVICE</div>
+   	<div class="vandi_servicecenter_style"><%=centerName%></div>
    	
    	<table border="0">
    	<tr class="row_bottom_only">
@@ -39,12 +40,16 @@ String centerName =  (String)session.getAttribute("centerName");
    		<td class="cell-r">
 				<% if(userName != null) { %> 
 				
-					[<%=centerName%>]&nbsp<%= userName %>&nbsp&nbsp&nbsp&nbsp<a target="center" href="../logout.jsp">로그아웃</a>
+					<%= userName %>&nbsp님&nbsp&nbsp&nbsp&nbsp<a target="center" href="../logout.jsp">로그아웃</a>
 				
 				<% } %>
 		</td>
    	</tr>
-   	<tr class="row_bottom_only"></tr>
+   	</table>
+
+	<table border="0" width="100%">
+		<tr class="row_bottom_only"><td></td></tr>
+   		<tr class="row_bottom_only"><td></td></tr>
    	</table>
 
    <p>

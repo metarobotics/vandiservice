@@ -22,6 +22,15 @@ textarea {
 	line-height: 26.4px;
 }
 
+.table-title_short h1 {
+	font-family: Raleway;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 20px;
+}
+
 table {
 	/* font-family: Inconsolata, monospace; */
 	/* font-family: Oxygen Mono, monospace; */
@@ -442,4 +451,26 @@ li a {
 /* Change the link color to #111 (black) on hover */
 li a:hover {
     color: #CCC;
+}
+
+.vandi_title_style {
+	font-family: Raleway;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 30px;
+	margin-top: 0.6em;
+	margin-bottom: 0.2em;
+}
+
+.vandi_servicecenter_style {
+	font-family: 'Nanum Gothic', serif;
+	font-size: 15px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 700;
+	line-height: 15.4px;
+	margin-bottom: 0.8em;
+	color: #F7882F;
 }

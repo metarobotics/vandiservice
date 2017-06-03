@@ -55,7 +55,12 @@
 <center>
 <table width="540" cellpadding="0" cellspacing="0" border="0">
 <tr>
-	<td class="cell-l"><h1>Materials 20170529</h1></td>
+	<td class="cell-c"><h1>Materials 20170529</h1></td>
+</tr>
+</table>
+
+<table width="540" cellpadding="0" cellspacing="0" border="0">
+<tr>
 	<td class="cell-r">total : <%= size %></td>
 </tr>
 </table>
