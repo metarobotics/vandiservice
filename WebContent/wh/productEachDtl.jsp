@@ -140,7 +140,7 @@
 			</tr>
 			
     		<tr class="row_bottom_only">
-				<td width="40%" class="cell-r">제품번호</td>
+				<td width="40%" class="cell-r">제품일련번호</td>
 				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=serialNo id=serialNo size=15 value='' >
@@ -150,7 +150,7 @@
 				</td>
 			</tr>
     		<tr class="row_bottom_only">
-				<td width="40%" class="cell-r">제작일</td>
+				<td width="40%" class="cell-r">제작일자</td>
 				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=date name=prodDt id=prodDt size=15 value='' >
@@ -163,7 +163,7 @@
 		
 			
     		<tr class="row_bottom_only">
-				<td width="40%" class="cell-r">인증 검사일</td>
+				<td width="40%" class="cell-r">인증 검사일자</td>
 				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=date name=certDt id=certDt size=20 value='' >

@@ -67,11 +67,11 @@
 
 <table border="1" width="600">
 <tr class="header">
-	<th width="25%" class="text-center">제품번호</th>
-	<th width="18%" class="text-center">제작일</th>
+	<th width="25%" class="text-center">제품일련번호</th>
+	<th width="18%" class="text-center">제작일자</th>
 	<th width="15%" class="text-center">등록번호</th>
 	<th width="24%" class="text-center">고객명</th>
-	<th width="18%" class="text-center">검사일</th>
+	<th width="18%" class="text-center">검사일자</th>
 </tr>
 
 <%

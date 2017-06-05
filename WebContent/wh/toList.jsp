@@ -92,7 +92,7 @@
 <table width="600" border="1">
 <tr class="header">
 	<th width="15%" class="text-center">주문번호</th>
-	<th width="15%" class="text-center">날짜</th>
+	<th width="15%" class="text-center">주문일자</th>
 	<th width="20%" class="text-center">출고지</th>
 	<th width="20%" class="text-center">배송지</th>
 	<th width="20%" class="text-center">합계금액</th>

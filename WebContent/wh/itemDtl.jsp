@@ -59,15 +59,15 @@ String pg = request.getParameter("pg");
 			<td width="70%" class="cell-l"><%=itemNo%></td>
 		</tr>
 		<tr>
-			<td class="cell-hd">前格ID</td>
+			<td class="cell-hd">前格内靛</td>
 			<td class="cell-l"><%=itemId%></td>
 		</tr>
 		<tr>
-			<td class="cell-hd">前格疙</td>
+			<td class="cell-hd">前疙(康绢)</td>
 			<td class="cell-l"><%=itemNm%></td>
 		</tr>
 		<tr>
-			<td class="cell-hd">前格 茄臂疙</td>
+			<td class="cell-hd">前疙(茄臂)</td>
 			<td class="cell-l"><%=itemNmKor%></td>
 		</tr>
 	</table>

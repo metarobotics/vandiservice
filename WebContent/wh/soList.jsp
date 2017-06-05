@@ -72,10 +72,10 @@
 	   <div class="table-title"><h1>견적서목록</h1></div>
 <table border="1">
 <tr class="header">
-	<th width="10%" class="text-center">접수일</th>
-	<th width="14%" class="text-center">날짜</th>
+	<th width="10%" class="text-center">접수번호</th>
+	<th width="14%" class="text-center">접수일자</th>
 	<th width="16%" class="text-center">서비스센터</th>
-	<th width="16%" class="text-center">제품번호</th>
+	<th width="16%" class="text-center">제품일련번호</th>
 	<th width="14%" class="text-center">고객명</th>
 	<th width="10%" class="text-center">합계금액</th>
 	<th width="10%" class="text-center">상태</th>

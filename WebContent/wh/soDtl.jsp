@@ -347,7 +347,7 @@ $('body').html(restorepage);
 
 		<table width=600>
     		<tr class="row_bottom_only">
-				<td width="100" class="cell-hd">접수번호 : </td>
+				<td width="100" class="cell-hd">접수번호 </td>
 					<td width="100" class="cell-l">
  
  	<% if(mode.equals("C")) { %>
@@ -364,7 +364,7 @@ $('body').html(restorepage);
 					<td width="100" class="cell-l"/>
 			</tr>
     		<tr class="row_bottom_only">
-				<td width="100" class="cell-hd">작성일자 : </td>
+				<td width="100" class="cell-hd">접수일자 </td>
 				<td width="100" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=date name=orderDt id=orderDt size=10 value='<%= MrUtil.getDateStr() %>' >
@@ -373,7 +373,7 @@ $('body').html(restorepage);
 	<% } else if(mode.equals("V")) { %><%= orderDt %>
 	<% } %>   		
 				</td>
-				<td width="100"  class="cell-r">센 터 명 : </td>
+				<td width="100"  class="cell-r">센 터 명 </td>
      			<td width="100"  class="cell-l">
      <% if(mode.equals("V")) { %><%= whNm %>
      				
@@ -393,7 +393,7 @@ $('body').html(restorepage);
      			</td>
 			</tr>
     		<tr class="row_bottom_only">
-				<td width="100" class="cell-hd">작 성 자 : </td>
+				<td width="100" class="cell-hd">작 성 자 </td>
 				<td width="100" class="cell-l">
 	<% if(mode.equals("C")) { %>
 					<input type=text name=userId id=userId size=10 disabled value='<%= (String)session.getAttribute("userId") %>' >
@@ -401,7 +401,7 @@ $('body').html(restorepage);
 					<%= insertUserId %>
 	<% } %>
 				</td>
-				<td width="100" class="cell-r">제품번호 : </td>
+				<td width="100" class="cell-r">제품일련번호 </td>
      			<td width="100" class="cell-l">
      <% if(mode.equals("V")) { %><%= productSerialNo %>
      <% } else { %>

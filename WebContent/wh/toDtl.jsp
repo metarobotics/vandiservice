@@ -111,28 +111,28 @@
 		
 		if(isNull(document.getElementById("srcWh")))
 		{
-			alert('Source Warehouse를 선택하세요.');
+			alert('출고지를 선택하세요.');
 			return false;
 		}
 		else if(isNull(document.getElementById("destWh")))
 		{
-			alert('Destination Warehouse를 선택하세요.');
+			alert('배송지를 선택하세요.');
 			return false;
 		}
 		else if(document.getElementById("srcWh").value == document.getElementById("destWh").value)
 		{
-			alert("Source창고와 Destination창고는 같을 수 없습니다.");
+			alert("출고지와 배송지는 같을 수 없습니다.");
 			return false;
 		}
 		else if(document.getElementById("tdSubtotal").innerHTML  == "" || document.getElementById("tdSubtotal").innerHTML  == 0)
 		{
-			alert("아이템 입력 내역이 없습니다.");
+			alert("품목 입력 내역이 없습니다.");
 			return false;
 		}
 		
 		if (backOrderFg)
 		{ 
-			if(confirm("오렌지 컬러 Item은 백오더 상태입니다. 계속하시겠습니까?"))
+			if(confirm("오렌지 컬러 품목은 백오더 상태입니다. 계속하시겠습니까?"))
 			{
 				document.getElementById('srcWh').disabled='';
 				document.getElementById('destWh').disabled='';
@@ -365,7 +365,7 @@
 	<% } %>
 					</td>
 					
-					<td width="35%" class="cell-r">Source Warehouse</td>
+					<td width="35%" class="cell-r">출고지</td>
 					<td width="15%" class="cell-l">
 						<select name=srcWh id=srcWh disabled>
 							<option value=''>선택</option>
@@ -392,7 +392,7 @@
  %>
 					</td>
 					
-					<td width="35%" class="cell-r">Destination Warehouse</td>
+					<td width="35%" class="cell-r">배송지</td>
 					<td width="15%" class="cell-l">
 						<select id=destWh name=destWh disabled>
 							<option value=''>선택</option>
@@ -414,11 +414,11 @@
 			<table id="order_item_table" border=0>
 				<thead>
 					<tr>
-						<th width="60%" nowrap>Item</th>
-						<th width="10%" class="cell-r">가격</th>
+						<th width="60%" nowrap>품목</th>
+						<th width="10%" class="cell-r">판매가격</th>
 						<th width="10%" class="cell-r">수량</th>
-						<th width="10%" class="cell-r">Src센터 재고</th>
-						<th width="10%" class="cell-r">Dest센터 재고</th>
+						<th width="10%" class="cell-r">출고지 재고</th>
+						<th width="10%" class="cell-r">배송지 재고</th>
 					</tr>
 				</thead>
 				<tbody id="p_item">

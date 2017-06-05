@@ -74,12 +74,12 @@
 
 <table border="1">
 <tr>
-	<th class="text-center">Part no.</th>
-	<th class="text-center">Description</th>
-	<th class="text-center">Center Price</th>
-	<th class="text-center">List price</th>
-	<th class="text-center">Service hour</th>
-	<th class="text-center">Item Count</th>
+	<th class="text-center">품목코드</th>
+	<th class="text-center">품명</th>
+	<th class="text-center">구매단가</th>
+	<th class="text-center">판매단가</th>
+	<th class="text-center">공임시간</th>
+	<th class="text-center">품목개수</th>
 </tr>
 <tbody class="table-hover">
 <%
