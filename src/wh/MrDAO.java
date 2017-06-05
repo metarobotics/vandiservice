@@ -123,7 +123,51 @@ public class MrDAO extends DAO {
 	} 
 	
 	
+	/*
+	 * Product
+	 */
+	
+	public ArrayList<Product> getProductList() { 
+		
+		Connection con = dbconnect.getConnection(); 
+		PreparedStatement pstmt = null; 
+		ResultSet rs = null; 
+		
+		ArrayList<Product> alist = new ArrayList<Product>(); 
+		
+		try { 
+			/*
 
+	private int productNo;//1
+	
+	private String productId;//2
+	private String productNmKor;
+	private String productNmEng;
+	private String createDt;//5
+	
+	private String insertUserId;//6
+	private String insertDatetime;
+	private String updateUserId;
+	private String updateDatetime;//9
+		
+					 */
+			sql = "select * from product order by productNo"; 
+			pstmt = con.prepareStatement(sql); 
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Product product = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9)); 
+				alist.add(product); 
+			} 
+		}catch(Exception e) { 
+			
+		}finally { 
+			DBClose.close(con,pstmt,rs); 
+		} 
+		
+		return alist; 
+	} 
+	
 	
 	/*
 	 * Wh
@@ -138,7 +182,7 @@ public class MrDAO extends DAO {
 		ArrayList<Wh> alist = new ArrayList<Wh>(); 
 		
 		try { 
-			sql = "select * from wh order by whNo"; 
+			sql = "select * from wh where useYn = 'Y' order by whNo"; 
 			pstmt = con.prepareStatement(sql); 
 			rs = pstmt.executeQuery();
 			

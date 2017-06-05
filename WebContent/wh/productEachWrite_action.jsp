@@ -2,6 +2,7 @@
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
+
 <jsp:useBean id="dao" class="wh.ProductEachDAO"/>
 
 <%
@@ -34,21 +35,24 @@ ProductEach productEach;
 
 if(mode.equals("C") || mode.equals("U")) 
 {
-	int productNo;
-	
-	if(mode.equals("C"))
-		productNo = 1; //dao.getNextClientNo();
-	else
-		productNo = Integer.parseInt(request.getParameter("productNo"));
+	int productEachNo = 0;
+	if(mode.equals("C")) 
+	{
+		productEachNo = dao.getNextProductEachNo();
+	}
+	else //U
+	{
+		productEachNo = Integer.parseInt(request.getParameter("productEachNo"));
+	}
 
+	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	String serialNo = request.getParameter("serialNo").toString();
 	String prodDt = request.getParameter("prodDt").toString();
 	String certDt = request.getParameter("certDt").toString();
 	String registerNo = request.getParameter("registerNo").toString();
 	int clientNo = Integer.parseInt(request.getParameter("clientNo"));
-
 	
-	productEach = new ProductEach(productNo, serialNo, prodDt, certDt, registerNo, clientNo, userId, null, userId, null);
+	productEach = new ProductEach(productEachNo, productNo, serialNo, prodDt, certDt, registerNo, clientNo, userId, null, userId, null);
 	
 	if(mode.equals("C"))
 	{
@@ -64,10 +68,9 @@ if(mode.equals("C") || mode.equals("U"))
 }
 else //D
 {
-	int productNo = Integer.parseInt(request.getParameter("productNo"));
-	String serialNo = request.getParameter("serialNo").toString();
+	int productEachNo = Integer.parseInt(request.getParameter("productEachNo"));
 	
-	dao.deleteProductEach(productNo, serialNo); 
+	dao.deleteProductEach(productEachNo); 
 }
 
 %>

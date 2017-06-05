@@ -7,13 +7,24 @@
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
 
+<jsp:include page = "top.jsp"/>
 <jsp:useBean id="dao" class="wh.OrderTDAO"/>
 
 <%	
-	int total = dao.countOrderT();
-	ArrayList<OrderT> alist = dao.getOrderTList();
-	int size = alist.size();
-	int size2 = size;
+	//int total = dao.countOrderT();
+
+	String authLvl =  (String)session.getAttribute("authLvl");
+	if (authLvl == null) return;
+	int whNo =  (Integer)session.getAttribute("whNo");
+	
+	ArrayList<OrderT> alist = null;
+	if(authLvl.equals("S")) // super
+		alist = dao.getOrderTList();
+	else
+		alist = dao.getOrderTList(whNo);
+	
+	int total = alist.size();
+	int size2 = total;
 	
 	final int ROWSIZE = 10;
 	final int BLOCK = 5;
@@ -40,7 +51,7 @@
 	
 	size2 -=end;
 	if(size2 < 0) {
-		end = size;
+		end = total;
 	}
 	
 	
@@ -56,6 +67,8 @@
 
 <body>
 <center>
+	   <div class="table-title"><h1>T.O.(Transfer order) 목록</h1></div>
+	   <!-- 
 <table>
 	<tr height="20"></tr>
 	<tr>
@@ -63,12 +76,11 @@
 	</tr>
 	<tr height="20"></tr>
 </table>
-
+ -->
 <table width="600">
 <tr>
 <td>
 <h2>주문관련 주의사항</h2>
-<br>
 주문후에 본사에 연락을 하고, 견적서를 요청하시면 됩니다.
 <br>
 입금계좌 : 농협 301-0212-5189-11 예금주: 메타로보틱스 주식회사
@@ -99,14 +111,14 @@
 				OrderT orderT = alist.get(i);
 %>
 
-<tr class="row">
-<td class="cell-c"><a href="toDtl.jsp?mode=R&orderNo=<%=orderT.getOrderNo()%>&pg=<%=pg%>"><%= MrUtil.getTOrderNoStr(orderT.getOrderNo()) %></a></td>
-<td class="cell-c"><%=orderT.getOrderDt()%></td>
-<td class="cell-c"><%=orderT.getSrcWhNm()%></td>
-<td class="cell-c"><%=orderT.getDestWhNm()%></td>
-<td class="cell-r"><%=MrUtil.FormatCurrentDisplay(orderT.getTotalAmt()) %></td>
-<td class="cell-c"><%=orderT.getStatusNm()%></td>
-</tr>
+	<tr class="row">
+	<td class="cell-c"><a href="toDtl.jsp?mode=R&orderNo=<%=orderT.getOrderNo()%>&pg=<%=pg%>"><%= MrUtil.getTOrderNoStr(orderT.getOrderNo()) %></a></td>
+	<td class="cell-c"><%=orderT.getOrderDt()%></td>
+	<td class="cell-c"><%=orderT.getSrcWhNm()%></td>
+	<td class="cell-c"><%=orderT.getDestWhNm()%></td>
+	<td class="cell-r"><%=MrUtil.FormatCurrentDisplay(orderT.getTotalAmt()) %></td>
+	<td class="cell-c"><%=orderT.getStatusNm()%></td>
+	</tr>
 
 <%
 
@@ -114,7 +126,9 @@
 
 %>
 
+</tbody>
 </table>
+
 <br>
 <table cellpadding="0" cellspacing="0" border="0">
   <tr>
@@ -154,11 +168,8 @@
 		</tr>
 	<tr height="10"></tr>
 	<tr>
-   		<td ><input type=button class="dtlBtn" value="등록" OnClick="window.location='toDtl.jsp?mode=C&pg=<%=pg%>'"></td>
+   		<td align="center"><input type=button class="dtlBtn" value="등록" OnClick="window.location='toDtl.jsp?mode=C&pg=<%=pg%>'"></td>
   </tr>
-
-
-</tbody>
 </table>
 
 </center>

@@ -8,7 +8,9 @@ public class OrderItem {
 	private int itemNo;
 	private int itemCnt;
 	private int itemPrice;
-	private String insertUserId;
+	private float serviceHour; // for SO
+	
+	private String insertUserId; //8
 	private String insertDatetime;
 	private String updateUserId;
 	private String updateDatetime;
@@ -26,6 +28,19 @@ public class OrderItem {
 		this.insertUserId = insertUserId;
 	}
 
+	// include serviceHour. for SO 
+	public OrderItem(String orderFg, int orderNo, int seq, int itemNo, int itemCnt, int itemPrice, float serviceHour, String insertUserId) {
+		this.orderFg = orderFg;
+		this.orderNo = orderNo;
+		this.seq = seq;
+		this.itemNo = itemNo;
+		this.itemCnt = itemCnt;
+		this.itemPrice = itemPrice;
+		this.serviceHour = serviceHour;
+		this.insertUserId = insertUserId;
+	}
+
+	
 	public String getOrderFg() {
 		return orderFg;
 	}
@@ -104,6 +119,14 @@ public class OrderItem {
 
 	public void setUpdateDatetime(String updateDatetime) {
 		this.updateDatetime = updateDatetime;
+	}
+
+	public float getServiceHour() {
+		return serviceHour;
+	}
+
+	public void setServiceHour(float serviceHour) {
+		this.serviceHour = serviceHour;
 	}
 
 }

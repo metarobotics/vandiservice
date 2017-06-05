@@ -2,6 +2,7 @@
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
+
 <jsp:useBean id="orderSDao" class="wh.OrderSDAO"/>
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
 
@@ -10,51 +11,63 @@
 request.setCharacterEncoding("UTF-8");
 
 //parameter
-String mode = request.getParameter("mode");
-String modeStr;
+String mode = request.getParameter("mode"); //CUD + F(Finish.확정)
+String modeStr = "";
 if(mode.equals("C")) 
 {
 	modeStr = "등록";
 }
-else //U
+else if(mode.equals("U")) 
 {
 	modeStr = "수정";
 }
-
-int orderNo = 0;
-if(mode.equals("C")) 
+else if(mode.equals("D"))
 {
-	orderNo = orderSDao.getNextOrderNo();
+	modeStr = "삭제";
 }
-else //U
+else if(mode.equals("F"))
 {
-	orderNo = Integer.parseInt(request.getParameter("orderNo"));
+	modeStr = "확정";
 }
 
-String orderDt = request.getParameter("orderDt").toString();
-int centerId = Integer.parseInt(request.getParameter("center"));
-String productSerialNo = request.getParameter("productEach").toString();
-
-int subtotal = Integer.parseInt(request.getParameter("subtotal"));
-int tax = Integer.parseInt(request.getParameter("tax"));
-int totalAmt = Integer.parseInt(request.getParameter("totalAmt"));
-
-String orderStr = request.getParameter("orderStr").toString(); // 1:3:25000|2:5:15000
-
-// session 
-String userId = (String)session.getAttribute("userId");
-
-//out.print(srcWhId +"<br>"+destWhId +"<br>"+ subtotal +"<br>"+ tax +"<br>"+ totalAmt +"<br>"+ orderStr + "<br>" + userId + "<br>");
-
-%>
-
-
-<%
+if(mode.equals("C") || mode.equals("U")) 
+{
+	
+	int orderNo = 0;
+	if(mode.equals("C")) 
+	{
+		orderNo = orderSDao.getNextOrderNo();
+	}
+	else //U
+	{
+		orderNo = Integer.parseInt(request.getParameter("orderNo"));
+	}
+	
+	String orderDt = request.getParameter("orderDt").toString();
+	int whNo = Integer.parseInt(request.getParameter("whNo"));
+	String productSerialNo = request.getParameter("productEach").toString();
+	
+	int subtotal = Integer.parseInt(request.getParameter("subtotal"));
+	int tax = Integer.parseInt(request.getParameter("tax"));
+	int totalAmt = Integer.parseInt(request.getParameter("totalAmt"));
+	String note = request.getParameter("note").toString();
+	
+	String orderStr = request.getParameter("orderStr").toString(); // 1:3:25000|2:5:15000
+	
+	// session 
+	String userId = (String)session.getAttribute("userId");
+	
+	//out.print(srcWhId +"<br>"+destWhId +"<br>"+ subtotal +"<br>"+ tax +"<br>"+ totalAmt +"<br>"+ orderStr + "<br>" + userId + "<br>");
+	
+	%>
+	
+	
+	<%
 	//
 	// orderT
 	//
 	
-	OrderS orderS = new OrderS(orderNo, orderDt, centerId, productSerialNo, null, subtotal, tax, totalAmt, userId, userId);
+	OrderS orderS = new OrderS(orderNo, orderDt, whNo, productSerialNo, null, subtotal, tax, totalAmt, note, userId, userId);
 	
 	if(mode.equals("C"))
 	{
@@ -78,6 +91,7 @@ String userId = (String)session.getAttribute("userId");
 	int itemNo;
 	int itemCnt;
 	int itemPrice;
+	float serviceHour;
 
 	//out.print("<br><br>");
 	
@@ -92,11 +106,27 @@ String userId = (String)session.getAttribute("userId");
 		itemNo = Integer.parseInt(arr[0]);
 		itemCnt = Integer.parseInt(arr[1]);
 		itemPrice = Integer.parseInt(arr[2]);
+		serviceHour = Float.parseFloat(arr[3]);
 		
-		OrderItem orderItem = new OrderItem("S", orderNo, i+1, itemNo, itemCnt, itemPrice, userId); 
+		OrderItem orderItem = new OrderItem("S", orderNo, i+1, itemNo, itemCnt, itemPrice, serviceHour, userId);  
 		orderSDao.insertOrderItem(orderItem);
 	}
+}
+else if(mode.equals("D"))
+{
+	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
+
+	orderSDao.deleteOrderS(orderNo);
+	orderSDao.deleteOrderItem(orderNo);
+}
+else if(mode.equals("F")) // 확정 
+{
+	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
+	int whNo = Integer.parseInt(request.getParameter("whNo"));
 	
+	orderSDao.finishOrderS(orderNo, whNo);
+}
+
 %>
 <script>
 	alert("<%= modeStr %>되었습니다.");

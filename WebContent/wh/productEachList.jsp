@@ -7,9 +7,15 @@
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
 
+<jsp:include page = "top.jsp"/>
+
 <jsp:useBean id="dao" class="wh.ProductEachDAO"/>
 
 <%	
+	String authLvl =  (String)session.getAttribute("authLvl");
+	if (authLvl == null) return;
+//	if(authLvl.equals("S") || authLvl.equals("A")) // 등록,수정 권한자
+	
 	ArrayList<ProductEach> alist = dao.getProductEachList();
 	int productEachListSize = alist.size();
 	
@@ -57,11 +63,11 @@
 
 <body translate="no" >
 <center>
-   <div class="table-title"><h1>Products</h1></div>
+   <div class="table-title"><h1>제품목록</h1></div>
 
 <table border="1" width="600">
 <tr class="header">
-	<th width="25%" class="text-center">일련번호</th>
+	<th width="25%" class="text-center">제품번호</th>
 	<th width="18%" class="text-center">제작일</th>
 	<th width="15%" class="text-center">등록번호</th>
 	<th width="24%" class="text-center">고객명</th>
@@ -86,7 +92,7 @@
 %>
 
 <tr class="row">
-<td class="cell-c"><a href="productEachDtl.jsp?mode=R&productNo=<%=productEach.getProductNo()%>&serialNo=<%=productEach.getSerialNo()%>&pg=<%=pg%>"><%= productEach.getSerialNo() %></a></td>
+<td class="cell-c"><a href="productEachDtl.jsp?mode=R&productEachNo=<%=productEach.getProductEachNo()%>&pg=<%=pg%>"><%= productEach.getSerialNo() %></a></td>
 <td class="cell-c"><%=productEach.getProdDt()%></td>
 <td class="cell-c"><%=productEach.getRegisterNo()%></td>
 <td class="cell-c"><%=productEach.getClientNm()%></td>
@@ -138,10 +144,16 @@
 		%>
 		</td>
 		</tr>
-	<tr align="right">
-   		<td ><input type=button class="myButton" value="등록" OnClick="window.location='productEachDtl.jsp?mode=C&pg=<%=pg%>'"></td>
-  </tr>
-
+		
+	<tr height="10"></tr>
+	<tr>
+		<%
+		if(authLvl.equals("S") || authLvl.equals("A")) { // 등록,수정 권한자
+		%>
+	   		<td align="center"><input type=button class="dtlBtn" value="등록" OnClick="window.location='productEachDtl.jsp?mode=C&pg=<%=pg%>'"></td>
+	   	<%} else { %>
+	   	<%} %>
+  	</tr>
 
 </tbody>
 </table>

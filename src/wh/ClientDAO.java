@@ -13,7 +13,7 @@ public class ClientDAO extends DAO {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public int getNextClientNo() {
+	public int getNextClientNo() throws Exception {
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
@@ -21,36 +21,42 @@ public class ClientDAO extends DAO {
 		
 		try { 
 			sql = "select ifnull(max(clientNo),0)+1 from client"; 
+			
 			pstmt = con.prepareStatement(sql); 
 			rs = pstmt.executeQuery(); 
+			System.out.println(sql);
 			
 			if(rs.next()) { 
 				no = rs.getInt(1); 
 			} 
 		}catch(Exception e) { 
-			
+			e.printStackTrace();
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
 		return no; 
 	}
 	
-	public int countClient() { 
+	public int countClient() throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
 		int cnt = 0; 
 		
 		try { 
-			sql = "SELECT COUNT(*) FROM client"; 
+			sql = "SELECT COUNT(*) FROM client";
+			
 			pstmt = con.prepareStatement(sql); 
 			rs = pstmt.executeQuery(); 
+			System.out.println(sql);
 			
 			if(rs.next()) { 
 				cnt=rs.getInt(1); 
 			} 
 		}catch(Exception e) { 
-			
+			e.printStackTrace();
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
@@ -70,7 +76,7 @@ public class ClientDAO extends DAO {
 	} 
 	
 	
-	public Client getClientInfo(int clientNo) { 
+	public Client getClientInfo(int clientNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
@@ -87,12 +93,14 @@ public class ClientDAO extends DAO {
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			pstmt.setInt(1, clientNo); 
 			rs = pstmt.executeQuery(); 
+			System.out.println(sqlBuf.toString());
 			
 			if(rs.next()) { 
 				client = new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getInt(13)); 
 			} 
 		}catch(Exception e) { 
-			
+			e.printStackTrace();
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
@@ -102,7 +110,7 @@ public class ClientDAO extends DAO {
 	
 		
 	// list page 
-	public ArrayList<Client> getClientList() { 
+	public ArrayList<Client> getClientList() throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
@@ -113,26 +121,29 @@ public class ClientDAO extends DAO {
 			StringBuffer sqlBuf=new StringBuffer(); 
 
 			sqlBuf.append("		select a.* ");
-			sqlBuf.append("			, (select count(0) from orderS where clientNo = a.clientNo) as dealCnt");
+			sqlBuf.append("			, (select count(0) from orderS where productSerialNo in (select serialNo from productEach where clientNo = a.clientNo)) as dealCnt");
 			sqlBuf.append("		from client a ");
 			sqlBuf.append("		order by clientNm;");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			rs = pstmt.executeQuery(); 
+			System.out.println(sqlBuf.toString());
+			
 			while(rs.next()) { 
 				Client client = new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getInt(13)); 
 				
 				alist.add(client); 
 			} 
 		}catch(Exception e) { 
-			
+			e.printStackTrace();
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} return alist; 
 	} 
 	
 	
-	public void insertClient(Client client) { 
+	public void insertClient(Client client) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		
@@ -151,15 +162,18 @@ public class ClientDAO extends DAO {
 			pstmt.setString(9, client.getInsertUserId());
 			
 			pstmt.execute(); 
-		}catch(Exception e) { 
+			System.out.println(sql);
 			
+		}catch(Exception e) { 
+			e.printStackTrace();
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 
 		} 
 	} 
 	
 	
-	public void modifyClient(Client client) { 
+	public void modifyClient(Client client) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		
@@ -179,16 +193,18 @@ public class ClientDAO extends DAO {
 			pstmt.setInt(9, client.getClientNo());
 			
 			pstmt.executeUpdate();
+			System.out.println(sql);
 			
 		}catch(Exception e) { 
-			
+			e.printStackTrace();
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 
 		} 
 	} 
 		
 
-	public void deleteClient(int clientNo) { 
+	public void deleteClient(int clientNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		try { 
@@ -196,8 +212,10 @@ public class ClientDAO extends DAO {
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setInt(1, clientNo); 
 			pstmt.executeUpdate();
+			System.out.println(sql);
 		}catch(Exception e) { 
-		
+			e.printStackTrace();
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 
 		} 

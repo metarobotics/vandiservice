@@ -2,17 +2,18 @@ package wh;
 
 public class ProductEach {
 	
+	private int productEachNo;
 	private int productNo;
 	private String serialNo;
 	private String prodDt;
 	private String certDt;
 	private String registerNo;
-	private int clientNo;//6
+	private int clientNo;//7
 	
 	private String insertUserId;
 	private String insertDatetime;
 	private String updateUserId;
-	private String updateDatetime;//10
+	private String updateDatetime;//11
 	
 	private String clientNm;
 
@@ -20,9 +21,10 @@ public class ProductEach {
 	public ProductEach() {
 	}
 
-	public ProductEach(int productNo, String serialNo, String prodDt, String certDt, String registerNo, int clientNo, 
+	public ProductEach(int productEachNo, int productNo, String serialNo, String prodDt, String certDt, String registerNo, int clientNo, 
 			String insertUserId, String insertDatetime, String updateUserId, String updateDatetime) {
 	
+		this.productEachNo = productEachNo;
 		this.productNo = productNo;
 		this.serialNo = serialNo;
 		this.prodDt = prodDt;
@@ -37,10 +39,11 @@ public class ProductEach {
 		
 	}
 	
-	public ProductEach(int productNo, String serialNo, String prodDt, String certDt, String registerNo, int clientNo, 
+	public ProductEach(int productEachNo, int productNo, String serialNo, String prodDt, String certDt, String registerNo, int clientNo, 
 					String insertUserId, String insertDatetime, String updateUserId, String updateDatetime,
 					String clientNm) {
 		
+		this.productEachNo = productEachNo;
 		this.productNo = productNo;
 		this.serialNo = serialNo;
 		this.prodDt = prodDt;
@@ -54,6 +57,14 @@ public class ProductEach {
 		this.updateDatetime = updateDatetime;
 		
 		this.clientNm = clientNm;
+	}
+
+	public int getProductEachNo() {
+		return productEachNo;
+	}
+
+	public void setProductEachNo(int productEachNo) {
+		this.productEachNo = productEachNo;
 	}
 
 	public int getProductNo() {

@@ -8,10 +8,12 @@
 <%@ page import="wh.*"%>
 <%@ page import="java.util.*"%>
 
+<jsp:include page = "top.jsp"/>
+
 <jsp:useBean id="mrDao" class="wh.MrDAO" />
 <jsp:useBean id="itemDao" class="wh.ItemDAO" />
 <jsp:useBean id="orderTDao" class="wh.OrderTDAO" />
-<jsp:include page="/loginChk.jsp" />
+
 
 
 
@@ -23,13 +25,16 @@
 <link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
 <script type="text/javascript" src="../js/chkValid.js"></script>
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 
 <%
 	String mode = request.getParameter("mode");
 	String pg = request.getParameter("pg");
+
+	String authLvl =  (String)session.getAttribute("authLvl");
+	if (authLvl == null) return;
+	int whNo =  (Integer)session.getAttribute("whNo");
 
 	//out.print("."+mode+".");
 
@@ -50,11 +55,12 @@
 	String insertUserId = "";
 
 	ArrayList<OrderItem> orderItemList = null;
-
+	ArrayList<Item> itemlist = null;
+	
+	OrderT orderT = null; 
+	
 	if (mode.equals("R")) {
 		orderNo = Integer.parseInt(request.getParameter("orderNo"));
-
-		OrderT orderT = null;
 
 		orderT = orderTDao.getOrderTInfo(orderNo);
 
@@ -69,19 +75,26 @@
 			tax = orderT.getTax();
 			totalAmt = orderT.getTotalAmt();
 			insertUserId = orderT.getInsertUserId();
+			
+			orderItemList = orderTDao.getOrderItemList(orderNo);
+			
+			itemlist = itemDao.getItemList(srcWhNo, destWhNo);
 		}
 
-		orderItemList = orderTDao.getOrderItemList(orderNo);
 		//		int size = orderItemList.size();		
 	}
-
-	// mode C/R
+	else // mode C/R
+	{
+		srcWhNo = 0; // mr
+		destWhNo = (Integer)session.getAttribute("whNo"); // user wh
+		itemlist = itemDao.getItemList(srcWhNo, destWhNo);
+	}
+	
+	int itemLength = itemlist.size();
+	
 
 	ArrayList<Wh> whlist = mrDao.getWhList();
 	int whLength = whlist.size();
-
-	ArrayList<Item> itemlist = itemDao.getItemList();
-	int itemLength = itemlist.size();
 
 	String orderStr;
 %>
@@ -89,20 +102,21 @@
 <script type="text/javascript">
 
 	var mode = '<%=mode%>';
+	var backOrderFg = false;  // src 자재 갯수 이상 주문시 true
+	
 	//alert(mode);
 	
 
 	function toWriteCheck() {
 		
-		
 		if(isNull(document.getElementById("srcWh")))
 		{
-			alert('src 선택해');
+			alert('Source Warehouse를 선택하세요.');
 			return false;
 		}
 		else if(isNull(document.getElementById("destWh")))
 		{
-			alert('dest 선택해');
+			alert('Destination Warehouse를 선택하세요.');
 			return false;
 		}
 		else if(document.getElementById("srcWh").value == document.getElementById("destWh").value)
@@ -116,7 +130,23 @@
 			return false;
 		}
 		
-		return true;
+		if (backOrderFg)
+		{ 
+			if(confirm("오렌지 컬러 Item은 백오더 상태입니다. 계속하시겠습니까?"))
+			{
+				document.getElementById('srcWh').disabled='';
+				document.getElementById('destWh').disabled='';
+			
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			document.getElementById('srcWh').disabled='';
+			document.getElementById('destWh').disabled='';
+			
+			return true;
+		}
 	}
 
 
@@ -196,7 +226,19 @@
 */
 			
 		}//if(mode == "R")
-			
+		else { //"C"
+			document.getElementById("srcWh").value = 0; // mr로 고정
+			document.getElementById("destWh").value = '<%= (Integer)session.getAttribute("whNo") %>'; // 사용자 wh
+		}	
+		
+		if('<%= authLvl %>' == 'S')
+		{
+			document.getElementById('destWh').disabled='';
+		}
+		/*else{
+			alert('2');
+			document.getElementById('destWh').setAttribute('disabled');
+		}*/
 	}//setPage
 	
 	
@@ -209,11 +251,15 @@
 	    var idList = document.getElementsByName("selItem");
 	    var priceList = document.getElementsByName("txtPrice");
 	    var cntList = document.getElementsByName("txtCnt");
+	    var srcCntList = document.getElementsByName("srcItemCnt");
 	    
 	    var tot = idList.length;
 	    
+	    backOrderFg = false;
+	    
 	    for (i = 0; i < tot; i++) {
 	    	
+	    	// 주문정보 setting
 	    	if(!isNull(cntList[i]) && cntList[i].value != 0)
 	    	{
 	    		if(str == "")
@@ -221,6 +267,18 @@
 	    		else
 	    			str = str + "/" + idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value; // seperator | 는 사용하면 안됨. 변형되는지 split이 안돼 
 	    		subtotal = subtotal + parseInt(priceList[i].value) * parseInt(cntList[i].value);
+	    	}
+	    	
+			// 재고 체크 
+	    	if(!isNull(cntList[i]))
+	    	{
+				if (parseInt(cntList[i].value) > parseInt(srcCntList[i].value))
+				{
+					cntList[i].style.backgroundColor = "orange";
+					backOrderFg = true;
+				}else{
+					cntList[i].style.backgroundColor = "";
+				}
 	    	}
 	    }
 	    
@@ -237,40 +295,43 @@
 	
 
 	function confirmDelete() {
-		
 		if(confirm('삭제하시겠습니까?'))
 		{
-			<%if (mode.equals("R")) {%>   
-				moveTo('toDelete.jsp?orderNo=<%=orderNo%>');
-			<%} else {%>
-	
-			<%}%>
+			moveTo('toWrite_action.jsp?mode=D&orderNo=<%=orderNo%>');
 		}
 	}
+	
+	// 접수 
+	function confirmAccept() {
+		if(confirm('접수 후에는 수정/삭제가 불가능합니다. 접수하시겠습니까?'))
+		{
+			moveTo('toWrite_action.jsp?mode=A&orderNo=<%=orderNo%>');
+		}
+	}
+		
+	// 배송중
+	function confirmShip() {
+		if(confirm('배송처리 하시겠습니까?'))
+		{
+			moveTo('toWrite_action.jsp?mode=S&orderNo=<%=orderNo%>');
+		}
+	}
+		
+	// 접수 
+	function confirmFinish() {
+		if(confirm('완료처리 하시겠습니까?'))
+		{
+			moveTo('toWrite_action.jsp?mode=F&orderNo=<%=orderNo%>');
+		}
+	}
+		
+	
 </script>
 </head>
 
 <body>
 	<center>
-
-
-
-		<%
-			if (mode.equals("R")) {
-		%>
-		<div class="table-title">
-			<h1>Transfer order #<%= orderNo %></h1>
-		</div>
-		<%
-			} else {
-		%>
-		<div class="table-title">
-			<h1>New transfer order</h1>
-		</div>
-		<%
-			}
-		%>
-
+	   <div class="table-title"><h1>T.O.(Transfer order) 정보</h1></div>
 
 		<form name="form_order" method="post"
 			action="toWrite_action.jsp?mode=<%=writeMode%>"
@@ -305,7 +366,8 @@
 					</td>
 					
 					<td width="35%" class="cell-r">Source Warehouse</td>
-					<td width="15%" class="cell-l"><select name=srcWh id=srcWh>
+					<td width="15%" class="cell-l">
+						<select name=srcWh id=srcWh disabled>
 							<option value=''>선택</option>
 							<%
 								for (int i = 0; i < whLength; i++) {
@@ -331,7 +393,8 @@
 					</td>
 					
 					<td width="35%" class="cell-r">Destination Warehouse</td>
-					<td width="15%" class="cell-l"><select id=destWh name=destWh>
+					<td width="15%" class="cell-l">
+						<select id=destWh name=destWh disabled>
 							<option value=''>선택</option>
 							<%
 								for (int i = 0; i < whLength; i++) {
@@ -351,9 +414,11 @@
 			<table id="order_item_table" border=0>
 				<thead>
 					<tr>
-						<th width="60%">Item</th>
-						<th width="20%" class="cell-r">가격</th>
-						<th width="20%" class="cell-r">수량</th>
+						<th width="60%" nowrap>Item</th>
+						<th width="10%" class="cell-r">가격</th>
+						<th width="10%" class="cell-r">수량</th>
+						<th width="10%" class="cell-r">Src센터 재고</th>
+						<th width="10%" class="cell-r">Dest센터 재고</th>
 					</tr>
 				</thead>
 				<tbody id="p_item">
@@ -369,13 +434,19 @@
 								<option value=<%=item.getItemNo()%>> </option></select>-->
 								[<%=item.getItemId()%>]&nbsp;<%=item.getItemNm()%>
 						</td>
-						<td class="cell-r"><input type="text" name="txtPrice"
+						<td class="cell-r"><input type="text" name="txtPrice" size=6
 							style="border: 0px; text-align: right;" value='<%=item.getPriceCenter()%>'
 							disabled /></td>
-						<td class="cell-r"><input type="text" name="txtCnt"
+						<td class="cell-r"><input type="text" name="txtCnt" size=6
 							style="text-align: right" onchange="setSelectResult();"
 							onKeypress="if(event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" />
 						</td>
+						<td class="cell-r"><input type="text" name="srcItemCnt" size=7
+							style="border: 0px; text-align: right;" value='<%=item.getSrcItemCnt()%>'
+							disabled /></td>
+						<td class="cell-r"><input type="text" name="destItemCnt" size=7
+							style="border: 0px; text-align: right;" value='<%=item.getDestItemCnt()%>'
+							disabled /></td>
 					</tr>
 
 					<%
@@ -408,18 +479,23 @@
 				<tr height="40" valign="bottom">
 					<td colspan="2">
 						<div align="center">
-							<%
-								if (mode.equals("C")) {
-							%>
-							<input type="submit" class="dtlBtn" value="등록">&nbsp;
-							<%
-								} else {
-							%>
-							<input type="submit" class="dtlBtn" value="수정">&nbsp;
-							<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
-							<%
-								}
-							%>
+							<% if (mode.equals("C")) { %>
+									<input type="submit" class="dtlBtn" value="등록">&nbsp;
+							<% } %> 
+							<% if (mode.equals("R") && orderT.getStatusCd().equals("10")){ // 주문상태 => 수정 삭제 가능 %>
+									<input type="submit" class="dtlBtn" value="수정">&nbsp;
+									<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
+							<% } %> 
+							<% if (mode.equals("R") && orderT.getStatusCd().equals("10") && whNo == 0) { // 접수이고  MR 직원인 경우 확정 가능 %>
+									<input type="button" class="dtlBtn" value="접수" onclick="confirmAccept();">&nbsp;
+							<% } %> 
+							<% if (mode.equals("R") && orderT.getStatusCd().equals("20") && whNo == 0) { // 확정이고  MR 직원인 경우 배송관련 처리 가능 %>
+									<input type="button" class="dtlBtn" value="배송중" onclick="confirmShip();">&nbsp;
+							<% } %> 
+							<% if (mode.equals("R") && orderT.getStatusCd().equals("30") && whNo == 0) { // 배송중이고  MR 직원인 경우 배송관련 처리 가능 %>
+									<input type="button" class="dtlBtn" value="배송완료" onclick="confirmFinish();">&nbsp;
+							<% } %> 
+							
 							<input type="button" class="dtlBtn" value="목록"
 								onclick="moveTo('toList.jsp?pg=<%=pg%>');">
 						</div>

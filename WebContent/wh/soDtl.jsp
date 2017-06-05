@@ -5,11 +5,18 @@
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
  
+<% 
+
+String mode = request.getParameter("mode");
+
+if(!mode.equals("V")) { %>
+<jsp:include page = "top.jsp"/>
+<% } %>
+
 <jsp:useBean id="mrDao" class="wh.MrDAO"/>
 <jsp:useBean id="productEachDao" class="wh.ProductEachDAO"/>
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
 <jsp:useBean id="orderSDao" class="wh.OrderSDAO"/>
-<jsp:include page = "/loginChk.jsp"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -38,9 +45,12 @@ $('body').html(restorepage);
 	// P : Paper
 	// V : View
 
-	String mode = request.getParameter("mode");
+	//String mode = request.getParameter("mode");
 	String pg = request.getParameter("pg");
 	
+	String authLvl =  (String)session.getAttribute("authLvl");
+	if (authLvl == null) return;
+
 	//out.print("."+mode+".");
 	
 	String writeMode;
@@ -51,8 +61,8 @@ $('body').html(restorepage);
 	
 	int orderNo = 0;
 	String orderDt = "";
-	int centerNo=0;
-	String centerName = "";
+	int whNo=0;
+	String whNm = "";
 	String productSerialNo="";
 	String statusCd = "";
 	int subtotal=0;
@@ -62,11 +72,11 @@ $('body').html(restorepage);
 
 	ArrayList<OrderItem> orderItemList = null;
 	
+	OrderS orderS = null;
+	
 	if(mode.equals("R") || mode.equals("V"))
 	{
 		orderNo = Integer.parseInt(request.getParameter("orderNo"));
-	
-		OrderS orderS = null;
 	
 		orderS = orderSDao.getOrderSInfo(orderNo);
 	
@@ -75,7 +85,7 @@ $('body').html(restorepage);
 			//out.print("orderS not null");
 			
 			orderDt = orderS.getOrderDt();
-			centerNo = orderS.getCenterNo();
+			whNo = orderS.getWhNo();
 			productSerialNo = orderS.getProductSerialNo();
 			statusCd = orderS.getStatusCd();
 			subtotal = orderS.getSubtotal();
@@ -97,9 +107,9 @@ $('body').html(restorepage);
 	
 	for(int i=0; i<whLength;i++){
 		Wh wh = whList.get(i);
-		if(wh.getWhNo() == centerNo)
+		if(wh.getWhNo() == whNo)
 		{
-			centerName = wh.getWhNm();
+			whNm = wh.getWhNm();
 			break;
 		}
 	}
@@ -122,7 +132,7 @@ $('body').html(restorepage);
 	function soWriteCheck() {
 		
 		
-		if(isNull(document.getElementById("center")))
+		if(isNull(document.getElementById("whNo")))
 		{
 			alert('Service Center를 선택하세요.');
 			return false;
@@ -138,6 +148,8 @@ $('body').html(restorepage);
 			return false;
 		}
 		
+		document.getElementById('whNo').disabled='';
+		
 		return true;
 	}
 
@@ -148,8 +160,8 @@ $('body').html(restorepage);
 		
 			//document.getElementById("userId").value = '<%= insertUserId %>';
 			
-			document.getElementById("center").value = '<%= centerNo %>';
-			//document.getElementById("center").disabled = true;
+			document.getElementById("whNo").value = '<%= whNo %>';
+			//document.getElementById("whNo").disabled = true;
 			
 			document.getElementById("productEach").value = '<%= productSerialNo %>';
 			//document.getElementById("client").disabled = true;
@@ -157,6 +169,7 @@ $('body').html(restorepage);
 			document.getElementById("tdSubtotal").innerHTML = '<%= subtotal %>';
 			document.getElementById("tdTax").innerHTML = '<%= tax %>';
 			document.getElementById("tdTotalAmt").innerHTML = '<%= totalAmt %>';
+			
 <%			
 			if(orderItemList != null){
 				
@@ -170,16 +183,16 @@ $('body').html(restorepage);
 					orderItem = orderItemList.get(j);
 					int itemId = orderItem.getItemNo();
 					int itemCnt = orderItem.getItemCnt();
+					float serviceHour = orderItem.getServiceHour();
 					int itemSum = orderItem.getItemCnt() * orderItem.getItemPrice();
-//out.print(itemId + ":" + itemCnt);				
+					//out.print(itemId + ":" + itemCnt);				
 %>
-								
 				
 					// 수량 setting
 					var idList = document.getElementsByName("selItem");
 					var priceList = document.getElementsByName("txtPrice");
 					var cntList = document.getElementsByName("txtCnt");
-					var serviceTimeList = document.getElementsByName("txtServiceTime");
+					var serviceHourList = document.getElementsByName("txtServiceHour");
 					var itemSumList = document.getElementsByName("txtItemSum");
 					var subSumList = document.getElementsByName("txtSubSum");
 					
@@ -190,32 +203,41 @@ $('body').html(restorepage);
 						if(idList[i].value == '<%= itemId %>')
 						{
 							<%
-							
-							float serviceTime = 0;
+							/*
+							float serviceHour = 0;
 							for (int i = 0; i < itemLength; i++) {
 								Item item = itemList.get(i);
 								if(item.getItemNo() == itemId)
 								{
-									serviceTime = item.getServiceHour();
+									serviceHour = item.getServiceHour();
 									break;
 								}
-							}
+							}*/
 							
-							int itemSubSum = (int)(orderItem.getItemCnt() * (orderItem.getItemPrice() + serviceTime *34700));
+							int itemSubSum = (int)(orderItem.getItemCnt() * (orderItem.getItemPrice() + orderItem.getServiceHour() *34700));
 							totalSum += itemSubSum;
 							%>
 							
 							cntList[i].value = '<%=itemCnt%>';
+							serviceHourList[i].value = '<%=serviceHour%>';
 							itemSumList[i].value = '<%= MrUtil.FormatCurrent(itemSum) %>';
 							subSumList[i].value = '<%= MrUtil.FormatCurrent(itemSubSum) %>';
 
 						}
-					}					
+					}// for item IdList					
 <%
-				}
-			}
+				}//for orderItemSize
+			}//if(orderItemList != null){
 %>
-		}//if(mode == "R")
+		}//if(mode == "R") 
+		else { //"C"
+			document.getElementById("whNo").value = '<%= (Integer)session.getAttribute("whNo") %>'; // 사용자 wh
+		}	
+		
+		if('<%= authLvl %>' == 'S')
+		{
+			document.getElementById('whNo').disabled='';
+		}
 	}//setPage
 
 	
@@ -229,7 +251,7 @@ $('body').html(restorepage);
 	    var priceList = document.getElementsByName("txtPrice");
 	    var cntList = document.getElementsByName("txtCnt");
 	    
-	    var serviceTimeList = document.getElementsByName("txtServiceTime");
+	    var serviceHourList = document.getElementsByName("txtServiceHour");
 		var itemSumList = document.getElementsByName("txtItemSum");
 		var subSumList = document.getElementsByName("txtSubSum");
 	    
@@ -240,20 +262,20 @@ $('body').html(restorepage);
 	    	if(!isNull(cntList[i]) && cntList[i].value != 0)
 	    	{
 	    		if(str == "")
-	    			str = idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value;
+	    			str = idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value + ":" +  serviceHourList[i].value;
 	    		else
-	    			str = str + "/" + idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value; // seperator | 는 사용하면 안됨. 변형되는지 split이 안돼 
+	    			str = str + "/" + idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value + ":" +  serviceHourList[i].value; // seperator | 는 사용하면 안됨. 변형되는지 split이 안돼 
 	    			
 	    		var price = parseInt(priceList[i].value);
 	    		
 	    		var cnt = parseInt(cntList[i].value);
-	    		var serviceTime = parseFloat(serviceTimeList[i].value);
+	    		var serviceHour = parseFloat(serviceHourList[i].value);
 	    		
 	    		
 	    		itemSumList[i].value = price*cnt;
-				subSumList[i].value = (price + 34700*serviceTime)*cnt;
+				subSumList[i].value = (price + 34700*serviceHour)*cnt;
 				
-				subtotal = subtotal + (price + 34700*serviceTime)*cnt;
+				subtotal = subtotal + (price + 34700*serviceHour)*cnt;
 	    	}
 	    }
 
@@ -273,28 +295,47 @@ $('body').html(restorepage);
 		if(confirm('삭제하시겠습니까?'))
 		{
 			<% if(mode.equals("R")) { %>   
-				moveTo('soDelete.jsp?orderNo=<%=orderNo%>');
+				moveTo('soWrite_action.jsp?mode=D&orderNo=<%=orderNo%>');
 			<% } else { %>
 			<% } %>   		
 		}
 	}
 	
+	// 확정 
+	function confirmFinish() {
+		
+		if(confirm('확정 후에는 수정/삭제가 불가능하며 보유자재수가 감소합니다. 확정하시겠습니까?'))
+		{
+			moveTo('soWrite_action.jsp?mode=F&orderNo=<%=orderNo%>&whNo=<%=whNo%>');
+		}
+	}
+	
+	
+	function printWindow() {
+	
+	    var printContents = document.getElementById("printArea").innerHTML;
+	    var originalContents = document.body.innerHTML;
+	     
+	   	document.body.innerHTML = printContents;
+	    window.print();
+	    document.body.innerHTML = originalContents;
+	}
+		
 </script>
 </head>
 
 
 <body>
-<center>
+<div id="printArea">
 
+<center>
 	<!-- TITLE -->
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
-	
-	<% if(mode.equals("R") || mode.equals("V")) { %>
-		<div><h4>Smart robots for agriculture</h4></div>
-   		<div class="table-title"><h1>VANDI SERVICE</h1></div>
-	<% } else { %>
-   		<div class="table-title"><h1>New quotation</h1></div>
-	<% } %>
+	   	<% if(mode.equals("V")) { %>
+	   		<div class="table-title"><h1>견적서</h1></div>
+	   	<% } else { %>
+	   		<div class="table-title"><h1>견적서정보</h1></div>
+	   	<% } %>
 
 	<!-- FORM -->
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -304,7 +345,7 @@ $('body').html(restorepage);
 	<!-- ORDER INFO -->
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
 
-		<table>
+		<table width=600>
     		<tr class="row_bottom_only">
 				<td width="100" class="cell-hd">접수번호 : </td>
 					<td width="100" class="cell-l">
@@ -313,9 +354,9 @@ $('body').html(restorepage);
 					<input type=text size=10 disabled value='' style="border: 0px; text-align: left;" >
 					<input type=hidden name=orderNo id=orderNo >
 	<% } else if(mode.equals("R")) { %>
-					<input type=text size=10 disabled value='<%= MrUtil.getTOrderNoStr(orderNo) %>'  style="border: 0px; text-align: left;" >
+					<input type=text size=10 disabled value='<%= MrUtil.getSOrderNoStr(orderNo) %>'  style="border: 0px; text-align: left;" >
 					<input type=hidden name=orderNo id=orderNo value='<%= orderNo %>' >
-	<% } else if(mode.equals("V")) { %><%= MrUtil.getTOrderNoStr(orderNo) %>
+	<% } else if(mode.equals("V")) { %><%= MrUtil.getSOrderNoStr(orderNo) %>
 	<% } %>
  
 					</td>
@@ -334,10 +375,10 @@ $('body').html(restorepage);
 				</td>
 				<td width="100"  class="cell-r">센 터 명 : </td>
      			<td width="100"  class="cell-l">
-     <% if(mode.equals("V")) { %><%= centerName %>
+     <% if(mode.equals("V")) { %><%= whNm %>
      				
      <% } else { %>
-     				<select name=center id=center>
+     				<select name=whNo id=whNo disabled>
 	     				<option value=''>선택</option>
 		   				<%
 					 		for(int i=0; i<whLength;i++){
@@ -385,8 +426,16 @@ $('body').html(restorepage);
 	<!-- NOTE -->
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
 		<h3>Note</h3>
-		<table border="0">
-			<tr><td><textarea rows="3" cols="80" name="tacontents">입고/정비 관련 특이사항을 입력합니다.</textarea></td></tr>
+		<table border="0" width=600>
+			
+	   	<% if(mode.equals("C")) { %>
+			<tr><td><textarea rows="3" cols="80" name="note" placeholder="입고/정비 관련 특이사항을 입력합니다."></textarea></td></tr>
+	   	<% } else if(mode.equals("R")) { %>
+			<tr><td><textarea rows="3" cols="80" name="note"><%= orderS.getNote() %></textarea></td></tr>
+	   	<% } else if(mode.equals("V")){ %>
+			<tr><td><textarea rows="3" cols="96" name="note" style="border: 1px solid #C1C3D1;" readonly><%= orderS.getNote() %></textarea></td></tr>
+	   	<% } %>
+			        
 			<tr height="15"/>
 		</table>
 
@@ -395,7 +444,7 @@ $('body').html(restorepage);
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
 
 			<% int nTotalAmount = 0; %>
-			<table id="order_item_table" border=0>
+			<table id="order_item_table" border=0 width=600>
 				<thead>
 					<tr>
 						<th width="55%" class="cell-l">정비내용</th>
@@ -408,74 +457,81 @@ $('body').html(restorepage);
 				</thead>
 				<tbody id="p_item">
 
-					<%
-						for (int i = 0; i < itemLength; i++) {
-							Item item = itemList.get(i);
-							
-							// View Only
-							//////////////////////////////////////////////////////////////////////////
-							int nOrderItemCnt = 0;
-							if(mode.equals("V")){
-								for(int j = 0; j < orderItemList.size(); j++)
-								{
-									OrderItem oItem = orderItemList.get(j); 
-									if(item.getItemNo() == oItem.getItemNo())
-										nOrderItemCnt = oItem.getItemCnt();
+				<%
+					for (int i = 0; i < itemLength; i++) {
+						Item item = itemList.get(i);
+						
+						// View Only
+						//////////////////////////////////////////////////////////////////////////
+						int nOrderItemCnt = 0;
+						float nOrderServiceHour = 0;
+						if(mode.equals("V")){
+							for(int j = 0; j < orderItemList.size(); j++)
+							{
+								OrderItem oItem = orderItemList.get(j); 
+								if(item.getItemNo() == oItem.getItemNo()){
+									nOrderItemCnt = oItem.getItemCnt();
+									nOrderServiceHour = oItem.getServiceHour();
 								}
-								
-								if(nOrderItemCnt == 0)
-									continue;
 							}
-							//////////////////////////////////////////////////////////////////////////
-					%>
-
-					<tr id="order_item_info">
-						<td width="30%"><input type=hidden name="selItem" value=<%=item.getItemNo()%>>
-						<!-- <select name="selItem" disabled>
-								<option value=<%=item.getItemNo()%>> </option></select>-->
-								<%=item.getItemNmKor()%>
-						</td>
-						
-						
-			<% if(mode.equals("V")) { %>
-						<td width="10%" class="cell-c"><%=nOrderItemCnt%></td>
-						<td width="15%" class="cell-r"><%= MrUtil.FormatCurrentDisplay(item.getPriceCenter()) %></td>
-						<td width="15%" class="cell-c"><%=item.getServiceHour()%></td>
-						<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceCenter()*nOrderItemCnt)) %></td>
-						<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceCenter() + item.getServiceHour()*34700)*nOrderItemCnt) %></td>
-						<% nTotalAmount += (int)(item.getPriceCenter() + item.getServiceHour()*34700)*nOrderItemCnt; %>
-			<% } else { %>
-						<td width="10%" class="cell-r">
-							<input type="text" name="txtCnt" size=3
-							style="text-align: right"
-							onchange="setSelectResult();"
-							onKeypress="if(event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;" />
-						</td>
-						<td width="10%" class="cell-r">
-						<input type="text" name="txtPrice" size=8
-							style="border: 0px; text-align: right;" value='<%= MrUtil.FormatCurrent(item.getPriceCenter()) %>'
-							disabled />
-						</td>
-						<td width="10%" class="cell-r">
-						<input type="text" name="txtServiceTime" size=4
-							style="border: 0px; text-align: right;" value='<%=item.getServiceHour()%>'
-							disabled />
-						</td>
-						<td width="10%" class="cell-r">
-						<input type="text" name="txtItemSum" size=8
-							style="border: 0px; text-align: right;" value='<%=0%>'
-							disabled />
-						</td>
-						<td width="10%" class="cell-r">
-						<input type="text" name="txtSubSum" size=8
-							style="border: 0px; text-align: right;" value='<%=0%>'
-							disabled />
-						</td>
-			<% } %>
-					</tr>
-					<%
+							
+							if(nOrderItemCnt == 0)
+								continue;
 						}
-					%>
+						//////////////////////////////////////////////////////////////////////////
+				%>
+
+						<tr id="order_item_info">
+							<td width="30%"><input type=hidden name="selItem" value=<%=item.getItemNo()%>>
+							<!-- <select name="selItem" disabled>
+									<option value=<%=item.getItemNo()%>> </option></select>-->
+									<%=item.getItemNmKor()%>
+							</td>
+						
+						<% if(mode.equals("V")) { %>
+							<td width="10%" class="cell-c"><%=nOrderItemCnt%></td>
+							<td width="15%" class="cell-r"><%= MrUtil.FormatCurrentDisplay(item.getPriceCenter()) %></td>
+							<td width="15%" class="cell-c"><%=nOrderServiceHour%></td>
+							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceCenter()*nOrderItemCnt)) %></td>
+							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceCenter() + item.getServiceHour()*34700)*nOrderItemCnt) %></td>
+							<% nTotalAmount += (int)(item.getPriceCenter() + item.getServiceHour()*34700)*nOrderItemCnt; %>
+						<% } else { %>
+							<td width="10%" class="cell-r">
+								<input type="text" name="txtCnt" size=3
+								style="text-align: right"
+								onchange="setSelectResult();"
+								onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" />
+							</td>
+							<td width="10%" class="cell-r">
+							<input type="text" name="txtPrice" size=8
+								style="border: 0px; text-align: right;" value='<%= MrUtil.FormatCurrent(item.getPriceCenter()) %>'
+								disabled />
+							</td>
+							<td width="10%" class="cell-r">
+								<input type="text" name="txtServiceHour" size=4
+								style="text-align: right" value='<%=item.getServiceHour()%>'
+								onchange="setSelectResult();"
+								onKeypress="if(event.keyCode != 46 && (event.keyCode < 48 || event.keyCode > 57)) event.returnValue = false;" />
+							
+	<!--							<input type="text" name="txtServiceHour" size=4
+									style="border: 0px; text-align: right;" value='<%=item.getServiceHour()%>'
+									disabled />  -->
+							</td>
+							<td width="10%" class="cell-r">
+							<input type="text" name="txtItemSum" size=8
+								style="border: 0px; text-align: right;" value='<%=0%>'
+								disabled />
+							</td>
+							<td width="10%" class="cell-r">
+							<input type="text" name="txtSubSum" size=8
+								style="border: 0px; text-align: right;" value='<%=0%>'
+								disabled />
+							</td>
+						<% } //if(!mode.equals("V")) %>
+						</tr>
+				<%
+					} //for (int i = 0; i < itemLength; i++) {
+				%>
 				</tbody>
 			</table>
 
@@ -483,7 +539,7 @@ $('body').html(restorepage);
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
 
 <% if(mode.equals("V")) { %>
-		<table border="0">
+		<table border="0" width=600>
 			<tr height="30"/>
 			<tr class="row_top_only">
 				<td align="right" width="100">합계 : </td>
@@ -500,9 +556,9 @@ $('body').html(restorepage);
 			<tr height="30"/>
 		</table>
 		
-		<table border = "1">
+		<table border="1" width=600 style="border-color: #C1C3D1;">
 			<tr height="30"/>
-			<tr class="row_top_only">
+			<tr class="row_normal">
 				<td align="center">
 				위의 내용을 확인합니다
 				<br>
@@ -511,14 +567,14 @@ $('body').html(restorepage);
 				고 객 명&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명)
 				</td>
 			</tr>
-			<tr>
+			<tr class="row_normal">
 				<td align="left">
 				1. 납부기한 : 출고시 납부
 				<br>
 				2. 입금계좌 : 서비스센터별 확인 요망
 				</td>
 			</tr>
-			<tr class="row_bottom_only">
+			<tr class="row_normal">
 				<td align="left">
 				1. 점검 정비의 잘못으로 점검정비일로부터 30일 이내 발생하는 고장등에 대해서는 무상점검/정비를 합니다.
 				<br>
@@ -560,13 +616,23 @@ $('body').html(restorepage);
      					<input type="submit" class="dtlBtn" value="등록">&nbsp;
      				<% }else if(mode.equals("P")){ %>
      					<input type="button" class="dtlBtn" value="편집" onclick="moveTo('soList.jsp?mode=R&orderNo=<%=orderNo%>');">&nbsp;
-     				<% }else if(mode.equals("R")){ %>
-     					<input type="submit" class="dtlBtn" value="수정 완료" onclick="moveTo('soList.jsp?mode=R&orderNo=<%=orderNo%>');">&nbsp;
-     					<input type="button" class="dtlBtn" value="Print" onclick="moveTo('soDtl.jsp?mode=V&orderNo=<%=orderNo%>');">&nbsp;
+     				<% }
+     				   if(mode.equals("R") && orderS.getStatusCd().equals("10")){ // 주문상태 => 수정 삭제 가능 
+     				%>  
+     					<input type="submit" class="dtlBtn" value="수정" onclick="moveTo('soList.jsp?mode=R&orderNo=<%=orderNo%>');">&nbsp;
      					<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
-     				<% }else if(mode.equals("V")){ %>
-     					
-     				<% }else{ %>
+     				<% }
+     				   if(mode.equals("R")){ %>
+     					<input type="button" class="dtlBtn" value="Print" onclick="window.open('soDtl.jsp?mode=V&orderNo=<%=orderNo%>');">&nbsp;
+     				<% }
+     				   if(mode.equals("V")){ %>
+     				<% } %>
+     				
+					<% if (mode.equals("R") && orderS.getStatusCd().equals("10")) { // 접수일 경우 확정 가능   %>
+						<input type="button" class="dtlBtn" value="확정" onclick="confirmFinish();">&nbsp;
+					<% } %>
+     				
+     				<% if(!mode.equals("V")){ %>
      					<input type="button" class="dtlBtn" value="목록" onclick="moveTo('soList.jsp?pg=<%=pg %>');">
      				<% } %>
          				
@@ -581,14 +647,19 @@ $('body').html(restorepage);
 	setSelectResult();
 <% } %>
 </script>
-
-</center>
-</body>
-
+<% if(mode.equals("V")) { %>
 <footer>
 	<center>
 		<h2>metaRobotics, Inc.</h3>
 	</center>
 </footer>
-
+<% } %>
+</div>
+<% if(mode.equals("V")) { %>
+	<center>
+		<br>
+		<input type="button" class="dtlBtn" value="Print" onclick="printWindow();">
+	</center>
+<% } %>
+</body>
 </html>

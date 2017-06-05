@@ -1,19 +1,23 @@
-
 <%@ page contentType="text/html;charset=euc_kr" %>
 <% request.setCharacterEncoding("euc-kr"); %>
-
 
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
 
+<jsp:include page = "top.jsp"/>
+
 <jsp:useBean id="dao" class="wh.ClientDAO"/>
 
 <%	
-	int total = dao.countClient();
+	String authLvl =  (String)session.getAttribute("authLvl");
+	if (authLvl == null) return;
+	//if(authLvl.equals("S") || authLvl.equals("A")) // 등록,수정 권한자
+
+	//int total = dao.countClient();
 	ArrayList<Client> alist = dao.getClientList();
-	int size = alist.size();
-	int size2 = size;
+	int total = alist.size();
+	int size2 = total;
 	
 	final int ROWSIZE = 10;
 	final int BLOCK = 5;
@@ -40,9 +44,8 @@
 	
 	size2 -=end;
 	if(size2 < 0) {
-		end = size;
+		end = total;
 	}
-	
 	
 %>
 
@@ -56,7 +59,7 @@
 
 <body translate="no" >
 <center>
-   <div class="table-title"><h1>Clients</h1></div>
+   <div class="table-title"><h1>고객목록</h1></div>
 
 <table border="1" width="600">
 <tr>
@@ -103,8 +106,8 @@
 		<%
 			if(pg>BLOCK) {
 		%>
-			[<a href="toList.jsp?pg=1">◀◀</a>]
-			[<a href="toList.jsp?pg=<%=startPage-1%>">◀</a>]
+			[<a href="clientList.jsp?pg=1">◀◀</a>]
+			[<a href="clientList.jsp?pg=<%=startPage-1%>">◀</a>]
 		<%
 			}
 		%>
@@ -117,7 +120,7 @@
 		<%
 				}else{
 		%>
-					[<a href="toList.jsp?pg=<%=i %>"><%=i %></a>]
+					[<a href="clientList.jsp?pg=<%=i %>"><%=i %></a>]
 		<%
 				}
 			}
@@ -126,8 +129,8 @@
 		<%
 			if(endPage<allPage){
 		%>
-			[<a href="toList.jsp?pg=<%=endPage+1%>">▶</a>]
-			[<a href="toList.jsp?pg=<%=allPage%>">▶▶</a>]
+			[<a href="clientList.jsp?pg=<%=endPage+1%>">▶</a>]
+			[<a href="clientList.jsp?pg=<%=allPage%>">▶▶</a>]
 		<%
 			}
 		%>
@@ -135,7 +138,14 @@
 		</tr>
 		<tr height="10"/>
 	<tr align="center">
-   		<td ><input type=button class="myButton" value="등록" OnClick="window.location='clientDtl.jsp?mode=C&pg=<%=pg%>'"></td>
+	
+		<%
+		if(authLvl.equals("S") || authLvl.equals("A")) { // 등록,수정 권한자
+		%>
+	   		<td ><input type=button class="myButton" value="등록" OnClick="window.location='clientDtl.jsp?mode=C&pg=<%=pg%>'"></td>
+	   	<%} else { %>
+	   	<%} %>
+	   		
   </tr>
 
 

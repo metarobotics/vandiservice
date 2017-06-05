@@ -22,42 +22,63 @@ public class UserDAO extends DAO {
 		return data; 
 	} 
 	
-	public User getUserInfo(String id, String pwd) { 
+	public User getUserInfo(String id, String pwd) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
 		User user = null; 
 		
 		try { 
-			sql = "select userNo, userNm, whNo from user where userId = ? AND pwd = ?"; 
-			pstmt = con.prepareStatement(sql); 
+			StringBuffer sqlBuf = new StringBuffer(); 
+			
+			sqlBuf.append("		select a.userNo, a.userId, a.userNm, a.authLvl, ifnull(a.whNo,-1) as whNo"); 
+			sqlBuf.append("            , ifnull(b.whId, '') as whId, ifnull(b.whNm, '') as whNm ");
+			sqlBuf.append("       from user a ");
+			sqlBuf.append("       left outer join wh b ");
+			sqlBuf.append("         on a.whNo = b.whNo   ");
+			sqlBuf.append("      where userId = ? AND pwd = ?");
+			
+			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			pstmt.setString(1, id); 
 			pstmt.setString(2, pwd); 
 			rs = pstmt.executeQuery(); 
+			System.out.println(sqlBuf.toString());
 			
-			if(rs.next()) { 
-				user = new User(); 
-				user.setUserNo(rs.getInt(1)); 
-				user.setUserNm(rs.getString(2)); 
-				user.setUserWhNo(rs.getInt(3)); 
-				//item.setInsertUserNo(rs.getInt(3)); 
-				//item.setInsertDatetime(rs.getString(4).toString()); 
-				/*item.set(rs.getString(3)); 
-				item.setTime(rs.getString(4)); 
-				item.setHit(rs.getInt(5)+1); 
-				item.setPassword(rs.getString(6)); 
-				item.setRef(rs.getInt(7)); 
-				item.setIndent(rs.getInt(8)); 
-				item.setStep(rs.getInt(9)); */
-			} 
+			while(rs.next()) { 
+				user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7));
+			}
+			
 		}catch(Exception e) { 
-			System.out.println(e.toString());
+			e.printStackTrace();
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
 		
 		return user; 
 	} 
+	
+	public void setLoginDatetime(String id) throws Exception { 
+		Connection con = dbconnect.getConnection(); 
+		PreparedStatement pstmt = null; 
+		
+		try { 
+			sql = "update user set lastLoginDatetime = current_timestamp() where userid = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id); 
+			pstmt.executeUpdate(); 
+			System.out.println(sql);
+			
+		}catch(Exception e) { 
+			e.printStackTrace();
+			throw e;
+		}finally { 
+			DBClose.close(con,pstmt); 
+		} 
+	} 
+	
+	
 	/*
 	public void deleteItem(int idx) { 
 		Connection con = dbconnect.getConnection(); 

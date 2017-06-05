@@ -3,13 +3,24 @@
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
  
-<jsp:include page = "/loginChk.jsp"/>
 <jsp:include page = "top.jsp"/>
-<jsp:useBean id="dao" class="wh.ItemDAO"/>
+<jsp:useBean id="itemDao" class="wh.ItemDAO"/>
 
 <%	
-	int total = dao.countItem();
-	ArrayList<Item> alist = dao.getItemList();
+	String authLvl =  (String)session.getAttribute("authLvl");
+	if (authLvl == null) return;
+
+	int total = itemDao.countItem();
+
+	if(session.getAttribute("whNo") == null || (Integer)session.getAttribute("whNo") == -1){
+		return;
+	}
+	
+	int whNo = (Integer)session.getAttribute("whNo");
+	
+	ArrayList<Item> alist = null;
+	alist = itemDao.getItemList(whNo);
+	
 	int size = alist.size();
 	int size2 = size;
 	
@@ -53,11 +64,7 @@
 
 <body translate="no" >
 <center>
-<table width="540" cellpadding="0" cellspacing="0" border="0">
-<tr>
-	<td class="cell-c"><h1>Materials 20170529</h1></td>
-</tr>
-</table>
+	   <div class="table-title"><h1>자재목록 20170529</h1></div>
 
 <table width="540" cellpadding="0" cellspacing="0" border="0">
 <tr>
@@ -72,6 +79,7 @@
 	<th class="text-center">Center Price</th>
 	<th class="text-center">List price</th>
 	<th class="text-center">Service hour</th>
+	<th class="text-center">Item Count</th>
 </tr>
 <tbody class="table-hover">
 <%
@@ -99,6 +107,7 @@
 <td class="cell-r"><%=item.getPriceCenterStr()%></td>
 <td class="cell-r"><%=item.getPriceClientStr()%></td>
 <td class="cell-c"><%=item.getServiceHour()%></td>
+<td class="cell-c"><%=item.getItemCnt()%></td>
 
 </tr>
 
@@ -156,3 +165,4 @@
 </body>
 </html>
 
+<jsp:include page = "/bottom.jsp"/>

@@ -7,13 +7,26 @@
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
 
+<jsp:include page = "top.jsp"/>
+
 <jsp:useBean id="dao" class="wh.OrderSDAO"/>
 
 <%	
-	int total = dao.countOrderS();
-	ArrayList<OrderS> alist = dao.getOrderSList();
-	int size = alist.size();
-	int size2 = size;
+	//int total = dao.countOrderS();
+
+	String authLvl =  (String)session.getAttribute("authLvl");
+	if (authLvl == null) return;
+	
+	int whNo =  (Integer)session.getAttribute("whNo");
+
+	ArrayList<OrderS> alist = null;
+	if(authLvl.equals("S")) // super
+		alist = dao.getOrderSList();
+	else
+		alist = dao.getOrderSList(whNo);
+	
+	int total = alist.size();
+	int size2 = total;
 	
 	final int ROWSIZE = 10;
 	final int BLOCK = 5;
@@ -40,7 +53,7 @@
 	
 	size2 -=end;
 	if(size2 < 0) {
-		end = size;
+		end = total;
 	}
 	
 	
@@ -56,19 +69,14 @@
 
 <body>
 <center>
-<table>
-	<tr>
-		<td class="td_railway_h0">Quotations</td>
-	</tr>
-	<tr height="20"></tr>
-</table>
+	   <div class="table-title"><h1>견적서목록</h1></div>
 <table border="1">
 <tr class="header">
 	<th width="10%" class="text-center">접수일</th>
-	<th width="10%" class="text-center">날짜</th>
-	<th width="20%" class="text-center">서비스센터</th>
-	<th width="20%" class="text-center">제품번호</th>
-	<th width="10%" class="text-center">고객명</th>
+	<th width="14%" class="text-center">날짜</th>
+	<th width="16%" class="text-center">서비스센터</th>
+	<th width="16%" class="text-center">제품번호</th>
+	<th width="14%" class="text-center">고객명</th>
 	<th width="10%" class="text-center">합계금액</th>
 	<th width="10%" class="text-center">상태</th>
 </tr>

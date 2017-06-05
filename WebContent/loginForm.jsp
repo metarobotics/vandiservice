@@ -20,17 +20,19 @@ function chk(f)
 <body onload="javascript:document.frm.id.focus()">
 
 <%	
+
 	if(session.getAttribute("userId") != null)
 	{
+		//String authLvl =  (String)session.getAttribute("authLvl");
 %>
 
-<script>
-	document.location.href = "./wh/itemList.jsp";
-</script>
+		<script>
+			document.location.href = "./wh/itemList.jsp";
+		</script>
 
 <% 
 
-}
+	}
 	
 %>
 

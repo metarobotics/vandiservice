@@ -2,17 +2,17 @@ package wh;
 
 public class Product {
 	
-	private int productNo;//i1
+	private int productNo;//1
 	
-	private String productId;//s1
+	private String productId;//2
 	private String productNmKor;
 	private String productNmEng;
-	private String createDt;
+	private String createDt;//5
 	
-	private String insertUserId;
+	private String insertUserId;//6
 	private String insertDatetime;
 	private String updateUserId;
-	private String updateDatetime;//s15
+	private String updateDatetime;//9
 	
 	public Product() {
 	}

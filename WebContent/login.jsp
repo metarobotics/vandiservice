@@ -23,11 +23,19 @@ String pwd = request.getParameter("pwd");
 
 	if(user != null)
 	{
+		dao.setLoginDatetime(id);
+		
+		//public User(int userNo, String userId, String userNm, String authLvl, int whNo, String whNm) {
+		
 		session.setAttribute("userId",id);
 		session.setAttribute("userNo",user.getUserNo());
-		session.setAttribute("userName",user.getUserNm());
-		session.setAttribute("centerName","Not defined");
+		session.setAttribute("userNm",user.getUserNm());
+		session.setAttribute("authLvl",user.getAuthLvl());
+		session.setAttribute("whNo",user.getWhNo());
+		session.setAttribute("whId",user.getWhId());
+		session.setAttribute("whNm",user.getWhNm());
 		
+		/*
 		ArrayList<Wh> wareHouses = mRdao.getWhList();
 		for(int i = 0; i < wareHouses.size(); i++)
 		{
@@ -39,10 +47,11 @@ String pwd = request.getParameter("pwd");
 				break;
 			}
 		}
+		*/
 		
 		session.setMaxInactiveInterval(60 * 60);
 
- 		out.print("Welcome " + id + " !!  ^^");
+ 		//out.print("Welcome " + id + " !!  ^^");
 %>
 
 <!--  <META http-equiv="refresh" content="1; url=./wh/itemList.jsp"> -->
@@ -56,7 +65,19 @@ String pwd = request.getParameter("pwd");
 	//parent.top.location.reload();
 	//parent.top.location.refresh();
 	//parent.document.getElementById("center").src = "./wh/itemList.jsp";
-	parent.document.location.href="index2.jsp";
+	
+	//parent.document.location.href="index2.jsp";
+	
+<%
+			String authLvl =  (String)session.getAttribute("authLvl");
+%>
+			
+			<% if(authLvl.equals("A")) { %>
+				document.location.href = "./wh/productEachList.jsp";
+			<% } else { %>
+				document.location.href = "./wh/itemList.jsp";
+			<% } %>
+
 </script>
 
 <% 

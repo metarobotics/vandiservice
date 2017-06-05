@@ -3,6 +3,7 @@
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
 
+<jsp:include page = "top.jsp"/>
 <jsp:useBean id="dao" class="wh.ItemDAO"/>
 
 <%
@@ -40,15 +41,16 @@ String pg = request.getParameter("pg");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<link rel="stylesheet" href="../css/mr.css">
+ 	<link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
 </head>
 <body translate="no" >
+<center>
 
 	<% if(mode.equals("R")) { %>   
-   		<div class="table-title"><h1>Item 상세</h1></div>
+   		<div class="table-title"><h1>자재정보</h1></div>
 	<% } else { %>
-   		<div class="table-title"><h1>Item 등록</h1></div>
+   		<div class="table-title"><h1>자재등록</h1></div>
 	<% } %>   		
 	
 	<table class="table-fill" border="1">
@@ -78,6 +80,6 @@ String pg = request.getParameter("pg");
 	</td>
 	</tr>
 </table>
-
+</center>
 </body>
 </html>

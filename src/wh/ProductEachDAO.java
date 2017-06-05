@@ -20,9 +20,10 @@ public class ProductEachDAO extends DAO {
 		int no = 0; 
 		
 		try { 
-			sql = "select ifnull(max(clientNo),0)+1 from client"; 
+			sql = "select ifnull(max(productEachNo),0)+1 from productEach"; 
 			pstmt = con.prepareStatement(sql); 
 			rs = pstmt.executeQuery(); 
+			System.out.println(sql);
 			
 			if(rs.next()) { 
 				no = rs.getInt(1); 
@@ -32,6 +33,7 @@ public class ProductEachDAO extends DAO {
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
+		
 		return no; 
 	}
 	
@@ -53,7 +55,7 @@ public class ProductEachDAO extends DAO {
 	 * ProductEach
 	 */
 	
-	public ProductEach getProductEachInfo(int productNo, String serialNo) throws Exception { 
+	public ProductEach getProductEachInfo(int productEachNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
@@ -66,20 +68,19 @@ public class ProductEachDAO extends DAO {
 			sqlBuf.append("		from productEach a ");
 			sqlBuf.append("		left join client b ");
 			sqlBuf.append("		on a.clientNo = b.clientNo ");
-			sqlBuf.append("		 where productNo = ?");
-			sqlBuf.append("		 and serialNo = ?");
+			sqlBuf.append("		 where productEachNo = ?");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString());
 			
-			pstmt.setInt(1, productNo); 
-			pstmt.setString(2, serialNo);
+			pstmt.setInt(1, productEachNo); 
 			
 			rs = pstmt.executeQuery(); 
+			System.out.println(sqlBuf.toString());
 			
 			if(rs.next()) { 
-				productEach = new ProductEach(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), 
-						rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), 
-						rs.getString(11));
+				productEach = new ProductEach(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), 
+						rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), 
+						rs.getString(12));
 			} 
 		}catch(Exception e) { 
 			throw e;
@@ -105,14 +106,16 @@ public class ProductEachDAO extends DAO {
 			sqlBuf.append("		from productEach a ");
 			sqlBuf.append("		left outer join client b ");
 			sqlBuf.append("		on a.clientNo = b.clientNo ");
+			sqlBuf.append("		order by a.serialNo");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			rs = pstmt.executeQuery();
+			System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) {
-				ProductEach productEach = new ProductEach(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), 
-						rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), 
-						rs.getString(11));
+				ProductEach productEach = new ProductEach(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), 
+						rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), 
+						rs.getString(12));
 				
 				alist.add(productEach); 
 			} 
@@ -135,18 +138,20 @@ public class ProductEachDAO extends DAO {
 		
 		try { 
 			
-			sql = "insert into productEach (productNo, serialNo, prodDt, certDt, registerNo, clientNo, insertUserId, insertDatetime) VALUES (?,?,?,?,?,?,?, current_timestamp())"; 
+			sql = "insert into productEach (productEachNo, productNo, serialNo, prodDt, certDt, registerNo, clientNo, insertUserId, insertDatetime) VALUES (?,?,?,?,?,?,?,?, current_timestamp())"; 
 			pstmt = con.prepareStatement(sql); 
 
-			pstmt.setInt(1, productEach.getProductNo());
-			pstmt.setString(2, productEach.getSerialNo()); 
-			pstmt.setString(3, productEach.getProdDt()); 
-			pstmt.setString(4, productEach.getCertDt());
-			pstmt.setString(5, productEach.getRegisterNo());
-			pstmt.setInt(6, productEach.getClientNo());
-			pstmt.setString(7, productEach.getInsertUserId());
+			pstmt.setInt(1, productEach.getProductEachNo());
+			pstmt.setInt(2, productEach.getProductNo());
+			pstmt.setString(3, productEach.getSerialNo()); 
+			pstmt.setString(4, productEach.getProdDt()); 
+			pstmt.setString(5, productEach.getCertDt());
+			pstmt.setString(6, productEach.getRegisterNo());
+			pstmt.setInt(7, productEach.getClientNo());
+			pstmt.setString(8, productEach.getInsertUserId());
 			
 			pstmt.execute(); 
+			System.out.println(sql);
 			
 		}catch(Exception e) { 
 			throw e;
@@ -162,19 +167,21 @@ public class ProductEachDAO extends DAO {
 		PreparedStatement pstmt = null; 
 		
 		try { 
-			sql = "update productEach set prodDt=?, certDt=?, registerNo=?, clientNo=?, updateUserId=?, updateDatetime=current_timestamp() where productNo=? and serialNo=?";
+			sql = "update productEach set productNo=?, serialNo=?, prodDt=?, certDt=?, registerNo=?, clientNo=?, updateUserId=?, updateDatetime=current_timestamp() where productEachNo=?";
 			
 			pstmt = con.prepareStatement(sql);
 
-			pstmt.setString(1, productEach.getProdDt()); 
-			pstmt.setString(2, productEach.getCertDt());
-			pstmt.setString(3, productEach.getRegisterNo());
-			pstmt.setInt(4, productEach.getClientNo());
-			pstmt.setString(5, productEach.getUpdateUserId());
-			pstmt.setInt(6, productEach.getProductNo());
-			pstmt.setString(7, productEach.getSerialNo()); 
+			pstmt.setInt(1, productEach.getProductNo());
+			pstmt.setString(2, productEach.getSerialNo());
+			pstmt.setString(3, productEach.getProdDt()); 
+			pstmt.setString(4, productEach.getCertDt());
+			pstmt.setString(5, productEach.getRegisterNo());
+			pstmt.setInt(6, productEach.getClientNo());
+			pstmt.setString(7, productEach.getUpdateUserId());
+			pstmt.setInt(8, productEach.getProductEachNo());
 			
 			pstmt.executeUpdate();
+			System.out.println(sql);
 			
 		}catch(Exception e) { 
 			throw e;
@@ -184,20 +191,21 @@ public class ProductEachDAO extends DAO {
 	} 
 		
 
-	public void deleteProductEach(int productNo, String serialNo) throws Exception { 
+	public void deleteProductEach(int productEachNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null;
 		
 		try {
 			
-			sql = "delete from productEach where productNo=? and serialNo=?";
+			sql = "delete from productEach where productEachNo=?";
 			
 			pstmt = con.prepareStatement(sql);
 			
-			pstmt.setInt(1, productNo); 
-			pstmt.setString(2, serialNo); 
+			pstmt.setInt(1, productEachNo); 
 			
 			pstmt.executeUpdate();
+			System.out.println(sql);
+			
 		}catch(Exception e) { 
 			throw e;
 		}finally { 

@@ -4,12 +4,12 @@ public class OrderS {
 
 	private int orderNo;
 	private String orderDt;
-	private int centerNo;
+	private int whNo;
 	private String productSerialNo;//4
 	private String statusCd;
 	private int subtotal;
 	private int tax;
-	private int totalAmt;
+	private int totalAmt;//8
 	private int depositPrgAmt;
 	private int creditPrgAmt;//10
 	private int depositAmt;
@@ -30,37 +30,42 @@ public class OrderS {
 	public OrderS() {
 	}
 
-	public OrderS(int orderNo, String orderDt, int centerNo, String productSerialNo, 
-					String statusCd, int subtotal, int tax,	int totalAmt, String insertUserId, String updateUserId) {
+	public OrderS(int orderNo, String orderDt, int whNo, String productSerialNo, 
+					String statusCd, int subtotal, int tax,	int totalAmt, String note, 
+					String insertUserId, String updateUserId) {
 		this.orderNo = orderNo;
 		this.orderDt = orderDt;
-		this.centerNo = centerNo;
+		this.whNo = whNo;
 		this.productSerialNo = productSerialNo;
 
 		this.statusCd = statusCd;
 		this.subtotal = subtotal;
 		this.tax = tax;
 		this.totalAmt = totalAmt;
+		this.note = note;
+		
 		this.insertUserId = insertUserId;
 		this.updateUserId = updateUserId;
 	}
 
 	// list page 를 보여주기 위한..
-	public OrderS(int orderNo, String orderDt, int centerNo, String productSerialNo, 
-					String statusCd, int subtotal, int tax, int totalAmt, 
+	public OrderS(int orderNo, String orderDt, int whNo, String productSerialNo, 
+					String statusCd, int subtotal, int tax, int totalAmt, String note, 
 					String insertUserId, String insertDatetime,
 					String centerNm, int clientNo, String clientNm, String statusNm) {
 
 		// basic
 		this.orderNo = orderNo;
 		this.orderDt = orderDt;
-		this.centerNo = centerNo;
+		this.whNo = whNo;
 		this.productSerialNo = productSerialNo;
 
 		this.statusCd = statusCd;
 		this.subtotal = subtotal;
 		this.tax = tax;
 		this.totalAmt = totalAmt;
+		this.note = note;
+		
 		this.insertUserId = insertUserId;
 		this.insertDatetime = insertDatetime;
 
@@ -69,6 +74,7 @@ public class OrderS {
 		this.clientNo = clientNo;
 		this.clientNm = clientNm;
 		this.statusNm = statusNm;
+		
 	}
 
 	public int getOrderNo() {
@@ -87,12 +93,12 @@ public class OrderS {
 		this.orderDt = orderDt;
 	}
 
-	public int getCenterNo() {
-		return centerNo;
+	public int getWhNo() {
+		return whNo;
 	}
 
-	public void setCenterNo(int centerNo) {
-		this.centerNo = centerNo;
+	public void setWhNo(int whNo) {
+		this.whNo = whNo;
 	}
 
 	public String getProductSerialNo() {

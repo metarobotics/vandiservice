@@ -5,10 +5,11 @@
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
  
+<jsp:include page = "top.jsp"/>
+
 <jsp:useBean id="productEachDao" class="wh.ProductEachDAO"/>
 <jsp:useBean id="clientDao" class="wh.ClientDAO"/>
-<jsp:include page = "/loginChk.jsp"/>
-
+<jsp:useBean id="mrDao" class="wh.MrDAO"/>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -23,6 +24,9 @@
 
 
 <%
+	String authLvl =  (String)session.getAttribute("authLvl");
+	if (authLvl == null) return;
+	//if(authLvl.equals("S") || authLvl.equals("A")) // 등록,수정 권한자
 
 	String mode = request.getParameter("mode"); // C/R
 	String pg = request.getParameter("pg");
@@ -36,26 +40,25 @@
 	int orderNo = 0;
 
 	//out.print("."+mode+".");
+
+	ArrayList<Product> productList = mrDao.getProductList();
+	ArrayList<Client> clientList = clientDao.getClientList();
+	int clientLength = clientList.size();
+	int productLength = productList.size();
 	
 	ProductEach productEach = null;
+	int productEachNo = 0;
 	int productNo = 0;
 	int clientNo = 0;
 	
 	if(mode.equals("R"))
 	{
-		productNo = Integer.parseInt(request.getParameter("productNo"));
-		String serialNo = request.getParameter("serialNo").toString();
-	
-		productEach = productEachDao.getProductEachInfo(productNo, serialNo);
+		productEachNo = Integer.parseInt(request.getParameter("productEachNo"));
+		
+		productEach = productEachDao.getProductEachInfo(productEachNo);
+		productNo = productEach.getProductNo();
 		clientNo = productEach.getClientNo();
 	}
-	else
-	{
-		productNo = 1;
-	}
-	
-	ArrayList<Client> clientList = clientDao.getClientList();
-	int clientLength = clientList.size();
 	
 %>
 
@@ -65,15 +68,23 @@
 	//alert(mode);
 
 	function chkValid() {
-		/*		
-		//alert(document.getElementById("clientId").value);
-		
-		if(isNull(document.getElementById("productEachNm")))
+				
+		if(isNull(document.getElementById("productNo")))
 		{
-			alert('고객명을 입력하세요.');
+			alert('모델명을 선택하세요.');
 			return false;
 		}
-		*/		
+		else if(isNull(document.getElementById("serialNo")))
+		{
+			alert('제품번호를 입력하세요.');
+			return false;
+		}
+		else if(isNull(document.getElementById("clientNo")))
+		{
+			alert('고객을 선택하세요.');
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -82,7 +93,7 @@
 		if(confirm('삭제하시겠습니까?'))
 		{
 			<% if(mode.equals("R")) { %>   
-				moveTo('productEachWrite_action.jsp?mode=D&productNo=<%= productEach.getProductNo() %>&serialNo=<%= productEach.getSerialNo() %>');	
+				moveTo('productEachWrite_action.jsp?mode=D&productEachNo=<%= productEach.getProductEachNo() %>');	
 			<% } else { %>
 			<% } %>   		
 		}
@@ -92,8 +103,8 @@
 	{
 		if(mode == "R")
 		{
+			document.getElementById("productNo").value = '<%= productNo %>';
 			document.getElementById("clientNo").value = '<%= clientNo %>';
-			//document.getElementById("clientNo").disabled = true;
 		}
 	}//setPage
 	
@@ -103,41 +114,43 @@
 <body>
 <center>
 
-	<% if(mode.equals("R")) { %>   
-   		<div class="table-title"><h1>Product information</h1></div>
-	<% } else { %>
-   		<div class="table-title"><h1>Product registration</h1></div>
-	<% } %>   		
-   	
+   		<div class="table-title"><h1>제품정보</h1></div>
 
 		<form name="form1" method="post" action="productEachWrite_action.jsp?mode=<%= writeMode %>" onsubmit="return chkValid();">
 
 
 
 		<table width = "300">
+     				
     		<tr class="row_bottom_only">
-				<td width="40%" class="cell-r" style="margin-left: 2px">제품명</td>
-				<td width="60%" class="cell-l">VANDI-A1
-	<% if(mode.equals("C")) { %>   
-					<input type=hidden name=productNo id=productNo value='<%= productNo %>' >
-	<% } else { %>
-					<input type=hidden name=productNo id=productNo value='<%= productEach.getProductNo() %>' >
-	<% } %>   		
+				<td width="40%" class="cell-r" style="margin-left: 2px">모델명</td>
+				<td width="60%" class="cell-l">
+     				<select id=productNo name=productNo>
+	     				<option value=''>선택</option>
+		   				<%
+					 		for(int i=0; i<productLength; i++){
+								Product product = productList.get(i);
+		     			%>
+		      			    <option value=<%= product.getProductNo() %>><%= product.getProductNmEng() %></option>
+		     			<%
+		     				}
+		     			%>
+     				</select>
 				</td>
 			</tr>
 			
     		<tr class="row_bottom_only">
-				<td width="40%" class="cell-r">일련번호</td>
+				<td width="40%" class="cell-r">제품번호</td>
 				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=text name=serialNo id=serialNo size=15 value='' >
 	<% } else { %>
-					<input type=text name=serialNo id=serialNo size=15 readonly value='<%= productEach.getSerialNo() %>' >
+					<input type=text name=serialNo id=serialNo size=15 value='<%= productEach.getSerialNo() %>' >
 	<% } %>   		
 				</td>
 			</tr>
     		<tr class="row_bottom_only">
-				<td width="40%" class="cell-r">제작일자</td>
+				<td width="40%" class="cell-r">제작일</td>
 				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=date name=prodDt id=prodDt size=15 value='' >
@@ -150,7 +163,7 @@
 		
 			
     		<tr class="row_bottom_only">
-				<td width="40%" class="cell-r">인증검사일</td>
+				<td width="40%" class="cell-r">인증 검사일</td>
 				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
 					<input type=date name=certDt id=certDt size=20 value='' >
@@ -172,12 +185,12 @@
 			</tr>
 			
     		<tr class="row_bottom_only">
-     			<td class="cell-r">Client</td>
+     			<td class="cell-r">고객명</td>
      			<td class="cell-l">
      				<select id=clientNo name=clientNo>
 	     				<option value=''>선택</option>
 		   				<%
-					 		for(int i=0; i<clientLength;i++){
+					 		for(int i=0; i<clientLength; i++){
 								Client client = clientList.get(i);
 		     			%>
 		      			    <option value=<%= client.getClientNo() %>><%= client.getClientNm() %></option>
@@ -187,7 +200,7 @@
      				</select>
      			</td>
      		</tr>
-			<tr height="30"/>
+			<tr height="30"/></tr>
 		</table>
 		<table>
     		<tr height="40" valign="bottom">
@@ -195,15 +208,16 @@
      				<div align="center">
      				<% if(mode.equals("C")) { %>
      					<input type="submit" class="dtlBtn" value="등록">&nbsp;
-     				<% }else{ %>
+     				<% }else if(mode.equals("R") && (authLvl.equals("S") || authLvl.equals("A"))) { %>
      					<input type="submit" class="dtlBtn" value="수정">&nbsp;
-     					<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
+     					<!-- <input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp; -->
      				<% } %>
          				<input type="button" class="dtlBtn" value="목록" onclick="moveTo('productEachList.jsp?pg=<%=pg %>');">
          			</div>
      			</td>
     		</tr>
-		</table>    		 
+		</table>
+		<input type=hidden name=productEachNo id=productEachNo value='<%= productEachNo %>' >    		 
 	</form> 
 </center>
 <script>
@@ -211,3 +225,4 @@
 </script>
 </body>
 </html>
+

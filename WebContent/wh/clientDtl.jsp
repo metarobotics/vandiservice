@@ -5,9 +5,9 @@
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
  
-<jsp:useBean id="clientDao" class="wh.ClientDAO"/>
-<jsp:include page = "/loginChk.jsp"/>
+<jsp:include page = "top.jsp"/>
 
+<jsp:useBean id="clientDao" class="wh.ClientDAO"/>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -22,6 +22,9 @@
 
 
 <%
+	String authLvl =  (String)session.getAttribute("authLvl");
+	if (authLvl == null) return;
+	//if(authLvl.equals("S") || authLvl.equals("A")) // 등록,수정 권한자
 
 	String mode = request.getParameter("mode"); // C/R
 	String pg = request.getParameter("pg");
@@ -70,9 +73,9 @@
 		if(confirm('삭제하시겠습니까?'))
 		{
 			<% if(mode.equals("R")) { %>   
-				moveTo('clientDelete.jsp?clientNo=<%= client.getClientNo() %>');	
+				moveTo('clientWrite_action.jsp?mode=D&clientNo=<%= client.getClientNo() %>');	
 			<% } else { %>
-			<% } %>   		
+			<% } %>
 		}
 	}
 	
@@ -82,18 +85,13 @@
 <body>
 <center>
 
-	<% if(mode.equals("R")) { %>   
-   		<div class="table-title"><h1>Client information</h1></div>
-	<% } else { %>
-   		<div class="table-title"><h1>Client registration</h1></div>
-	<% } %>   		
-   	
+   		<div class="table-title"><h1>고객정보</h1></div>
 
 		<form name="form1" method="post" action="clientWrite_action.jsp?mode=<%= writeMode %>" onsubmit="return chkValid();">
 
 
 		<table>
-    		<tr>
+    		<tr class="row_bottom_only">
 				<td width="40%" class="cell-r">고객번호</td>
 				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
@@ -194,9 +192,9 @@
      				<div align="center">
      				<% if(mode.equals("C")) { %>
      					<input type="submit" class="dtlBtn" value="등록">&nbsp;
-     				<% }else{ %>
+     				<% }else if(mode.equals("R") && (authLvl.equals("S") || authLvl.equals("A"))) { %>
      					<input type="submit" class="dtlBtn" value="수정">&nbsp;
-     					<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
+     					<!-- <input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp; -->
      				<% } %>
          				<input type="button" class="dtlBtn" value="목록" onclick="moveTo('clientList.jsp?pg=<%=pg %>');">
          			</div>

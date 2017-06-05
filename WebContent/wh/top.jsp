@@ -1,13 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<jsp:include page = "/loginChk.jsp"/>
+
 <%
-String session_id=null;
-session_id = (String)session.getAttribute("session_id");
-
+String session_id = (String)session.getAttribute("session_id");
 String userId =  (String)session.getAttribute("userId");
-String userName =  (String)session.getAttribute("userName");
-String centerName =  (String)session.getAttribute("centerName");
-
+if(userId == null)
+	return;
+String userNm =  (String)session.getAttribute("userNm");
+String authLvl =  (String)session.getAttribute("authLvl");
+int whNo =  (Integer)session.getAttribute("whNo");
+String whId =  (String)session.getAttribute("whId");
+String whNm =  (String)session.getAttribute("whNm");
 
 %>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -22,26 +27,34 @@ String centerName =  (String)session.getAttribute("centerName");
 	
 	<div><h4>Smart robots for agriculture</h4></div>
    	<div class="vandi_title_style">VANDI SERVICE</div>
-   	<div class="vandi_servicecenter_style"><%=centerName%></div>
+   	<div class="vandi_servicecenter_style"><%=whNm%></div>
    	
    	<table border="0">
    	<tr class="row_bottom_only">
    		<td class="cell-l">
-   		
-   		<ul>
-		  <li><a href="toList.jsp">자재구매요청</a></li>
-		  <li><a href="soList.jsp">견적서</a></li>
-		  <li><a href="productEachList.jsp">제품관리</a></li>
-		  <li><a href="clientList.jsp">고객관리</a></li>
-		</ul>
-   		
+	   		<ul>
+<% if(!authLvl.equals("A")) { %>
+			  <li><a href="itemList.jsp">자재목록</a></li>
+			  <li><a href="toList.jsp">자재구매요청</a></li>
+			  <li><a href="soList.jsp">견적서</a></li>
+<% } %>			  
+<% if(whId.equals("mr")) { %>
+			  <li><a href="poList.jsp">구매</a></li>
+<% } %>			  
+			  <li><a href="productEachList.jsp">제품관리</a></li>
+			  <li><a href="clientList.jsp">고객관리</a></li>
+<% if(authLvl.equals("S")) { %>
+			   <li><a href="companyDtl.jsp?mode=R">회사정보</a></li> 
+<% } %>			  
+			</ul>
    		</td>
    		
    		<td class="cell-r">
-				<% if(userName != null) { %> 
+				<% if(userNm != null) { %> 
 				
-					<%= userName %>&nbsp님&nbsp&nbsp&nbsp&nbsp<a target="center" href="../logout.jsp">로그아웃</a>
-				
+					<%= userNm %>&nbsp님&nbsp&nbsp&nbsp&nbsp<a target="center" href="../logout.jsp">로그아웃</a>
+					<!-- <br><% out.print(userId + "/" + userNm + "/" + authLvl + "/" + whNm); %> -->
+					
 				<% } %>
 		</td>
    	</tr>

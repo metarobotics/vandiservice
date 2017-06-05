@@ -36,7 +36,7 @@ public class OrderTDAO extends DAO {
 		} 
 		return no; 
 	}
-	
+	/*
 	public int countOrderT() { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
@@ -58,7 +58,7 @@ public class OrderTDAO extends DAO {
 		} 
 		return cnt; 
 	} 
-	
+	*/
 	public String incoding(String data) { 
 		try { 
 			//data = new String(data.getBytes("8859_1"), "euc-kr");
@@ -124,9 +124,44 @@ public class OrderTDAO extends DAO {
 			
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
-		} return alist; 
+		} 
+		
+		return alist; 
 	} 
 	
+	public ArrayList<OrderT> getOrderTList(int whNo) { 
+		Connection con = dbconnect.getConnection(); 
+		PreparedStatement pstmt = null; 
+		ResultSet rs = null; 
+		ArrayList<OrderT> alist = new ArrayList<OrderT>(); 
+		
+		try { 
+			StringBuffer sqlBuf=new StringBuffer(); 
+
+			sqlBuf.append("		select a.*, b.whNm srcWhNm, c.whNm destWhNm "); 
+			sqlBuf.append("      		" + incoding(", case a.statusCd when '10' then '주문' when '20' then '접수' when '21' then '백오더' when '30' then '배송중' when '40' then '배송완료' end statusNm "));
+			sqlBuf.append("        from orderT a ");
+			sqlBuf.append("        left join wh b on a.srcWhNo = b.whNo");
+			sqlBuf.append("        left join wh c on a.destWhNo = c.whNo");
+			sqlBuf.append("       where a.destWhNo = ?");
+			sqlBuf.append("        order by orderNo desc;");
+ 
+			pstmt = con.prepareStatement(sqlBuf.toString()); 
+			pstmt.setInt(1, whNo); 
+			rs = pstmt.executeQuery(); 
+			while(rs.next()) { 
+				OrderT orderT = new OrderT(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getString(17), rs.getString(21), rs.getString(22), rs.getString(23)); 
+				
+				alist.add(orderT); 
+			} 
+		}catch(Exception e) { 
+			
+		}finally { 
+			DBClose.close(con,pstmt,rs); 
+		} 
+		
+		return alist; 
+	} 	
 	
 	public ArrayList<OrderItem> getOrderItemList(int orderNo) { 
 		Connection con = dbconnect.getConnection(); 
@@ -216,7 +251,7 @@ public class OrderTDAO extends DAO {
 	} 
 	
 	
-	public void modifyOrderT(OrderT orderT) {
+	public void modifyOrderT(OrderT orderT) throws Exception {
 		
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
@@ -236,13 +271,16 @@ public class OrderTDAO extends DAO {
 						
 			pstmt.executeUpdate(); 
 		}catch(Exception e) { 
-			System.out.println(e.toString());
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 
 		} 
 	} 	
 	
 	
+	/*
+	 * 삭제  
+	 */
 	public void deleteOrderT(int orderNo) { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
@@ -274,6 +312,50 @@ public class OrderTDAO extends DAO {
 		} 
 	} 
 	
+	
+	/*
+	 * 접수 
+	 */
+	public void acceptOrderT(int orderNo) throws Exception { 
+		modifyOrderTStatus(orderNo, "20");
+	} 
+	
+	/*
+	 * 배송중 
+	 */
+	public void shipOrderT(int orderNo) throws Exception { 
+		modifyOrderTStatus(orderNo, "30");
+	} 
+	
+	/*
+	 * 완료 
+	 */
+	public void finishOrderT(int orderNo) throws Exception { 
+		modifyOrderTStatus(orderNo, "40");
+	} 
+	
+	/*
+	 * 상태변경
+	 */
+	private void modifyOrderTStatus(int orderNo, String statusCd) throws Exception { 
+		Connection con = dbconnect.getConnection(); 
+		PreparedStatement pstmt = null; 
+		
+		try { 
+			sql = "update orderT set statusCd=? where orderNo=?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, statusCd);
+			pstmt.setInt(2, orderNo);
+			pstmt.executeUpdate();
+			System.out.println(sql);
+			
+		}catch(Exception e) { 
+			throw e;
+		}finally { 
+			DBClose.close(con,pstmt); 
+		} 
+	} 
 }
 
 
