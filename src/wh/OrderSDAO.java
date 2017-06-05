@@ -312,7 +312,7 @@ public class OrderSDAO extends DAO {
 			pstmt.setInt(3, orderItem.getSeq()); 
 			pstmt.setInt(4, orderItem.getItemNo());
 			pstmt.setInt(5, orderItem.getItemCnt());
-			pstmt.setInt(6, orderItem.getItemPrice());
+			pstmt.setFloat(6, orderItem.getItemPrice());
 			pstmt.setFloat(7, orderItem.getServiceHour());
 			pstmt.setString(8, orderItem.getInsertUserId());
 			

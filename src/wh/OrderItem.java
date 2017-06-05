@@ -7,10 +7,11 @@ public class OrderItem {
 	private int seq;
 	private int itemNo;
 	private int itemCnt;
-	private int itemPrice;
-	private float serviceHour; // for SO
+	private float itemPrice;//6
+	private String curCd;//7 	// for PO
+	private float serviceHour;  // for SO
 	
-	private String insertUserId; //8
+	private String insertUserId; //9
 	private String insertDatetime;
 	private String updateUserId;
 	private String updateDatetime;
@@ -40,6 +41,17 @@ public class OrderItem {
 		this.insertUserId = insertUserId;
 	}
 
+	// include curCd. price float. for PO
+	public OrderItem(String orderFg, int orderNo, int seq, int itemNo, int itemCnt, float itemPrice, String curCd, String insertUserId) {
+		this.orderFg = orderFg;
+		this.orderNo = orderNo;
+		this.seq = seq;
+		this.itemNo = itemNo;
+		this.itemCnt = itemCnt;
+		this.itemPrice = itemPrice;
+		this.curCd = curCd;
+		this.insertUserId = insertUserId;
+	}
 	
 	public String getOrderFg() {
 		return orderFg;
@@ -81,12 +93,28 @@ public class OrderItem {
 		this.itemCnt = itemCnt;
 	}
 
-	public int getItemPrice() {
+	public float getItemPrice() {
 		return itemPrice;
 	}
 
-	public void setItemPrice(int itemPrice) {
+	public void setItemPrice(float itemPrice) {
 		this.itemPrice = itemPrice;
+	}
+
+	public String getCurCd() {
+		return curCd;
+	}
+
+	public void setCurCd(String curCd) {
+		this.curCd = curCd;
+	}
+
+	public float getServiceHour() {
+		return serviceHour;
+	}
+
+	public void setServiceHour(float serviceHour) {
+		this.serviceHour = serviceHour;
 	}
 
 	public String getInsertUserId() {
@@ -119,14 +147,6 @@ public class OrderItem {
 
 	public void setUpdateDatetime(String updateDatetime) {
 		this.updateDatetime = updateDatetime;
-	}
-
-	public float getServiceHour() {
-		return serviceHour;
-	}
-
-	public void setServiceHour(float serviceHour) {
-		this.serviceHour = serviceHour;
 	}
 
 }

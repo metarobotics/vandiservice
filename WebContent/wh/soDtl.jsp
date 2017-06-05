@@ -173,7 +173,7 @@ $('body').html(restorepage);
 <%			
 			if(orderItemList != null){
 				
-				int totalSum = 0;
+				float totalSum = 0;
 				
 				int size = orderItemList.size();
 				OrderItem orderItem = null;
@@ -184,7 +184,7 @@ $('body').html(restorepage);
 					int itemId = orderItem.getItemNo();
 					int itemCnt = orderItem.getItemCnt();
 					float serviceHour = orderItem.getServiceHour();
-					int itemSum = orderItem.getItemCnt() * orderItem.getItemPrice();
+					float itemSum = orderItem.getItemCnt() * orderItem.getItemPrice();
 					//out.print(itemId + ":" + itemCnt);				
 %>
 				
@@ -214,7 +214,7 @@ $('body').html(restorepage);
 								}
 							}*/
 							
-							int itemSubSum = (int)(orderItem.getItemCnt() * (orderItem.getItemPrice() + orderItem.getServiceHour() *34700));
+							float itemSubSum = (int)(orderItem.getItemCnt() * (orderItem.getItemPrice() + orderItem.getServiceHour() *34700));
 							totalSum += itemSubSum;
 							%>
 							
@@ -421,7 +421,7 @@ $('body').html(restorepage);
      			</td>
 			</tr>
 			<tr height="10"/>
-     		</table>
+    	</table>
 
 	<!-- NOTE -->
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -490,11 +490,11 @@ $('body').html(restorepage);
 						
 						<% if(mode.equals("V")) { %>
 							<td width="10%" class="cell-c"><%=nOrderItemCnt%></td>
-							<td width="15%" class="cell-r"><%= MrUtil.FormatCurrentDisplay(item.getPriceCenter()) %></td>
+							<td width="15%" class="cell-r"><%= MrUtil.FormatCurrentDisplay(item.getPriceClient()) %></td>
 							<td width="15%" class="cell-c"><%=nOrderServiceHour%></td>
-							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceCenter()*nOrderItemCnt)) %></td>
-							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceCenter() + item.getServiceHour()*34700)*nOrderItemCnt) %></td>
-							<% nTotalAmount += (int)(item.getPriceCenter() + item.getServiceHour()*34700)*nOrderItemCnt; %>
+							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceClient()*nOrderItemCnt)) %></td>
+							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceClient() + item.getServiceHour()*34700)*nOrderItemCnt) %></td>
+							<% nTotalAmount += (int)(item.getPriceClient() + item.getServiceHour()*34700)*nOrderItemCnt; %>
 						<% } else { %>
 							<td width="10%" class="cell-r">
 								<input type="text" name="txtCnt" size=3
@@ -504,7 +504,7 @@ $('body').html(restorepage);
 							</td>
 							<td width="10%" class="cell-r">
 							<input type="text" name="txtPrice" size=8
-								style="border: 0px; text-align: right;" value='<%= MrUtil.FormatCurrent(item.getPriceCenter()) %>'
+								style="border: 0px; text-align: right;" value='<%= MrUtil.FormatCurrent(item.getPriceClient()) %>'
 								disabled />
 							</td>
 							<td width="10%" class="cell-r">
@@ -614,20 +614,17 @@ $('body').html(restorepage);
      				<div align="center">
      				<% if(mode.equals("C")) { %>
      					<input type="submit" class="dtlBtn" value="등록">&nbsp;
-     				<% }else if(mode.equals("P")){ %>
+     				<% } %>
+     				<% if(mode.equals("P")){ %>
      					<input type="button" class="dtlBtn" value="편집" onclick="moveTo('soList.jsp?mode=R&orderNo=<%=orderNo%>');">&nbsp;
-     				<% }
-     				   if(mode.equals("R") && orderS.getStatusCd().equals("10")){ // 주문상태 => 수정 삭제 가능 
-     				%>  
+     				<% } %>
+     				<% if(mode.equals("R") && orderS.getStatusCd().equals("10")){ // 주문상태 => 수정 삭제 가능 %>  
      					<input type="submit" class="dtlBtn" value="수정" onclick="moveTo('soList.jsp?mode=R&orderNo=<%=orderNo%>');">&nbsp;
      					<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
-     				<% }
-     				   if(mode.equals("R")){ %>
-     					<input type="button" class="dtlBtn" value="Print" onclick="window.open('soDtl.jsp?mode=V&orderNo=<%=orderNo%>');">&nbsp;
-     				<% }
-     				   if(mode.equals("V")){ %>
      				<% } %>
-     				
+     				<% if(mode.equals("R")){ %>
+     					<input type="button" class="dtlBtn" value="Print" onclick="window.open('soDtl.jsp?mode=V&orderNo=<%=orderNo%>');">&nbsp;
+     				<% } %>
 					<% if (mode.equals("R") && orderS.getStatusCd().equals("10")) { // 접수일 경우 확정 가능   %>
 						<input type="button" class="dtlBtn" value="확정" onclick="confirmFinish();">&nbsp;
 					<% } %>

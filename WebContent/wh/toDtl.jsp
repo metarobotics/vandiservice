@@ -34,9 +34,10 @@
 
 	String authLvl =  (String)session.getAttribute("authLvl");
 	if (authLvl == null) return;
-	int whNo =  (Integer)session.getAttribute("whNo");
+	int userWhNo =  (Integer)session.getAttribute("whNo");
+	String userWhId =  (String)session.getAttribute("whId");
 
-	//out.print("."+mode+".");
+	//out.print("[ "+userWhId+" ]");
 
 	String writeMode;
 	if (mode.equals("C"))
@@ -83,10 +84,10 @@
 
 		//		int size = orderItemList.size();		
 	}
-	else // mode C/R
+	else // mode C
 	{
 		srcWhNo = 0; // mr
-		destWhNo = (Integer)session.getAttribute("whNo"); // user wh
+		destWhNo = userWhNo;
 		itemlist = itemDao.getItemList(srcWhNo, destWhNo);
 	}
 	
@@ -228,7 +229,7 @@
 		}//if(mode == "R")
 		else { //"C"
 			document.getElementById("srcWh").value = 0; // mr로 고정
-			document.getElementById("destWh").value = '<%= (Integer)session.getAttribute("whNo") %>'; // 사용자 wh
+			document.getElementById("destWh").value = '<%= userWhNo %>';
 		}	
 		
 		if('<%= authLvl %>' == 'S')
@@ -317,7 +318,7 @@
 		}
 	}
 		
-	// 접수 
+	// 완료 
 	function confirmFinish() {
 		if(confirm('완료처리 하시겠습니까?'))
 		{
@@ -486,13 +487,13 @@
 									<input type="submit" class="dtlBtn" value="수정">&nbsp;
 									<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
 							<% } %> 
-							<% if (mode.equals("R") && orderT.getStatusCd().equals("10") && whNo == 0) { // 접수이고  MR 직원인 경우 확정 가능 %>
+							<% if (mode.equals("R") && orderT.getStatusCd().equals("10") && userWhId.equals("mr")) { // 접수이고  MR 직원인 경우 확정 가능 %>
 									<input type="button" class="dtlBtn" value="접수" onclick="confirmAccept();">&nbsp;
 							<% } %> 
-							<% if (mode.equals("R") && orderT.getStatusCd().equals("20") && whNo == 0) { // 확정이고  MR 직원인 경우 배송관련 처리 가능 %>
+							<% if (mode.equals("R") && orderT.getStatusCd().equals("20") && userWhId.equals("mr")) { // 확정이고  MR 직원인 경우 배송관련 처리 가능 %>
 									<input type="button" class="dtlBtn" value="배송중" onclick="confirmShip();">&nbsp;
 							<% } %> 
-							<% if (mode.equals("R") && orderT.getStatusCd().equals("30") && whNo == 0) { // 배송중이고  MR 직원인 경우 배송관련 처리 가능 %>
+							<% if (mode.equals("R") && orderT.getStatusCd().equals("30") && userWhId.equals("mr")) { // 배송중이고  MR 직원인 경우 배송관련 처리 가능 %>
 									<input type="button" class="dtlBtn" value="배송완료" onclick="confirmFinish();">&nbsp;
 							<% } %> 
 							

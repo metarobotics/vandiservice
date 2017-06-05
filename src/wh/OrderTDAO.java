@@ -15,7 +15,7 @@ public class OrderTDAO extends DAO {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public int getNextOrderNo() {
+	public int getNextOrderNo() throws Exception  {
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
@@ -25,12 +25,13 @@ public class OrderTDAO extends DAO {
 			sql = "select ifnull(max(orderNo),0)+1 from orderT"; 
 			pstmt = con.prepareStatement(sql); 
 			rs = pstmt.executeQuery(); 
+			System.out.println(sql);
 			
 			if(rs.next()) { 
 				no = rs.getInt(1); 
 			} 
 		}catch(Exception e) { 
-			
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
@@ -72,7 +73,7 @@ public class OrderTDAO extends DAO {
 	} 
 	
 	
-	public OrderT getOrderTInfo(int orderNo) { 
+	public OrderT getOrderTInfo(int orderNo) throws Exception  { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
@@ -83,12 +84,13 @@ public class OrderTDAO extends DAO {
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setInt(1, orderNo); 
 			rs = pstmt.executeQuery(); 
+			System.out.println(sql);
 			
 			if(rs.next()) { 
 				orderT = new OrderT(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getString(17), rs.getString(19)); 
 			} 
 		}catch(Exception e) { 
-			
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
@@ -97,7 +99,7 @@ public class OrderTDAO extends DAO {
 	} 
 	
 	
-	public ArrayList<OrderT> getOrderTList() { 
+	public ArrayList<OrderT> getOrderTList() throws Exception  { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
@@ -115,13 +117,15 @@ public class OrderTDAO extends DAO {
  
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			rs = pstmt.executeQuery(); 
+			System.out.println(sqlBuf.toString());
+			
 			while(rs.next()) { 
 				OrderT orderT = new OrderT(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getString(17), rs.getString(21), rs.getString(22), rs.getString(23)); 
 				
 				alist.add(orderT); 
 			} 
 		}catch(Exception e) { 
-			
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
@@ -129,7 +133,7 @@ public class OrderTDAO extends DAO {
 		return alist; 
 	} 
 	
-	public ArrayList<OrderT> getOrderTList(int whNo) { 
+	public ArrayList<OrderT> getOrderTList(int whNo) throws Exception  { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
@@ -149,13 +153,15 @@ public class OrderTDAO extends DAO {
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			pstmt.setInt(1, whNo); 
 			rs = pstmt.executeQuery(); 
+			System.out.println(sqlBuf.toString());
+			
 			while(rs.next()) { 
 				OrderT orderT = new OrderT(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getString(17), rs.getString(21), rs.getString(22), rs.getString(23)); 
 				
 				alist.add(orderT); 
 			} 
 		}catch(Exception e) { 
-			
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
@@ -163,7 +169,7 @@ public class OrderTDAO extends DAO {
 		return alist; 
 	} 	
 	
-	public ArrayList<OrderItem> getOrderItemList(int orderNo) { 
+	public ArrayList<OrderItem> getOrderItemList(int orderNo) throws Exception  { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
@@ -180,8 +186,9 @@ public class OrderTDAO extends DAO {
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			pstmt.setInt(1, orderNo);
+			rs = pstmt.executeQuery();
+			System.out.println(sqlBuf.toString());
 			
-			rs = pstmt.executeQuery(); 
 			while(rs.next()) { 
 				
 				OrderItem orderItem = new OrderItem(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7)); 
@@ -189,7 +196,7 @@ public class OrderTDAO extends DAO {
 				alist.add(orderItem); 
 			} 
 		}catch(Exception e) { 
-			
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
@@ -198,7 +205,7 @@ public class OrderTDAO extends DAO {
 	} 
 	
 	
-	public void insertOrderT(OrderT orderT) { 
+	public void insertOrderT(OrderT orderT) throws Exception  { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		
@@ -218,15 +225,17 @@ public class OrderTDAO extends DAO {
 			pstmt.setString(9, orderT.getInsertUserId());
 			
 			pstmt.execute(); 
-		}catch(Exception e) { 
+			System.out.println(sql);
 			
+		}catch(Exception e) { 
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 
 		} 
 	} 
 	
 	
-	public void insertOrderItem(OrderItem orderItem) { 
+	public void insertOrderItem(OrderItem orderItem) throws Exception  { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		
@@ -239,12 +248,14 @@ public class OrderTDAO extends DAO {
 			pstmt.setInt(3, orderItem.getSeq()); 
 			pstmt.setInt(4, orderItem.getItemNo());
 			pstmt.setInt(5, orderItem.getItemCnt());
-			pstmt.setInt(6, orderItem.getItemPrice());
+			pstmt.setFloat(6, orderItem.getItemPrice());
 			pstmt.setString(7, orderItem.getInsertUserId());
 			
 			pstmt.execute(); 
-		}catch(Exception e) { 
+			System.out.println(sql);
 			
+		}catch(Exception e) { 
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 
 		} 
@@ -270,6 +281,8 @@ public class OrderTDAO extends DAO {
 			pstmt.setInt(7, orderT.getOrderNo());
 						
 			pstmt.executeUpdate(); 
+			System.out.println(sql);
+			
 		}catch(Exception e) { 
 			throw e;
 		}finally { 
@@ -281,23 +294,27 @@ public class OrderTDAO extends DAO {
 	/*
 	 * ªË¡¶  
 	 */
-	public void deleteOrderT(int orderNo) { 
+	public void deleteOrderT(int orderNo) throws Exception  { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
+		
 		try { 
+			
 			sql = "delete from orderT where orderNo = ?"; 
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setInt(1, orderNo); 
 			pstmt.executeUpdate();
+			System.out.println(sql);
+			
 		}catch(Exception e) { 
-		
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 
 		} 
 	} 
 	
 	
-	public void deleteOrderItem(int orderNo) { 
+	public void deleteOrderItem(int orderNo) throws Exception  { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		try { 
@@ -305,8 +322,10 @@ public class OrderTDAO extends DAO {
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setInt(1, orderNo); 
 			pstmt.executeUpdate(); 
+			System.out.println(sql);
+			
 		}catch(Exception e) { 
-		
+			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 
 		} 

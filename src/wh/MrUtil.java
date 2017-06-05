@@ -27,6 +27,11 @@ public class MrUtil {
 		return getOrderNoStr("T", orderNo);
 	}
 
+	public static String getPOrderNoStr(int orderNo)
+	{
+		return getOrderNoStr("P", orderNo);
+	}
+
 	public static String getClientNoStr(int clientNo)
 	{
 		return String.format("%7s", clientNo).replace(' ', '0');
@@ -67,8 +72,29 @@ public class MrUtil {
 	{
 		return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
 	}
+
+	public static String FormatCurrentDisplay(float price)
+	{
+		return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
+	}
+	
+	public static String FormatCurrentDisplay(float price, String curCd)
+	{
+		if(curCd.equals("WON"))
+			return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
+		else if(curCd.equals("USD"))
+			return NumberFormat.getCurrencyInstance(Locale.US).format(price);
+		else
+			return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
+	}
 	
 	public static String FormatCurrent(int price)
+	{
+		return String.valueOf( price );
+		//return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
+	}
+	
+	public static String FormatCurrent(float price)
 	{
 		return String.valueOf( price );
 		//return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
