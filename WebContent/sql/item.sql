@@ -188,3 +188,15 @@ insert into item(itemId, itemNm, itemNmKor, priceCenter, priceClient, serviceHou
 insert into item(itemId, itemNm, itemNmKor, priceCenter, priceClient, serviceHour) values(6302, '순차식 충전기', '순차식 충전기', 5000000, 5000000,0);
 insert into item(itemId, itemNm, itemNmKor, priceCenter, priceClient, serviceHour) values(7101, 'Pixhawk', '픽스호크(반디)', 660000, 800000,4);
 insert into item(itemId, itemNm, itemNmKor, priceCenter, priceClient, serviceHour) values(7102, 'GPS', 'GPS', 120000, 140000,2);
+
+
+update item a 
+inner join 
+(
+	select *
+	from meta_materials.bom
+) aa 
+on a.itemId = aa.id
+set a.price = aa.price
+,a.curCd = (case price_unit when '1' then 'WON' when '2' then 'USD' end)
+;
