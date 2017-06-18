@@ -88,7 +88,10 @@ if(!mode.equals("V")) { %>
 			
 			orderItemList = orderPDao.getOrderItemList(orderNo);
 			
-			itemlist = itemDao.getItemList(whNo);
+			if(orderP.getStatusCd().equals("10")) //작성중
+				itemlist = itemDao.getItemList(whNo);
+			else
+				itemlist = itemDao.getOrderPItemList(orderNo);
 		}
 
 		//		int size = orderItemList.size();		
@@ -239,7 +242,6 @@ if(!mode.equals("V")) { %>
 	    
 	    var tot = idList.length;
 	    
-	    backOrderFg = false;
 	    var tmpCurCd = "";
 	    
 	    for (i = 0; i < tot; i++) {
@@ -262,7 +264,7 @@ if(!mode.equals("V")) { %>
 	    			str = idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value;
 	    		else
 	    			str = str + "/" + idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value; // seperator | 는 사용하면 안됨. 변형되는지 split이 안돼 
-	    		subtotal = subtotal + parseInt(priceList[i].value) * parseInt(cntList[i].value);
+	    		subtotal = subtotal + parseFloat(priceList[i].value) * parseInt(cntList[i].value);
 	    	}
 	    }
 	    
@@ -277,6 +279,33 @@ if(!mode.equals("V")) { %>
 		document.getElementById("curCd").value = curCd; //parseInt(subtotal * 1.1);
 
 		document.getElementById("orderStr").value = str;
+	}
+	
+	function setSelectResultRcv()
+	{
+		var str = "";
+		var cnt = 0;
+	    
+	    var idList = document.getElementsByName("selItem");
+	    var cntList = document.getElementsByName("txtCntRcv");
+	    
+	    var tot = idList.length;
+	    
+	    var tmpCurCd = "";
+	    
+	    for (i = 0; i < tot; i++) {
+	    	
+	    	if(!isNull(cntList[i]) && cntList[i].value != 0)
+	    	{
+		    	// 입고처리 정보 setting
+	    		if(str == "")
+	    			str = idList[i].value + ":" +  cntList[i].value;
+	    		else
+	    			str = str + "/" + idList[i].value + ":" +  cntList[i].value; // seperator | 는 사용하면 안됨. 변형되는지 split이 안돼 
+	    	}
+	    }
+	    
+		document.getElementById("rcvStr").value = str;
 	}
 	
 
@@ -355,7 +384,7 @@ if(!mode.equals("V")) { %>
 					<input type=text size=10 disabled value='' style="border: 0px; text-align: left;" >
 					<input type=hidden name=orderNo id=orderNo >
 	<% } else if(mode.equals("R")) { %>
-					<input type=text size=10 disabled value='<%= MrUtil.getTOrderNoStr(orderNo) %>'  style="border: 0px; text-align: left;" >
+					<input type=text size=10 disabled value='<%= MrUtil.getPOrderNoStr(orderNo) %>'  style="border: 0px; text-align: left;" >
 					<input type=hidden name=orderNo id=orderNo value='<%= orderNo %>' >
 	<% } else if(mode.equals("V")) { %><%= MrUtil.getPOrderNoStr(orderNo) %>
 	<% } %>
@@ -427,14 +456,23 @@ if(!mode.equals("V")) { %>
 						<% if(mode.equals("V")) { %>
 						<th width="70%" nowrap>품목</th>
 						<th width="10%" class="cell-r">판매가격</th>
-						<th width="10%" class="cell-r">수량</th>
+						<th width="10%" class="cell-r">주문수량</th>
 						<th width="10%" class="cell-r">센터 재고</th>
-						<% } else {%>
+						<% } else if(mode.equals("C") || (mode.equals("R") && orderP.getStatusCd().equals("10"))){ //작성중 %>
 						<th width="60%" nowrap>품목</th>
 						<th width="10%" class="cell-r">판매가격</th>
 						<th width="10%" class="cell-c">화폐</th>
-						<th width="10%" class="cell-r">수량</th>
+						<th width="10%" class="cell-r">주문수량</th>
 						<th width="10%" class="cell-r">센터 재고</th>
+						<% } else { //작성완료 이후 %>
+						<th width="52%" nowrap>품목</th>
+						<th width="8%" class="cell-r">판매가격</th>
+						<th width="8%" class="cell-c">화폐</th>
+						<th width="8%" class="cell-r">주문수량</th>
+						<th width="8%" class="cell-r">센터재고</th>
+						<th width="8%" class="cell-r">입고</th>
+						<th width="8%" class="cell-r">미입고</th>
+						
 						<% } %>
 					</tr>
 				</thead>
@@ -477,10 +515,10 @@ if(!mode.equals("V")) { %>
 								<td class="cell-r"><%= item.getItemCnt() %></td>
 								<% nTotalAmount += (float)(item.getPrice())*nOrderItemCnt; %>
 	
-							<% } else { %>
+							<% } else if(mode.equals("C") || (mode.equals("R") && orderP.getStatusCd().equals("10"))){ //작성중 %>
 							
 								<td class="cell-r"><input type="text" name="txtPrice" size=6
-									style="border: 0px; text-align: right;" value='<%=item.getPrice()%>'
+									style="border: 0px; text-align: right;" value='<%= MrUtil.FormatCurrentDisplay2(item.getPrice(), item.getCurCd()) %>'
 									disabled /></td>
 								<td class="cell-c"><input type="text" name="txtCurCd" size=6
 									style="border: 0px; text-align: center;" value='<%=item.getCurCd()%>'
@@ -492,8 +530,31 @@ if(!mode.equals("V")) { %>
 								<td class="cell-r"><input type="text" name="itemCnt" size=4
 									style="border: 0px; text-align: right;" value='<%=item.getItemCnt()%>'
 									disabled /></td>
+
+							<% } else { //작성완료 이후 %>
+							
+								<td class="cell-r"><input type="text" name="txtPrice" size=4
+									style="border: 0px; text-align: right;" value='<%= MrUtil.FormatCurrentDisplay2(item.getPrice(), item.getCurCd()) %>'
+									disabled /></td>
+								<td class="cell-c"><input type="text" name="txtCurCd" size=2
+									style="border: 0px; text-align: center;" value='<%=item.getCurCd()%>'
+									disabled /></td>
+								<td class="cell-r"><input type="text" name="txtCnt" size=2
+									style="text-align: right" readonly value='<%=item.getOrderItemCnt()%>' />
+								</td>
+								<td class="cell-r"><input type="text" name="itemCnt" size=3
+									style="border: 0px; text-align: right;" value='<%=item.getWhItemCnt()%>'
+									disabled /></td>
+
+								<td class="cell-r"><input type="text" name="itemCntRcv" size=2
+									style="border: 0px; text-align: right;" value='<%=item.getItemRcvCnt()%>'
+									disabled /></td>
+								<td class="cell-r"><input type="text" name="itemCntNoRcv" size=2
+									style="border: 0px; text-align: right;" value='<%=item.getItemNoRcvCnt()%>'
+									disabled /></td>
+
 									
-							<% } //if(!mode.equals("V")) %>
+							<% } %>
 									
 						</tr>
 				<%
@@ -576,6 +637,7 @@ if(!mode.equals("V")) { %>
 			<input type="hidden" id="totalAmt" name="totalAmt" /> 
 			<input type="hidden" id="curCd" name="curCd" /> 
 			<input type="hidden" id="orderStr" name="orderStr" />
+			<input type="hidden" id="rcvStr" name="rcvStr" />
 			
 			<table>
 				<tr height="40" valign="bottom">
@@ -595,7 +657,7 @@ if(!mode.equals("V")) { %>
 									<input type="button" class="dtlBtn" value="작성완료" onclick="confirmAccept();">&nbsp;
 							<% } %> 
 							<% if (mode.equals("R") && orderP.getStatusCd().equals("20") && userWhId.equals("mr")) { // 작성완료이고  MR 직원인 경우 입고처리 가능 %>
-									<input type="button" class="dtlBtn" value="입고처리" onclick="confirmGetItem();">&nbsp;
+									<input type="button" class="dtlBtn" value="입고처리" onclick="moveTo('poRcvList.jsp?mode=R&orderNo=<%=orderNo%>&pg=<%=pg%>');">&nbsp;
 							<% } %> 
 							<% if (mode.equals("R") && orderP.getStatusCd().equals("30") && userWhId.equals("mr")) { // 입고처리이고  MR 직원인 경우 입고완료 처리 가능 %>
 									<input type="button" class="dtlBtn" value="입고완료" onclick="confirmFinish();">&nbsp;

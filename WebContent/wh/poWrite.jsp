@@ -11,7 +11,7 @@
 	request.setCharacterEncoding("UTF-8");
 	
 	//parameter
-	String mode = request.getParameter("mode"); //CUD + A(Accept.작성완료), G(GET.입고처리), F(Finish.입고완료)
+	String mode = request.getParameter("mode"); //CUD + A(Accept.작성완료->주문), G(GET.입고처리), F(Finish.입고완료)
 	String modeStr = "";
 	if(mode.equals("C")) 
 	{
@@ -27,7 +27,7 @@
 	}
 	else if(mode.equals("A"))
 	{
-		modeStr = "작성완료";
+		modeStr = "작성완료";//주문
 	}
 	else if(mode.equals("G"))
 	{
@@ -59,7 +59,7 @@
 		
 		int whNo = Integer.parseInt(request.getParameter("whNo"));
 		
-		float totalAmt = Integer.parseInt(request.getParameter("totalAmt"));
+		float totalAmt = Float.parseFloat(request.getParameter("totalAmt"));
 		float subtotal = totalAmt; //Integer.parseInt(request.getParameter("subtotal"));
 		float tax = 0; //Integer.parseInt(request.getParameter("tax"));
 		
@@ -71,7 +71,7 @@
 		out.print("\n2:"+orderNo);
 		out.print("\n4:"+request.getParameter("curCd"));
 		//out.print("\n5:"+Integer.parseInt(request.getParameter("tax")));
-		
+	
 
 		
 		// session 
@@ -106,7 +106,7 @@
 		
 		int itemNo;
 		int itemCnt;
-		int itemPrice;
+		float itemPrice;
 	
 		//out.print("<br><br>");
 		
@@ -120,9 +120,9 @@
 			
 			itemNo = Integer.parseInt(arr[0]);
 			itemCnt = Integer.parseInt(arr[1]);
-			itemPrice = Integer.parseInt(arr[2]);
+			itemPrice = Float.parseFloat(arr[2]);
 			
-			OrderItem orderItem = new OrderItem("P", orderNo, i+1, itemNo, itemCnt, itemPrice, userId); 
+			OrderItem orderItem = new OrderItem("P", orderNo, i+1, itemNo, itemCnt, itemPrice, curCd, userId); 
 			orderPDao.insertOrderItem(orderItem);
 		}
 		
@@ -134,7 +134,7 @@
 		orderPDao.deleteOrderP(orderNo);
 		orderPDao.deleteOrderItem(orderNo);
 	}
-	else if(mode.equals("A")) // 접수 
+	else if(mode.equals("A")) // 주문 
 	{
 		int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 

@@ -25,7 +25,8 @@ public class OrderP {
 
 	private String whNm;//21
 	private String statusNm;
-
+	private int rcvCnt; // 입고처리건수
+	
 	public OrderP() {
 	}
 
@@ -47,7 +48,7 @@ public class OrderP {
 	// list page 를 보여주기 위한..
 	public OrderP(int orderNo, String orderDt, int whNo, 
 					String statusCd, float subtotal, float tax, float totalAmt, String curCd, String insertUserId, String updateUserId, 
-					String whNm, String statusNm) {
+					String whNm, String statusNm, int rcvCnt) {
 
 		// basic
 		this.orderNo = orderNo;
@@ -65,6 +66,7 @@ public class OrderP {
 		// additional
 		this.whNm = whNm;
 		this.statusNm = statusNm;
+		this.rcvCnt = rcvCnt;
 	}
 
 	public int getOrderNo() {
@@ -241,6 +243,14 @@ public class OrderP {
 
 	public void setStatusNm(String statusNm) {
 		this.statusNm = statusNm;
+	}
+
+	public int getRcvCnt() {
+		return rcvCnt;
+	}
+
+	public void setRcvCnt(int rcvCnt) {
+		this.rcvCnt = rcvCnt;
 	}
 
 }

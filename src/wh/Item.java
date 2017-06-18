@@ -11,7 +11,7 @@ public class Item {
 	private String itemNmKor;
 	private String sku;
 	private String vendorId;
-	private int price;
+	private float price;
 	private String curCd;
 	private int priceMeta;
 	private int priceFactory;
@@ -36,6 +36,13 @@ public class Item {
 	private int srcItemCnt; // from to
 	private int destItemCnt; // from to
 	
+	// po
+	private int whItemCnt; //=itemCnt
+	private int orderItemCnt;
+	private int itemRcvCnt;
+	private int itemNoRcvCnt;
+	private int itemNewRcvCnt;
+	
 	public Item() {
 	}
 	
@@ -47,7 +54,7 @@ public class Item {
 	}
 	
 	// basic Item table info 
-	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, String vendorId, int price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime) {
+	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, String vendorId, float price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime) {
 		this.itemNo = itemNo;
 		this.itemId = itemId;
 		this.itemNm = itemNm;
@@ -77,7 +84,7 @@ public class Item {
 	}
 
 	// include itemCnt
-	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, String vendorId, int price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime, int itemCnt) {
+	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, String vendorId, float price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime, int itemCnt) {
 		this.itemNo = itemNo;
 		this.itemId = itemId;
 		this.itemNm = itemNm;
@@ -109,7 +116,7 @@ public class Item {
 	}
 	
 	// include srcItemCnt, destItemCnt
-	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, String vendorId, int price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime, int srcItemCnt, int destItemCnt) {
+	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, String vendorId, float price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime, int srcItemCnt, int destItemCnt) {
 		this.itemNo = itemNo;
 		this.itemId = itemId;
 		this.itemNm = itemNm;
@@ -245,11 +252,11 @@ public class Item {
 		this.vendorId = vendorId;
 	}
 
-	public int getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 
@@ -363,6 +370,46 @@ public class Item {
 
 	public void setDestItemCnt(int destItemCnt) {
 		this.destItemCnt = destItemCnt;
+	}
+
+	public int getWhItemCnt() {
+		return whItemCnt;
+	}
+
+	public void setWhItemCnt(int whItemCnt) {
+		this.whItemCnt = whItemCnt;
+	}
+
+	public int getOrderItemCnt() {
+		return orderItemCnt;
+	}
+
+	public void setOrderItemCnt(int orderItemCnt) {
+		this.orderItemCnt = orderItemCnt;
+	}
+
+	public int getItemRcvCnt() {
+		return itemRcvCnt;
+	}
+
+	public void setItemRcvCnt(int itemRcvCnt) {
+		this.itemRcvCnt = itemRcvCnt;
+	}
+
+	public int getItemNoRcvCnt() {
+		return itemNoRcvCnt;
+	}
+
+	public void setItemNoRcvCnt(int itemNoRcvCnt) {
+		this.itemNoRcvCnt = itemNoRcvCnt;
+	}
+	
+	public int getItemNewRcvCnt() {
+		return itemNewRcvCnt;
+	}
+
+	public void setItemNewRcvCnt(int itemNewRcvCnt) {
+		this.itemNewRcvCnt = itemNewRcvCnt;
 	}
 	
 }

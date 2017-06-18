@@ -78,6 +78,8 @@ public class MrUtil {
 		return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
 	}
 	
+	// £Ü14,000, $182.00
+	// Currency + Amount
 	public static String FormatCurrentDisplay(float price, String curCd)
 	{
 		if(curCd.equals("WON"))
@@ -88,6 +90,23 @@ public class MrUtil {
 			return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
 	}
 	
+	// 14000, 182.94
+	// Amount only 
+	public static String FormatCurrentDisplay2(float price, String curCd)
+	{
+		if(curCd.equals("WON")){
+			String strPrice = new Float(price).toString();
+			strPrice = strPrice.substring(0, strPrice.indexOf("."));
+			return strPrice;
+		}else if(curCd.equals("USD"))
+			return NumberFormat.getCurrencyInstance(Locale.US).format(price).toString().substring(1);
+		else{
+			String strPrice = new Float(price).toString();
+			strPrice = strPrice.substring(0, strPrice.indexOf("."));
+			return strPrice;
+		}
+	}
+
 	public static String FormatCurrent(int price)
 	{
 		return String.valueOf( price );

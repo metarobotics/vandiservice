@@ -64,18 +64,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
  	<link rel="stylesheet" href="../css/vandiservice.css">
 </head>
-
 <body>
 <center>
 	   <div class="table-title"><h1>구매목록</h1></div>
 
 <table width="600" border="1">
 <tr class="header">
-	<th width="20%" class="text-center">주문번호</th>
-	<th width="20%" class="text-center">주문일자</th>
+	<th width="18%" class="text-center">주문번호</th>
+	<th width="18%" class="text-center">주문일자</th>
 	<th width="20%" class="text-center">서비스센터</th>
-	<th width="20%" class="text-center">합계금액</th>
-	<th width="20%" class="text-center">상태</th>
+	<th width="17%" class="text-center">합계금액</th>
+	<th width="15%" class="text-center">상태</th>
+	<th width="12%" class="text-center">입고처리</th>
 </tr>
 <tbody class="table-hover">
 <%
@@ -91,11 +91,16 @@
 %>
 
 	<tr class="row">
-	<td class="cell-c"><a href="poDtl.jsp?mode=R&orderNo=<%=orderP.getOrderNo()%>&pg=<%=pg%>"><%= MrUtil.getTOrderNoStr(orderP.getOrderNo()) %></a></td>
+	<td class="cell-c"><a href="poDtl.jsp?mode=R&orderNo=<%=orderP.getOrderNo()%>&pg=<%=pg%>"><%= MrUtil.getPOrderNoStr(orderP.getOrderNo()) %></a></td>
 	<td class="cell-c"><%=orderP.getOrderDt()%></td>
 	<td class="cell-c"><%=orderP.getWhNm()%></td>
 	<td class="cell-r"><%=MrUtil.FormatCurrentDisplay(orderP.getTotalAmt(), orderP.getCurCd()) %></td>
 	<td class="cell-c"><%=orderP.getStatusNm()%></td>
+	<td class="cell-c"><% if(!orderP.getStatusCd().equals("10")) {%>
+						<a href="poRcvList.jsp?mode=R&orderNo=<%=orderP.getOrderNo()%>&pg=<%=pg%>"><%= orderP.getRcvCnt() %>건</a>
+						<% } else {%>
+						<% }%>
+	</td>
 	</tr>
 
 <%

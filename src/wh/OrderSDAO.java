@@ -340,6 +340,8 @@ public class OrderSDAO extends DAO {
 			pstmt.setInt(4, orderS.getTax());
 			pstmt.setInt(5, orderS.getTotalAmt());
 			pstmt.setString(6, orderS.getNote());
+System.out.println("note = " + orderS.getNote());			
+System.out.println("note = " + incoding(orderS.getNote()));			
 			pstmt.setInt(7, orderS.getOrderNo());
 						
 			pstmt.executeUpdate(); 

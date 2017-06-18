@@ -20,7 +20,7 @@
 	int size2 = total;
 	
 	final int ROWSIZE = 10;
-	final int BLOCK = 5;
+	final int BLOCK = 10;
 	int indent = 0;
 
 	int pg = 1;
@@ -64,8 +64,8 @@
 <table border="1" width="600">
 <tr>
 	<th width="15%" class="text-center">고객번호</th>
-	<th width="15%" class="text-center">고객명</th>
-	<th width="50%" class="text-center">거주지</th>
+	<th width="30%" class="text-center">고객명</th>
+	<th width="35%" class="text-center">거주지</th>
 	<th width="20%" class="text-center">거래건수</th>
 </tr>
 <%

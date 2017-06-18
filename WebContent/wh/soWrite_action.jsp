@@ -7,8 +7,10 @@
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
 
 <%
-// request 
-request.setCharacterEncoding("UTF-8");
+//request 
+request.setCharacterEncoding("EUC-KR");
+response.setContentType("text/html;charset=EUC-KR");
+
 
 //parameter
 String mode = request.getParameter("mode"); //CUD + F(Finish.È®Á¤)
@@ -51,7 +53,12 @@ if(mode.equals("C") || mode.equals("U"))
 	int tax = Integer.parseInt(request.getParameter("tax"));
 	int totalAmt = Integer.parseInt(request.getParameter("totalAmt"));
 	String note = request.getParameter("note").toString();
-	
+/*
+	if(note != null){
+	out.print(note);
+//	return;
+}
+*/
 	String orderStr = request.getParameter("orderStr").toString(); // 1:3:25000|2:5:15000
 	
 	// session 
