@@ -67,11 +67,12 @@
 
 <table border="1" width="600">
 <tr class="header">
-	<th width="25%" class="text-center">제품일련번호</th>
-	<th width="18%" class="text-center">제작일자</th>
-	<th width="15%" class="text-center">등록번호</th>
-	<th width="24%" class="text-center">고객명</th>
-	<th width="18%" class="text-center">검사일자</th>
+	<th width="23%" class="text-center">제품일련번호</th>
+	<th width="16%" class="text-center">제작일자</th>
+	<th width="13%" class="text-center">등록번호</th>
+	<th width="22%" class="text-center">고객명</th>
+	<th width="10%" class="text-center">지역</th>
+	<th width="16%" class="text-center">검사일자</th>
 </tr>
 
 <%
@@ -96,6 +97,7 @@
 <td class="cell-c"><%=productEach.getProdDt()%></td>
 <td class="cell-c"><%=productEach.getRegisterNo()%></td>
 <td class="cell-c"><%=productEach.getClientNm()%></td>
+<td class="cell-c"><%=productEach.getClientLocation()%></td>
 <td class="cell-c"><%=productEach.getCertDt()%></td>
 </tr>
 

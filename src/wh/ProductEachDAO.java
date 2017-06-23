@@ -65,7 +65,7 @@ public class ProductEachDAO extends DAO {
 			StringBuffer sqlBuf = new StringBuffer(); 
 
 			sqlBuf.append("		select a.*, ifnull(b.clientNm, '') ");
-			sqlBuf.append("		from productEach a ");
+			sqlBuf.append("		, b.location from productEach a ");
 			sqlBuf.append("		left join client b ");
 			sqlBuf.append("		on a.clientNo = b.clientNo ");
 			sqlBuf.append("		 where productEachNo = ?");
@@ -80,7 +80,7 @@ public class ProductEachDAO extends DAO {
 			if(rs.next()) { 
 				productEach = new ProductEach(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), 
 						rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), 
-						rs.getString(12));
+						rs.getString(12), rs.getString(13));
 			} 
 		}catch(Exception e) { 
 			throw e;
@@ -103,7 +103,7 @@ public class ProductEachDAO extends DAO {
 			StringBuffer sqlBuf = new StringBuffer(); 
 
 			sqlBuf.append("		select a.*, ifnull(b.clientNm, '') ");
-			sqlBuf.append("		from productEach a ");
+			sqlBuf.append("		, b.location from productEach a ");
 			sqlBuf.append("		left outer join client b ");
 			sqlBuf.append("		on a.clientNo = b.clientNo ");
 			sqlBuf.append("		order by a.serialNo");
@@ -115,7 +115,7 @@ public class ProductEachDAO extends DAO {
 			while(rs.next()) {
 				ProductEach productEach = new ProductEach(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), 
 						rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), 
-						rs.getString(12));
+						rs.getString(12), rs.getString(13));
 				
 				alist.add(productEach); 
 			} 

@@ -16,6 +16,7 @@ public class ProductEach {
 	private String updateDatetime;//11
 	
 	private String clientNm;
+	private String clientLocation;
 
 	
 	public ProductEach() {
@@ -41,7 +42,7 @@ public class ProductEach {
 	
 	public ProductEach(int productEachNo, int productNo, String serialNo, String prodDt, String certDt, String registerNo, int clientNo, 
 					String insertUserId, String insertDatetime, String updateUserId, String updateDatetime,
-					String clientNm) {
+					String clientNm, String clientLocation) {
 		
 		this.productEachNo = productEachNo;
 		this.productNo = productNo;
@@ -57,6 +58,7 @@ public class ProductEach {
 		this.updateDatetime = updateDatetime;
 		
 		this.clientNm = clientNm;
+		this.clientLocation = clientLocation;
 	}
 
 	public int getProductEachNo() {
@@ -155,5 +157,8 @@ public class ProductEach {
 		this.clientNm = clientNm;
 	}
 
+	public String getClientLocation() {
+		return clientLocation;
+	}
 }
 
