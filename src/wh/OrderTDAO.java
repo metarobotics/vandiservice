@@ -79,15 +79,32 @@ public class OrderTDAO extends DAO {
 		ResultSet rs = null; 
 		OrderT orderT = null; 
 		
+		/*
+		this.orderNo = orderNo;
+		this.orderDt = orderDt;
+		this.srcWhNo = srcWhNo;
+		this.destWhNo = destWhNo;
+
+		this.statusCd = statusCd;
+		this.subtotal = subtotal;
+		this.tax = tax;
+		this.totalAmt = totalAmt;
+		this.note = note;
+		
+		this.insertUserId = insertUserId;
+		this.updateUserId = updateUserId;
+		
+		*/
+		
 		try { 
-			sql = "select * from orderT where orderNo = ?"; 
+			sql = "select orderNo, orderDt, srcWhNo, destWhNo, statusCd, subtotal, tax, totalAmt, note, insertUserId, updateUserId from orderT where orderNo = ?"; 
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setInt(1, orderNo); 
 			rs = pstmt.executeQuery(); 
 			System.out.println(sql);
 			
 			if(rs.next()) { 
-				orderT = new OrderT(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getString(17), rs.getString(19)); 
+				orderT = new OrderT(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getString(11)); 
 			} 
 		}catch(Exception e) { 
 			throw e;
@@ -106,9 +123,30 @@ public class OrderTDAO extends DAO {
 		ArrayList<OrderT> alist = new ArrayList<OrderT>(); 
 		
 		try { 
-			StringBuffer sqlBuf=new StringBuffer(); 
+			StringBuffer sqlBuf=new StringBuffer();
+			
+			/*
+			this.orderNo = orderNo; //1
+			this.orderDt = orderDt; //2
+			this.srcWhNo = srcWhNo; //3
+			this.destWhNo = destWhNo; //4
 
-			sqlBuf.append("		select a.*, b.whNm srcWhNm, c.whNm destWhNm "); 
+			this.statusCd = statusCd; //7
+			this.subtotal = subtotal; //8
+			this.tax = tax; //9
+			this.totalAmt = totalAmt; //10
+			this.insertUserId = insertUserId; //17
+
+			// additional
+			this.srcWhNm = srcWhNm; //21
+			this.destWhNm = destWhNm; //22
+			this.statusNm = statusNm; //23
+			
+			
+			*/
+
+			sqlBuf.append("		select a.orderNo, a.orderDt, a.srcWhNo, a.destWhNo, a.statusCd, a.subtotal, a.tax, a.totalAmt, a.insertUserId, a.note ");
+			sqlBuf.append("		, b.whNm srcWhNm, c.whNm destWhNm "); 
 			sqlBuf.append("      		" + incoding(", case a.statusCd when '10' then '주문' when '20' then '접수' when '21' then '백오더' when '30' then '배송중' when '40' then '배송완료' end statusNm "));
 			sqlBuf.append("        from orderT a ");
 			sqlBuf.append("        left join wh b on a.srcWhNo = b.whNo");
@@ -120,7 +158,7 @@ public class OrderTDAO extends DAO {
 			System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) { 
-				OrderT orderT = new OrderT(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getString(17), rs.getString(21), rs.getString(22), rs.getString(23)); 
+				OrderT orderT = new OrderT(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13)); 
 				
 				alist.add(orderT); 
 			} 
@@ -141,8 +179,9 @@ public class OrderTDAO extends DAO {
 		
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
-
-			sqlBuf.append("		select a.*, b.whNm srcWhNm, c.whNm destWhNm "); 
+			
+			sqlBuf.append("		select a.orderNo, a.orderDt, a.srcWhNo, a.destWhNo, a.statusCd, a.subtotal, a.tax, a.totalAmt, a.insertUserId, a.updateUserId, a.note ");
+			sqlBuf.append("		, b.whNm srcWhNm, c.whNm destWhNm "); 
 			sqlBuf.append("      		" + incoding(", case a.statusCd when '10' then '주문' when '20' then '접수' when '21' then '백오더' when '30' then '배송중' when '40' then '배송완료' end statusNm "));
 			sqlBuf.append("        from orderT a ");
 			sqlBuf.append("        left join wh b on a.srcWhNo = b.whNo");
@@ -156,7 +195,7 @@ public class OrderTDAO extends DAO {
 			System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) { 
-				OrderT orderT = new OrderT(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getString(17), rs.getString(21), rs.getString(22), rs.getString(23)); 
+				OrderT orderT = new OrderT(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getString(11), rs.getString(12), rs.getString(13)); 
 				
 				alist.add(orderT); 
 			} 
@@ -211,7 +250,7 @@ public class OrderTDAO extends DAO {
 		
 		try { 
 			
-			sql = "insert into orderT (orderNo, orderDt, srcWhNo, destWhNo, statusCd, subtotal, tax, totalAmt, insertUserId, insertDatetime) VALUES (?,?,?,?,?,?,?,?,?, current_timestamp())"; 
+			sql = "insert into orderT (orderNo, orderDt, srcWhNo, destWhNo, statusCd, subtotal, tax, totalAmt, insertUserId, note, insertDatetime) VALUES (?,?,?,?,?,?,?,?,?,?, current_timestamp())"; 
 			pstmt = con.prepareStatement(sql); 
 
 			pstmt.setInt(1, orderT.getOrderNo());
@@ -223,6 +262,7 @@ public class OrderTDAO extends DAO {
 			pstmt.setInt(7, orderT.getTax());
 			pstmt.setInt(8, orderT.getTotalAmt());
 			pstmt.setString(9, orderT.getInsertUserId());
+			pstmt.setString(10, orderT.getNote());
 			
 			pstmt.execute(); 
 			System.out.println(sql);

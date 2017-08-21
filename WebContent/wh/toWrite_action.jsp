@@ -70,6 +70,7 @@
 		int subtotal = Integer.parseInt(request.getParameter("subtotal"));
 		int tax = Integer.parseInt(request.getParameter("tax"));
 		int totalAmt = Integer.parseInt(request.getParameter("totalAmt"));
+		String note = request.getParameter("note").toString();
 		
 		String orderStr = request.getParameter("orderStr").toString(); // 1:3:25000|2:5:15000
 		
@@ -82,7 +83,7 @@
 		// orderT
 		//
 		
-		OrderT orderT = new OrderT(orderNo, orderDt, srcWhId, destWhId, null, subtotal, tax, totalAmt, userId, userId);
+		OrderT orderT = new OrderT(orderNo, orderDt, srcWhId, destWhId, null, subtotal, tax, totalAmt, note, userId, userId);
 	
 		if(mode.equals("C"))
 		{

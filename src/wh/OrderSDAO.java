@@ -255,7 +255,8 @@ public class OrderSDAO extends DAO {
 			
 			while(rs.next()) { 
 				
-				OrderItem orderItem = new OrderItem(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getFloat(7), rs.getString(8)); 
+				System.out.println("[OrderSDAO ServiceHour] " + rs.getFloat(7));
+				OrderItem orderItem = new OrderItem(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getFloat(8), rs.getString(9)); 
 				
 				alist.add(orderItem); 
 			} 

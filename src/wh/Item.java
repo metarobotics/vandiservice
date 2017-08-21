@@ -313,6 +313,7 @@ public class Item {
 	}
 
 	public void setServiceHour(float serviceHour) {
+		System.out.println("[L SetServiceHour] " + serviceHour);
 		this.serviceHour = serviceHour;
 	}
 

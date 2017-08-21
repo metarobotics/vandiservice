@@ -110,6 +110,7 @@ public class OrderItem {
 	}
 
 	public float getServiceHour() {
+		System.out.println("[ServiceHour]" + this.itemNo + "/" + this.serviceHour);
 		return serviceHour;
 	}
 

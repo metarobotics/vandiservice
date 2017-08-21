@@ -491,10 +491,10 @@ $('body').html(restorepage);
 						<% if(mode.equals("V")) { %>
 							<td width="10%" class="cell-c"><%=nOrderItemCnt%></td>
 							<td width="15%" class="cell-r"><%= MrUtil.FormatCurrentDisplay(item.getPriceClient()) %></td>
-							<td width="15%" class="cell-c"><%=nOrderServiceHour%></td>
-							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceClient()*nOrderItemCnt)) %></td>
-							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceClient() + item.getServiceHour()*34700)*nOrderItemCnt) %></td>
-							<% nTotalAmount += (int)(item.getPriceClient() + item.getServiceHour()*34700)*nOrderItemCnt; %>
+							<td width="15%" class="cell-c"><%= nOrderServiceHour%></td>
+							<td width="20%" class="cell-r"><%= item.getPriceClient()*nOrderItemCnt %></td>
+							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceClient()*nOrderItemCnt + nOrderServiceHour*34700*nOrderItemCnt)) %></td>
+							<% nTotalAmount += (int)(item.getPriceClient()*nOrderItemCnt + nOrderServiceHour*34700*nOrderItemCnt); %>
 						<% } else { %>
 							<td width="10%" class="cell-r">
 								<input type="text" name="txtCnt" size=3

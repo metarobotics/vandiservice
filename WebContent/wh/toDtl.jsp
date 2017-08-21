@@ -411,6 +411,24 @@
 				
 				<tr height="20" />
 			</table>
+			
+			
+		<!-- NOTE -->
+		<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
+		<h3>Note</h3>
+		<table border="0" width=600>
+			
+	   	<% if(mode.equals("C")) { %>
+			<tr><td><textarea rows="3" cols="80" name="note" placeholder="자재 구매 관련 특이사항을 입력합니다."></textarea></td></tr>
+	   	<% } else if(mode.equals("R")) { %>
+			<tr><td><textarea rows="3" cols="80" name="note"><%= orderT.getNote() %></textarea></td></tr>
+	   	<% } else if(mode.equals("V")){ %>
+			<tr><td><textarea rows="3" cols="96" name="note" style="border: 1px solid #C1C3D1;" readonly><%= orderT.getNote() %></textarea></td></tr>
+	   	<% } %>
+			        
+			<tr height="15"/>
+		</table>
+			
 
 			<table id="order_item_table" border=0>
 				<thead>

@@ -30,8 +30,8 @@ public class OrderT {
 	public OrderT() {
 	}
 
-	public OrderT(int orderNo, String orderDt, int srcWhNo, int destWhNo, 
-					String statusCd, int subtotal, int tax, int totalAmt, String insertUserId, String updateUserId) {
+	public OrderT(int orderNo, String orderDt, int srcWhNo, int destWhNo,
+					String statusCd, int subtotal, int tax, int totalAmt, String note, String insertUserId, String updateUserId) {
 		this.orderNo = orderNo;
 		this.orderDt = orderDt;
 		this.srcWhNo = srcWhNo;
@@ -41,13 +41,15 @@ public class OrderT {
 		this.subtotal = subtotal;
 		this.tax = tax;
 		this.totalAmt = totalAmt;
+		this.note = note;
+		
 		this.insertUserId = insertUserId;
 		this.updateUserId = updateUserId;
 	}
 
 	// list page 를 보여주기 위한..
 	public OrderT(int orderNo, String orderDt, int srcWhNo, int destWhNo, 
-					String statusCd, int subtotal, int tax, int totalAmt, String insertUserId, 
+					String statusCd, int subtotal, int tax, int totalAmt, String insertUserId, String note, 
 					String srcWhNm, String destWhNm, String statusNm) {
 
 		// basic
@@ -66,6 +68,7 @@ public class OrderT {
 		this.srcWhNm = srcWhNm;
 		this.destWhNm = destWhNm;
 		this.statusNm = statusNm;
+		this.note = note;
 	}
 
 	public int getOrderNo() {
