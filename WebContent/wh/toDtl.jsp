@@ -298,7 +298,7 @@
 	function confirmDelete() {
 		if(confirm('삭제하시겠습니까?'))
 		{
-			moveTo('toWrite_action.jsp?mode=D&orderNo=<%=orderNo%>');
+			moveTo('toWrite_action.jsp?version=1&mode=D&orderNo=<%=orderNo%>');
 		}
 	}
 	

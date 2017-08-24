@@ -8,7 +8,7 @@
 
 <%
 	// request 
-	request.setCharacterEncoding("UTF-8");
+	request.setCharacterEncoding("EUC-KR");
 	
 	//parameter
 	String mode = request.getParameter("mode"); //CUD + A(Accept.접수), S(Ship.배송중), F(Finish.완료)
@@ -87,7 +87,8 @@
 	
 		if(mode.equals("C"))
 		{
-			orderTDao.insertOrderT(orderT); 
+			out.print("[L] orderT note : " + note + " : " + orderT.getNote());
+			orderTDao.insertOrderT(orderT);
 		} 
 		else
 		{

@@ -30,6 +30,7 @@ public class OrderT {
 	public OrderT() {
 	}
 
+	//sql = "select orderNo, orderDt, srcWhNo, destWhNo, statusCd, subtotal, tax, totalAmt, note, insertUserId, updateUserId from orderT where orderNo = ?"; 
 	public OrderT(int orderNo, String orderDt, int srcWhNo, int destWhNo,
 					String statusCd, int subtotal, int tax, int totalAmt, String note, String insertUserId, String updateUserId) {
 		this.orderNo = orderNo;

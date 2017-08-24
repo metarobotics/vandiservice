@@ -168,7 +168,7 @@
 		</tr>
 	<tr height="10"></tr>
 	<tr>
-   		<td align="center"><input type=button class="dtlBtn" value="등록" OnClick="window.location='toDtl.jsp?mode=C&pg=<%=pg%>'"></td>
+   		<td align="center"><input type=button class="dtlBtn" value="등록" OnClick="window.location='toDtl.jsp?version=1&mode=C&pg=<%=pg%>'"></td>
   </tr>
 </table>
 

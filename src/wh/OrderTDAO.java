@@ -250,7 +250,7 @@ public class OrderTDAO extends DAO {
 		
 		try { 
 			
-			sql = "insert into orderT (orderNo, orderDt, srcWhNo, destWhNo, statusCd, subtotal, tax, totalAmt, insertUserId, note, insertDatetime) VALUES (?,?,?,?,?,?,?,?,?,?, current_timestamp())"; 
+			sql = "insert into orderT (orderNo, orderDt, srcWhNo, destWhNo, statusCd, subtotal, tax, totalAmt, note, insertUserId, insertDatetime) VALUES (?,?,?,?,?,?,?,?,?,?, current_timestamp())"; 
 			pstmt = con.prepareStatement(sql); 
 
 			pstmt.setInt(1, orderT.getOrderNo());
@@ -261,8 +261,8 @@ public class OrderTDAO extends DAO {
 			pstmt.setInt(6, orderT.getSubtotal());
 			pstmt.setInt(7, orderT.getTax());
 			pstmt.setInt(8, orderT.getTotalAmt());
-			pstmt.setString(9, orderT.getInsertUserId());
-			pstmt.setString(10, orderT.getNote());
+			pstmt.setString(9, orderT.getNote());
+			pstmt.setString(10, orderT.getInsertUserId());
 			
 			pstmt.execute(); 
 			System.out.println(sql);

@@ -28,7 +28,7 @@
 	int total = alist.size();
 	int size2 = total;
 	
-	final int ROWSIZE = 10;
+	final int ROWSIZE = 50;
 	final int BLOCK = 5;
 	int indent = 0;
 
@@ -123,8 +123,8 @@
 		<%
 			if(pg>BLOCK) {
 		%>
-			[<a href="toList.jsp?pg=1">¢¸¢¸</a>]
-			[<a href="toList.jsp?pg=<%=startPage-1%>">¢¸</a>]
+			[<a href="soList.jsp?pg=1">¢¸¢¸</a>]
+			[<a href="soList.jsp?pg=<%=startPage-1%>">¢¸</a>]
 		<%
 			}
 		%>
@@ -137,7 +137,7 @@
 		<%
 				}else{
 		%>
-					[<a href="toList.jsp?pg=<%=i %>"><%=i %></a>]
+					[<a href="soList.jsp?pg=<%=i %>"><%=i %></a>]
 		<%
 				}
 			}
@@ -146,8 +146,8 @@
 		<%
 			if(endPage<allPage){
 		%>
-			[<a href="toList.jsp?pg=<%=endPage+1%>">¢º</a>]
-			[<a href="toList.jsp?pg=<%=allPage%>">¢º¢º</a>]
+			[<a href="soList.jsp?pg=<%=endPage+1%>">¢º</a>]
+			[<a href="soList.jsp?pg=<%=allPage%>">¢º¢º</a>]
 		<%
 			}
 		%>
