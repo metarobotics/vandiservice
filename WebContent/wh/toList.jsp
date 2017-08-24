@@ -8,6 +8,7 @@
 <%@ page import="java.util.*" %>
 
 <jsp:include page = "top.jsp"/>
+<jsp:useBean id="mrDao" class="wh.MrDAO" />
 <jsp:useBean id="dao" class="wh.OrderTDAO"/>
 
 <%	
@@ -16,17 +17,43 @@
 	String authLvl =  (String)session.getAttribute("authLvl");
 	if (authLvl == null) return;
 	int whNo =  (Integer)session.getAttribute("whNo");
+	String strRequestWhNo = request.getParameter("whNo");
+	int nRequestWhNo = 0;
+	if(strRequestWhNo != null){
+		nRequestWhNo = Integer.parseInt(strRequestWhNo);
+	}
 	
 	ArrayList<OrderT> alist = null;
-	if(authLvl.equals("S")) // super
-		alist = dao.getOrderTList();
+	
+	ArrayList<Wh> whlist = mrDao.getWhList();
+	int whLength = whlist.size();
+	
+	boolean isSuper = false;
+	if(authLvl.equals("S"))
+	{
+		isSuper = true;
+	}
+	
+	if(isSuper)
+	{
+		if(nRequestWhNo == 0)
+		{
+			alist = dao.getOrderTList();
+		}
+		else
+		{
+			alist = dao.getOrderTList(nRequestWhNo);
+		}
+	}
 	else
+	{
 		alist = dao.getOrderTList(whNo);
+	}
 	
 	int total = alist.size();
 	int size2 = total;
 	
-	final int ROWSIZE = 10;
+	final int ROWSIZE = 50;
 	final int BLOCK = 5;
 	int indent = 0;
 
@@ -89,6 +116,28 @@
 <tr height="30"/>
 </table>
 
+<% if(isSuper) { %>
+
+<table>
+<tr>
+<td width="15%" class="cell-l">
+						<select name=srcWh id=srcWh onchange="onChangeCenter()">
+							<option value=''>서비스센터선택</option>
+							<%
+								for (int i = 0; i < whLength; i++) {
+									Wh wh = whlist.get(i);
+							%>
+							<option value=<%=wh.getWhNo()%>><%=wh.getWhNm()%></option>
+							<%
+								}
+							%>
+					</select>
+</td>
+</tr>
+<tr height="10"></tr>
+</table>
+<% } %>
+
 <table width="600" border="1">
 <tr class="header">
 	<th width="15%" class="text-center">주문번호</th>
@@ -109,6 +158,7 @@
 	 	} else {
 	 		for(int i=ROWSIZE*(pg-1); i<end;i++){
 				OrderT orderT = alist.get(i);
+				System.out.println(orderT.getStatusNm());
 %>
 
 	<tr class="row">
@@ -173,5 +223,18 @@
 </table>
 
 </center>
+
+<script>
+function onChangeCenter() {
+	var x = document.getElementById("srcWh").value;
+	if(x > 0)
+	{
+		window.location='toList.jsp?whNo='+ x;
+	}
+		
+}
+
+</script>
+
 </body>
 </html>

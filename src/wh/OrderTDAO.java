@@ -180,8 +180,11 @@ public class OrderTDAO extends DAO {
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
 			
-			sqlBuf.append("		select a.orderNo, a.orderDt, a.srcWhNo, a.destWhNo, a.statusCd, a.subtotal, a.tax, a.totalAmt, a.insertUserId, a.updateUserId, a.note ");
+			sqlBuf.append("		select a.orderNo, a.orderDt, a.srcWhNo, a.destWhNo, a.statusCd, a.subtotal, a.tax, a.totalAmt, a.insertUserId, a.note ");
 			sqlBuf.append("		, b.whNm srcWhNm, c.whNm destWhNm "); 
+			
+			
+			
 			sqlBuf.append("      		" + incoding(", case a.statusCd when '10' then '주문' when '20' then '접수' when '21' then '백오더' when '30' then '배송중' when '40' then '배송완료' end statusNm "));
 			sqlBuf.append("        from orderT a ");
 			sqlBuf.append("        left join wh b on a.srcWhNo = b.whNo");
