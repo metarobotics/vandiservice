@@ -311,7 +311,7 @@ public class OrderTDAO extends DAO {
 		PreparedStatement pstmt = null; 
 		
 		try { 
-			sql = "update orderT set orderDt=?, srcWhNo=?, destWhNo=?, subtotal=?, tax=?, totalAmt=?, updateDatetime=current_timestamp() where orderNo=?";
+			sql = "update orderT set orderDt=?, srcWhNo=?, destWhNo=?, subtotal=?, tax=?, totalAmt=?, note=?, updateDatetime=current_timestamp() where orderNo=?";
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -321,7 +321,8 @@ public class OrderTDAO extends DAO {
 			pstmt.setInt(4, orderT.getSubtotal()); 
 			pstmt.setInt(5, orderT.getTax()); 
 			pstmt.setInt(6, orderT.getTotalAmt()); 
-			pstmt.setInt(7, orderT.getOrderNo());
+			pstmt.setString(7, orderT.getNote());
+			pstmt.setInt(8, orderT.getOrderNo());
 						
 			pstmt.executeUpdate(); 
 			System.out.println(sql);
