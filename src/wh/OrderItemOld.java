@@ -1,14 +1,15 @@
 package wh;
 
-public class OrderItem {
+public class OrderItemOld {
 	
 	private String orderFg;
 	private int orderNo;
 	private int seq;
 	private int itemNo;
 	private int itemCnt;
-	private float itemPrice;//6
-	private String curCd;//7 	// for PO
+	private float itemPrice; //6
+	
+	private String curCd; //7 	// for PO
 	private float serviceHour;  // for SO
 	
 	private String insertUserId; //9
@@ -16,10 +17,10 @@ public class OrderItem {
 	private String updateUserId;
 	private String updateDatetime;
 		
-	public OrderItem() {
+	public OrderItemOld() {
 	}
 	
-	public OrderItem(String orderFg, int orderNo, int seq, int itemNo, int itemCnt, int itemPrice, String insertUserId) {
+	public OrderItemOld(String orderFg, int orderNo, int seq, int itemNo, int itemCnt, int itemPrice, String insertUserId) {
 		this.orderFg = orderFg;
 		this.orderNo = orderNo;
 		this.seq = seq;
@@ -30,7 +31,7 @@ public class OrderItem {
 	}
 
 	// include serviceHour. for SO 
-	public OrderItem(String orderFg, int orderNo, int seq, int itemNo, int itemCnt, int itemPrice, float serviceHour, String insertUserId) {
+	public OrderItemOld(String orderFg, int orderNo, int seq, int itemNo, int itemCnt, int itemPrice, float serviceHour, String insertUserId) {
 		this.orderFg = orderFg;
 		this.orderNo = orderNo;
 		this.seq = seq;
@@ -42,7 +43,7 @@ public class OrderItem {
 	}
 
 	// include curCd. price float. for PO
-	public OrderItem(String orderFg, int orderNo, int seq, int itemNo, int itemCnt, float itemPrice, String curCd, String insertUserId) {
+	public OrderItemOld(String orderFg, int orderNo, int seq, int itemNo, int itemCnt, float itemPrice, String curCd, String insertUserId) {
 		this.orderFg = orderFg;
 		this.orderNo = orderNo;
 		this.seq = seq;
@@ -110,7 +111,7 @@ public class OrderItem {
 	}
 
 	public float getServiceHour() {
-		System.out.println("[ServiceHour]" + this.itemNo + "/" + this.serviceHour);
+		//System.out.println("[ServiceHour]" + this.itemNo + "/" + this.serviceHour);
 		return serviceHour;
 	}
 

@@ -1,16 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
+<% request.setCharacterEncoding("EUC-KR"); %>
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
-
+<%@ page import="wh.*" %>
 <jsp:useBean id="orderSDao" class="wh.OrderSDAO"/>
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
 
 <%
-//request 
-request.setCharacterEncoding("EUC-KR");
 response.setContentType("text/html;charset=EUC-KR");
-
 
 //parameter
 String mode = request.getParameter("mode"); //CUD + F(Finish.확정)
@@ -87,12 +84,12 @@ if(mode.equals("C") || mode.equals("U"))
 
 	
 	//
-	// orderItem
+	// orderSItem
 	//
 	
 	if(mode.equals("U"))
 	{
-		orderSDao.deleteOrderItem(orderNo);
+		orderSDao.deleteOrderSItem(orderNo);
 	}
 	
 	int itemNo;
@@ -115,8 +112,8 @@ if(mode.equals("C") || mode.equals("U"))
 		itemPrice = Integer.parseInt(arr[2]);
 		serviceHour = Float.parseFloat(arr[3]);
 		
-		OrderItem orderItem = new OrderItem("S", orderNo, i+1, itemNo, itemCnt, itemPrice, serviceHour, userId);  
-		orderSDao.insertOrderItem(orderItem);
+		OrderSItem orderSItem = new OrderSItem(orderNo, i+1, itemNo, itemCnt, itemPrice, serviceHour, userId);  
+		orderSDao.insertOrderSItem(orderSItem);
 	}
 }
 else if(mode.equals("D"))
@@ -124,7 +121,7 @@ else if(mode.equals("D"))
 	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 
 	orderSDao.deleteOrderS(orderNo);
-	orderSDao.deleteOrderItem(orderNo);
+	orderSDao.deleteOrderSItem(orderNo);
 }
 else if(mode.equals("F")) // 확정 
 {

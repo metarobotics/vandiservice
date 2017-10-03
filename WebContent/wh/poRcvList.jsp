@@ -1,27 +1,20 @@
 <%@ page language="java" contentType="text/html;charset=EUC-KR"%>
-<%
-	request.setCharacterEncoding("EUC-KR");
-%>
-
-<%@ page import="java.sql.*"%>
-<!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*"%>
+<% request.setCharacterEncoding("EUC-KR"); %>
+<%@ page import="java.sql.*"%><!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="java.util.*"%>
-
-<% 
-
-String mode = request.getParameter("mode");
-
-if(!mode.equals("V")) { %>
-<jsp:include page = "top.jsp"/>
-<% } %>
-
-
+<%@ page import="wh.*"%>
 <jsp:useBean id="mrDao" class="wh.MrDAO" />
 <jsp:useBean id="itemDao" class="wh.ItemDAO" />
 <jsp:useBean id="orderPDao" class="wh.OrderPDAO" />
 
+<%
+String mode = request.getParameter("mode");
 
+if(!mode.equals("V")) { %>
+
+<jsp:include page = "top.jsp"/>
+
+<% } %>
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -31,7 +24,6 @@ if(!mode.equals("V")) { %>
 <title>Transfer Order</title>
 <link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
-<script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 
@@ -64,7 +56,7 @@ if(!mode.equals("V")) { %>
 	float totalAmt = 0;
 	String insertUserId = "";
 
-	ArrayList<OrderItem> orderItemList = null;
+	ArrayList<OrderPItem> orderPItemList = null;
 	ArrayList<Item> itemlist = null;
 	ArrayList<OrderPRcv> orderPRcvList = null;
 	ArrayList<OrderPRcvItem> orderPRcvItemList = null;
@@ -87,7 +79,7 @@ if(!mode.equals("V")) { %>
 		totalAmt = orderP.getTotalAmt();
 		insertUserId = orderP.getInsertUserId();
 		
-		orderItemList = orderPDao.getOrderItemList(orderNo);
+		orderPItemList = orderPDao.getOrderPItemList(orderNo);
 		
 		if(orderP.getStatusCd().equals("10")) //작성중
 			itemlist = itemDao.getItemList(whNo);
@@ -279,7 +271,7 @@ if(!mode.equals("V")) { %>
 				<tr height="40" valign="bottom">
 					<td colspan="2">
 						<div align="center">
-							<% if (mode.equals("R") && orderP.getStatusCd().equals("20") && userWhId.equals("mr")) { // 작성완료이고  MR 직원인 경우 입고처리 가능 %>
+							<% if (mode.equals("R") && (orderP.getStatusCd().equals("20") || orderP.getStatusCd().equals("30")) && userWhId.equals("mr")) { // 작성완료/입고중 이고  MR직원인 경우 입고처리 가능 %>
 									<input type="button" class="dtlBtn" value="입고등록" onclick="window.open('poRcvDtl.jsp?mode=C&orderNo=<%=orderNo%>');">&nbsp;
 							<% } %> 
 							<% if (mode.equals("R") && orderP.getStatusCd().equals("30") && userWhId.equals("mr")) { // 입고처리이고  MR 직원인 경우 입고완료 처리 가능 %>

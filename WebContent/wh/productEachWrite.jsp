@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
+<% request.setCharacterEncoding("EUC-KR"); %>
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
-
+<%@ page import="wh.*" %>
 <jsp:useBean id="dao" class="wh.ProductEachDAO"/>
 
 <%
-// request 
-request.setCharacterEncoding("EUC-KR");
 response.setContentType("text/html;charset=EUC-KR");
 
 //parameter

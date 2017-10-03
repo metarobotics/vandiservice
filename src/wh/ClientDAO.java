@@ -24,13 +24,11 @@ public class ClientDAO extends DAO {
 			
 			pstmt = con.prepareStatement(sql); 
 			rs = pstmt.executeQuery(); 
-			System.out.println(sql);
 			
 			if(rs.next()) { 
 				no = rs.getInt(1); 
 			} 
 		}catch(Exception e) { 
-			e.printStackTrace();
 			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
@@ -45,36 +43,22 @@ public class ClientDAO extends DAO {
 		int cnt = 0; 
 		
 		try { 
-			sql = "SELECT COUNT(*) FROM client";
+			sql = "SELECT COUNT(0) FROM client";
 			
 			pstmt = con.prepareStatement(sql); 
 			rs = pstmt.executeQuery(); 
-			System.out.println(sql);
+			//System.out.println(sql);
 			
 			if(rs.next()) { 
 				cnt=rs.getInt(1); 
 			} 
 		}catch(Exception e) { 
-			e.printStackTrace();
 			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
 		} 
 		return cnt; 
 	} 
-	
-	public String incoding(String data) { 
-		try { 
-			//data = new String(data.getBytes("8859_1"), "euc-kr");
-			//data = new String(data.getBytes("KSC5601"), "8859_1");
-			
-//			sql = new String(",  statusNm ".getBytes("8859_1"), "euc-kr");
-//			sql = new String(",  statusNm ".getBytes("KSC5601"), "8859_1");
-			
-		}catch (Exception e){ } 
-		return data; 
-	} 
-	
 	
 	public Client getClientInfo(int clientNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
@@ -85,21 +69,32 @@ public class ClientDAO extends DAO {
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
 
-			sqlBuf.append("		select a.* ");
-			sqlBuf.append("			, (select count(0) from orderS where clientNo = a.clientNo) as dealCnt");
-			sqlBuf.append("		from client a ");
+			sqlBuf.append("		select 	a.clientNo, ");
+			sqlBuf.append("				a.clientNm, ");
+			sqlBuf.append("				a.phoneNo, ");
+			sqlBuf.append("				a.mobileNo, ");
+			sqlBuf.append("				a.email, ");
+			
+			sqlBuf.append("				a.location, ");
+			sqlBuf.append("				a.addr, ");
+			sqlBuf.append("				a.note, ");
+			sqlBuf.append("				a.insertUserId, ");
+			sqlBuf.append("				a.insertDatetime, ");
+			
+			sqlBuf.append("				a.updateUserId, ");
+			sqlBuf.append("				a.updateDatetime "); 
+			sqlBuf.append("				, (select count(0) from orderS where clientNo = a.clientNo) as dealCnt");
+			sqlBuf.append("		  from client a ");
 			sqlBuf.append("		 where clientNo = ?;");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			pstmt.setInt(1, clientNo); 
 			rs = pstmt.executeQuery(); 
-			System.out.println(sqlBuf.toString());
 			
 			if(rs.next()) { 
 				client = new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getInt(13)); 
 			} 
 		}catch(Exception e) { 
-			e.printStackTrace();
 			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
@@ -107,7 +102,7 @@ public class ClientDAO extends DAO {
 		
 		return client; 
 	} 
-	
+
 		
 	// list page 
 	public ArrayList<Client> getClientList() throws Exception { 
@@ -120,14 +115,25 @@ public class ClientDAO extends DAO {
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
 
-			sqlBuf.append("		select a.* ");
+			sqlBuf.append("		select 	a.clientNo, ");
+			sqlBuf.append("				a.clientNm, ");
+			sqlBuf.append("				a.phoneNo, ");
+			sqlBuf.append("				a.mobileNo, ");
+			sqlBuf.append("				a.email, ");
+			sqlBuf.append("				a.location, ");
+			sqlBuf.append("				a.addr, ");
+			sqlBuf.append("				a.note, ");
+			sqlBuf.append("				a.insertUserId, ");
+			sqlBuf.append("				a.insertDatetime, ");
+			sqlBuf.append("				a.updateUserId, ");
+			sqlBuf.append("				a.updateDatetime "); 
 			sqlBuf.append("			, (select count(0) from orderS where productSerialNo in (select serialNo from productEach where clientNo = a.clientNo)) as dealCnt");
 			sqlBuf.append("		from client a ");
 			sqlBuf.append("		order by clientNm;");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			rs = pstmt.executeQuery(); 
-			System.out.println(sqlBuf.toString());
+			//System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) { 
 				Client client = new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getInt(13)); 
@@ -135,7 +141,6 @@ public class ClientDAO extends DAO {
 				alist.add(client); 
 			} 
 		}catch(Exception e) { 
-			e.printStackTrace();
 			throw e;
 		}finally { 
 			DBClose.close(con,pstmt,rs); 
@@ -162,10 +167,9 @@ public class ClientDAO extends DAO {
 			pstmt.setString(9, client.getInsertUserId());
 			
 			pstmt.execute(); 
-			System.out.println(sql);
+			//System.out.println(sql);
 			
 		}catch(Exception e) { 
-			e.printStackTrace();
 			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 
@@ -193,10 +197,9 @@ public class ClientDAO extends DAO {
 			pstmt.setInt(9, client.getClientNo());
 			
 			pstmt.executeUpdate();
-			System.out.println(sql);
+			//System.out.println(sql);
 			
 		}catch(Exception e) { 
-			e.printStackTrace();
 			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 
@@ -207,14 +210,17 @@ public class ClientDAO extends DAO {
 	public void deleteClient(int clientNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
+		
 		try { 
-			sql = "delete from client where clientNo = ?"; 
+			sql = "delete from client where clientNo = ?";
+			
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setInt(1, clientNo); 
 			pstmt.executeUpdate();
-			System.out.println(sql);
+			
+			//System.out.println(sql);
+			
 		}catch(Exception e) { 
-			e.printStackTrace();
 			throw e;
 		}finally { 
 			DBClose.close(con,pstmt); 

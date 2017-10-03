@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
-<%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
+<%@ page import="java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="java.util.*" %>
-
+<%@ page import="wh.*" %>
 <jsp:useBean id="orderPDao" class="wh.OrderPDAO"/>
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
 
@@ -38,6 +37,8 @@
 		modeStr = "입고완료";
 	}
 	
+	
+	OrderP orderP = null;
 	
 	if(mode.equals("C") || mode.equals("U")) 
 	{
@@ -83,7 +84,7 @@
 		// orderP
 		//
 		
-		OrderP orderP = new OrderP(orderNo, orderDt, whNo, null, subtotal, tax, totalAmt, curCd, userId, userId);
+		orderP = new OrderP(orderNo, orderDt, whNo, null, subtotal, tax, totalAmt, curCd, userId, userId);
 	
 		if(mode.equals("C"))
 		{
@@ -96,12 +97,12 @@
 	
 		
 		//
-		// orderItem
+		// orderPItem
 		//
 		
 		if(mode.equals("U"))
 		{
-			orderPDao.deleteOrderItem(orderNo);
+			orderPDao.deleteOrderPItem(orderNo);
 		}
 		
 		int itemNo;
@@ -122,8 +123,8 @@
 			itemCnt = Integer.parseInt(arr[1]);
 			itemPrice = Float.parseFloat(arr[2]);
 			
-			OrderItem orderItem = new OrderItem("P", orderNo, i+1, itemNo, itemCnt, itemPrice, curCd, userId); 
-			orderPDao.insertOrderItem(orderItem);
+			OrderPItem orderPItem = new OrderPItem(orderNo, i+1, itemNo, itemCnt, itemPrice, curCd, userId); 
+			orderPDao.insertOrderPItem(orderPItem);
 		}
 		
 	}
@@ -132,12 +133,13 @@
 		int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 
 		orderPDao.deleteOrderP(orderNo);
-		orderPDao.deleteOrderItem(orderNo);
+		orderPDao.deleteOrderPItem(orderNo);
 	}
-	else if(mode.equals("A")) // 주문 
+	else if(mode.equals("A")) // 주문 -> 작성완료 
 	{
 		int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 
+		//orderPDao.modifyOrderP(orderP); // 수정 후 작성완료 ????
 		orderPDao.acceptOrderP(orderNo);
 	}	
 	else if(mode.equals("G")) // 입고처리 
@@ -149,7 +151,7 @@
 	else if(mode.equals("F")) // 입고완료 
 	{
 		int orderNo = Integer.parseInt(request.getParameter("orderNo"));
-
+		
 		orderPDao.finishOrderP(orderNo);
 	}	
 	

@@ -118,4 +118,22 @@ public class MrUtil {
 		return String.valueOf( price );
 		//return NumberFormat.getCurrencyInstance(Locale.KOREA).format(price);
 	}
+	
+	// Caller : ItemDAO
+	public static String incoding(String data) throws Exception { 
+		
+		try {
+			
+			data = new String(data.getBytes("8859_1"), "euc-kr");
+			//data = new String(data.getBytes("KSC5601"), "8859_1");
+			
+			//sql = new String(",  statusNm ".getBytes("8859_1"), "euc-kr");
+			//sql = new String(",  statusNm ".getBytes("KSC5601"), "8859_1");
+			
+		}catch (Exception e){ 
+			e.printStackTrace();
+			throw e;
+		} 
+		return data; 
+	} 
 }

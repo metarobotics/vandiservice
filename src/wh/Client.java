@@ -48,8 +48,6 @@ public class Client {
 		
 		this.dealCnt = dealCnt;
 	}
-	
-
 
 	public int getClientNo() {
 		return clientNo;

@@ -1,14 +1,10 @@
 <%@ page language="java" contentType="text/html;charset=EUC-KR" %>
 <% request.setCharacterEncoding("EUC-KR"); %>
-
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
- 
+<%@ page import="wh.*" %>
 <jsp:useBean id="mrDao" class="wh.MrDAO"/>
 <jsp:include page = "/loginChk.jsp"/>
-
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -17,9 +13,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="../css/mr.css">
 <script type="text/javascript" src="../js/mr.js"></script>
-<script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
 
 <%
 	String mode = request.getParameter("mode"); // C/R

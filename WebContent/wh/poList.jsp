@@ -1,30 +1,31 @@
-
-<%@ page contentType="text/html;charset=euc_kr" %>
-<% request.setCharacterEncoding("euc-kr"); %>
-
-
-<%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
+<%@ page language="java" contentType="text/html;charset=EUC-KR"%>
+<% request.setCharacterEncoding("EUC-KR"); %>
+<%@ page import="java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="java.util.*" %>
-
-<jsp:include page = "top.jsp"/>
+<%@ page import="wh.*" %>
 <jsp:useBean id="dao" class="wh.OrderPDAO"/>
+<jsp:include page = "top.jsp"/>
 
 <%	
-	//int total = dao.countOrderP();
-
 	String authLvl =  (String)session.getAttribute("authLvl");
 	if (authLvl == null) return;
-	int whNo =  (Integer)session.getAttribute("whNo");
+	
+	int userWhNo =  (Integer)session.getAttribute("whNo");
+	String userWhNm =  (String)session.getAttribute("whNm");
+	String userWhId =  (String)session.getAttribute("whId");
+
+	// PO : MR직원만 가능
+	if(userWhNm == null || !userWhId.equals("mr"))
+		return;
 	
 	ArrayList<OrderP> alist = null;
 	if(authLvl.equals("S")) // super
 		alist = dao.getOrderPList();
 	else
-		alist = dao.getOrderPList(whNo);
+		alist = dao.getOrderPList(userWhNo);
 	
-	int total = alist.size();
-	int size2 = total;
+	int size = alist.size();
+	int size2 = size;
 	
 	final int ROWSIZE = 10;
 	final int BLOCK = 5;
@@ -43,7 +44,7 @@
 	int startPage = ((pg-1)/BLOCK*BLOCK)+1;
 	int endPage = ((pg-1)/BLOCK*BLOCK)+BLOCK;
 	
-	allPage = (int)Math.ceil(total/(double)ROWSIZE);
+	allPage = (int)Math.ceil(size/(double)ROWSIZE);
 	
 	if(endPage > allPage) {
 		endPage = allPage;
@@ -51,7 +52,7 @@
 	
 	size2 -=end;
 	if(size2 < 0) {
-		end = total;
+		end = size;
 	}
 	
 	
@@ -68,7 +69,13 @@
 <center>
 	   <div class="table-title"><h1>구매목록</h1></div>
 
-<table width="600" border="1">
+<table cellpadding="0" cellspacing="0" border="0">
+<tr>
+	<td class="cell-r">total : <%= size %></td>
+</tr>
+</table>
+
+<table border="1">
 <tr class="header">
 	<th width="18%" class="text-center">주문번호</th>
 	<th width="18%" class="text-center">주문일자</th>
@@ -79,7 +86,7 @@
 </tr>
 <tbody class="table-hover">
 <%
-	if(total==0) {
+	if(size==0) {
 %>
 		<tr class="row">
 	 	   <td colspan="6" class="cell-c">등록된 내역이 없습니다.</td>

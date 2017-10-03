@@ -1,19 +1,12 @@
-
-<%@ page contentType="text/html;charset=euc_kr" %>
-<% request.setCharacterEncoding("euc-kr"); %>
-
-
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
+<% request.setCharacterEncoding("EUC-KR"); %>
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
-
+<%@ page import="wh.*" %>
+<jsp:useBean id="dao" class="wh.OrderSDAO"/>
 <jsp:include page = "top.jsp"/>
 
-<jsp:useBean id="dao" class="wh.OrderSDAO"/>
-
 <%	
-	//int total = dao.countOrderS();
-
 	String authLvl =  (String)session.getAttribute("authLvl");
 	if (authLvl == null) return;
 	
@@ -25,8 +18,8 @@
 	else
 		alist = dao.getOrderSList(whNo);
 	
-	int total = alist.size();
-	int size2 = total;
+	int size = alist.size();
+	int size2 = size;
 	
 	final int ROWSIZE = 50;
 	final int BLOCK = 5;
@@ -45,7 +38,7 @@
 	int startPage = ((pg-1)/BLOCK*BLOCK)+1;
 	int endPage = ((pg-1)/BLOCK*BLOCK)+BLOCK;
 	
-	allPage = (int)Math.ceil(total/(double)ROWSIZE);
+	allPage = (int)Math.ceil(size/(double)ROWSIZE);
 	
 	if(endPage > allPage) {
 		endPage = allPage;
@@ -53,7 +46,7 @@
 	
 	size2 -=end;
 	if(size2 < 0) {
-		end = total;
+		end = size;
 	}
 	
 	
@@ -70,6 +63,11 @@
 <body>
 <center>
 	   <div class="table-title"><h1>견적서목록</h1></div>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr>
+	<td class="cell-r">total : <%= size %></td>
+</tr>
+</table>
 <table border="1">
 <tr class="header">
 	<th width="10%" class="text-center">접수번호</th>
@@ -82,7 +80,7 @@
 </tr>
 <tbody class="table-hover">
 <%
-	if(total==0) {
+	if(size==0) {
 %>
 		<tr class="row">
 	 	   <td colspan="8" class="cell-c">등록된 내역이 없습니다.</td>
@@ -91,7 +89,7 @@
 	 	} else {
 	 		for(int i=ROWSIZE*(pg-1); i<end;i++){
 				OrderS orderS = alist.get(i);
-				System.out.println(orderS.getTotalAmt());
+				//System.out.println(orderS.getTotalAmt());
 	//			indent = item.getIndent();
 				/*int itemNo = item.getItemNo();
 				String itemNm = item.getItemNm();

@@ -1,25 +1,19 @@
 <%@ page language="java" contentType="text/html;charset=EUC-KR" %>
 <% request.setCharacterEncoding("EUC-KR"); %>
-
-<%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
+<%@ page import="java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="java.util.*" %>
- 
-<jsp:include page = "top.jsp"/>
-
+<%@ page import="wh.*" %>
 <jsp:useBean id="clientDao" class="wh.ClientDAO"/>
-
+<jsp:include page = "top.jsp"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Vandi clients</title>
+<title>Vandi Service</title>
 <link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
-<script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
 
 <%
 	String authLvl =  (String)session.getAttribute("authLvl");
@@ -35,10 +29,8 @@
 	else // R
 		writeMode = "U";
 	
-	int orderNo = 0;
-
 	//out.print("."+mode+".");
-	
+
 	Client client = null;
 	
 	if(mode.equals("R"))
@@ -59,7 +51,7 @@
 		
 		//alert(document.getElementById("clientNo").value);
 		
-		if(isNull(document.getElementById("clientNm")))
+		if(document.getElementById("clientNm").value == '')
 		{
 			alert('고객명을 입력하세요.');
 			return false;
@@ -73,7 +65,7 @@
 		if(confirm('삭제하시겠습니까?'))
 		{
 			<% if(mode.equals("R")) { %>   
-				moveTo('clientWrite_action.jsp?mode=D&clientNo=<%= client.getClientNo() %>');	
+				moveTo('clientWrite.jsp?mode=D&clientNo=<%= client.getClientNo() %>');	
 			<% } else { %>
 			<% } %>
 		}
@@ -85,9 +77,13 @@
 <body>
 <center>
 
+	<% if(mode.equals("R")) { %>   
    		<div class="table-title"><h1>고객정보</h1></div>
-
-		<form name="form1" method="post" action="clientWrite_action.jsp?mode=<%= writeMode %>" onsubmit="return chkValid();">
+	<% } else { %>
+   		<div class="table-title"><h1>고객등록</h1></div>
+	<% } %>   		
+	
+	<form name="form1" method="post" action="clientWrite.jsp?mode=<%= writeMode %>" onsubmit="return chkValid();">
 
 
 		<table>

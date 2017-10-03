@@ -1,15 +1,10 @@
-
-<%@ page contentType="text/html;charset=euc_kr" %>
-<% request.setCharacterEncoding("euc-kr"); %>
-
-
-<%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
+<%@ page language="java" contentType="text/html;charset=EUC-KR" %>
+<% request.setCharacterEncoding("EUC-KR"); %>
+<%@ page import="java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="java.util.*" %>
-
-<jsp:include page = "top.jsp"/>
-
+<%@ page import="wh.*" %>
 <jsp:useBean id="dao" class="wh.ProductEachDAO"/>
+<jsp:include page = "top.jsp"/>
 
 <%	
 	String authLvl =  (String)session.getAttribute("authLvl");
@@ -61,27 +56,33 @@
  	<link rel="stylesheet" href="../css/vandiservice.css">
 </head>
 
-<body translate="no" >
+<body>
 <center>
    <div class="table-title"><h1>제품목록</h1></div>
 
-<table border="1" width="600">
-<tr class="header">
-	<th width="23%" class="text-center">제품일련번호</th>
-	<th width="16%" class="text-center">제작일자</th>
-	<th width="13%" class="text-center">등록번호</th>
-	<th width="22%" class="text-center">고객명</th>
-	<th width="10%" class="text-center">지역</th>
-	<th width="16%" class="text-center">검사일자</th>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr>
+	<td class="cell-r">total : <%= size %></td>
 </tr>
+</table>
 
-<%
-	if(productEachListSize==0) {
-%>
-		<tr class="row">
-	 	   <td colspan="7" class="cell-c">등록된 내역이 없습니다.</td>
-		</tr>
-	 <%
+<table border="1" width="600">
+	<tr class="header">
+		<th width="23%" class="text-center">제품일련번호</th>
+		<th width="16%" class="text-center">제작일자</th>
+		<th width="13%" class="text-center">등록번호</th>
+		<th width="22%" class="text-center">고객명</th>
+		<th width="10%" class="text-center">지역</th>
+		<th width="16%" class="text-center">검사일자</th>
+	</tr>
+	
+	<%
+		if(productEachListSize==0) {
+	%>
+			<tr class="row">
+		 	   <td colspan="6" class="cell-c">등록된 내역이 없습니다.</td>
+			</tr>
+	<%
 	 	} else {
 	 		for(int i=ROWSIZE*(pg-1); i<end;i++){
 	 			ProductEach productEach = alist.get(i);
@@ -90,63 +91,60 @@
 				String itemNm = item.getItemNm();
 				String regUserId = item.getInsertUserId();
 				String regDt = item.getInsertDatetime.toString();*/
-%>
+	%>
+	
+			<tr class="row">
+				<td class="cell-c"><a href="productEachDtl.jsp?mode=R&productEachNo=<%=productEach.getProductEachNo()%>&pg=<%=pg%>"><%= productEach.getSerialNo() %></a></td>
+				<td class="cell-c"><%=productEach.getProdDt()%></td>
+				<td class="cell-c"><%=productEach.getRegisterNo()%></td>
+				<td class="cell-c"><%=productEach.getClientNm()%></td>
+				<td class="cell-c"><%=productEach.getClientLocation()%></td>
+				<td class="cell-c"><%=productEach.getCertDt()%></td>
+			</tr>
 
-<tr class="row">
-<td class="cell-c"><a href="productEachDtl.jsp?mode=R&productEachNo=<%=productEach.getProductEachNo()%>&pg=<%=pg%>"><%= productEach.getSerialNo() %></a></td>
-<td class="cell-c"><%=productEach.getProdDt()%></td>
-<td class="cell-c"><%=productEach.getRegisterNo()%></td>
-<td class="cell-c"><%=productEach.getClientNm()%></td>
-<td class="cell-c"><%=productEach.getClientLocation()%></td>
-<td class="cell-c"><%=productEach.getCertDt()%></td>
-</tr>
-
-<%
-
-	}}
-
-%>
+	<%
+			}
+		}
+	%>
 
 </table>
-
-<br>
 <table cellpadding="0" cellspacing="0" border="0">
-  <tr>
-	<td align="center">
-		<%
-			if(pg>BLOCK) {
-		%>
-			[<a href="toList.jsp?pg=1">◀◀</a>]
-			[<a href="toList.jsp?pg=<%=startPage-1%>">◀</a>]
-		<%
-			}
-		%>
-		
-		<%
-			for(int i=startPage; i<= endPage; i++){
-				if(i==pg){
-		%>
-					<u><b>[<%=i %>]</b></u>
-		<%
-				}else{
-		%>
-					[<a href="toList.jsp?pg=<%=i %>"><%=i %></a>]
-		<%
+	<tr height="10"/>
+	<tr>
+		<td align="center">
+			<%
+				if(pg>BLOCK) {
+			%>
+				[<a href="toList.jsp?pg=1">◀◀</a>]
+				[<a href="toList.jsp?pg=<%=startPage-1%>">◀</a>]
+			<%
 				}
-			}
-		%>
-		
-		<%
-			if(endPage<allPage){
-		%>
-			[<a href="toList.jsp?pg=<%=endPage+1%>">▶</a>]
-			[<a href="toList.jsp?pg=<%=allPage%>">▶▶</a>]
-		<%
-			}
-		%>
+			%>
+			
+			<%
+				for(int i=startPage; i<= endPage; i++){
+					if(i==pg){
+			%>
+						<u><b>[<%=i %>]</b></u>
+			<%
+					}else{
+			%>
+						[<a href="toList.jsp?pg=<%=i %>"><%=i %></a>]
+			<%
+					}
+				}
+			%>
+			
+			<%
+				if(endPage<allPage){
+			%>
+				[<a href="toList.jsp?pg=<%=endPage+1%>">▶</a>]
+				[<a href="toList.jsp?pg=<%=allPage%>">▶▶</a>]
+			<%
+				}
+			%>
 		</td>
-		</tr>
-		
+	</tr>
 	<tr height="10"></tr>
 	<tr>
 		<%
@@ -156,10 +154,7 @@
 	   	<%} else { %>
 	   	<%} %>
   	</tr>
-
-</tbody>
 </table>
-
 </center>
 </body>
 </html>

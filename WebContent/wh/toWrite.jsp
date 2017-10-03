@@ -1,15 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
+<% request.setCharacterEncoding("EUC-KR"); %>
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
-
+<%@ page import="wh.*" %>
 <jsp:useBean id="orderTDao" class="wh.OrderTDAO"/>
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
 
 <%
-	// request 
-	request.setCharacterEncoding("EUC-KR");
-	
 	//parameter
 	String mode = request.getParameter("mode"); //CUD + A(Accept.접수), S(Ship.배송중), F(Finish.완료)
 	String modeStr = "";
@@ -60,6 +57,7 @@
 		out.print("\n2:"+request.getParameter("destWh"));
 		out.print("\n3:"+orderNo);
 		out.print("\n4:"+Integer.parseInt(request.getParameter("subtotal")));
+		
 		//out.print("\n5:"+Integer.parseInt(request.getParameter("tax")));
 		//out.print("\n6:"+Integer.parseInt(request.getParameter("totalAmt")));
 		
@@ -87,7 +85,7 @@
 	
 		if(mode.equals("C"))
 		{
-			out.print("[L] orderT note : " + note + " : " + orderT.getNote());
+			//out.print("[L] orderT note : " + note + " : " + orderT.getNote());
 			orderTDao.insertOrderT(orderT);
 		} 
 		else
@@ -102,7 +100,7 @@
 		
 		if(mode.equals("U"))
 		{
-			orderTDao.deleteOrderItem(orderNo);
+			orderTDao.deleteOrderTItem(orderNo);
 		}
 		
 		int itemNo;
@@ -123,8 +121,8 @@
 			itemCnt = Integer.parseInt(arr[1]);
 			itemPrice = Integer.parseInt(arr[2]);
 			
-			OrderItem orderItem = new OrderItem("T", orderNo, i+1, itemNo, itemCnt, itemPrice, userId); 
-			orderTDao.insertOrderItem(orderItem);
+			OrderTItem orderTItem = new OrderTItem(orderNo, i+1, itemNo, itemCnt, itemPrice, userId); 
+			orderTDao.insertOrderTItem(orderTItem);
 		}
 		
 	}
@@ -133,7 +131,7 @@
 		int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 
 		orderTDao.deleteOrderT(orderNo);
-		orderTDao.deleteOrderItem(orderNo);
+		orderTDao.deleteOrderTItem(orderNo);
 	}
 	else if(mode.equals("A")) // 접수 
 	{

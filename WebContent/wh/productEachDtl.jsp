@@ -1,16 +1,13 @@
 <%@ page language="java" contentType="text/html;charset=EUC-KR" %>
 <% request.setCharacterEncoding("EUC-KR"); %>
-
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
- 
-<jsp:include page = "top.jsp"/>
-
+<%@ page import="wh.*" %>
 <jsp:useBean id="productEachDao" class="wh.ProductEachDAO"/>
 <jsp:useBean id="clientDao" class="wh.ClientDAO"/>
 <jsp:useBean id="mrDao" class="wh.MrDAO"/>
-
+ 
+<jsp:include page = "top.jsp"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,9 +16,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
-<script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
 
 <%
 	String authLvl =  (String)session.getAttribute("authLvl");
@@ -93,7 +88,7 @@
 		if(confirm('삭제하시겠습니까?'))
 		{
 			<% if(mode.equals("R")) { %>   
-				moveTo('productEachWrite_action.jsp?mode=D&productEachNo=<%= productEach.getProductEachNo() %>');	
+				moveTo('productEachWrite.jsp?mode=D&productEachNo=<%= productEach.getProductEachNo() %>');	
 			<% } else { %>
 			<% } %>   		
 		}
@@ -116,7 +111,7 @@
 
    		<div class="table-title"><h1>제품정보</h1></div>
 
-		<form name="form1" method="post" action="productEachWrite_action.jsp?mode=<%= writeMode %>" onsubmit="return chkValid();">
+		<form name="form1" method="post" action="productEachWrite.jsp?mode=<%= writeMode %>" onsubmit="return chkValid();">
 
 
 

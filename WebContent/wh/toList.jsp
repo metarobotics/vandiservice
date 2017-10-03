@@ -1,19 +1,14 @@
-
-<%@ page contentType="text/html;charset=euc_kr" %>
-<% request.setCharacterEncoding("euc-kr"); %>
-
-
+<%@ page language="java" contentType="text/html;charset=EUC-KR"%>
+<% request.setCharacterEncoding("EUC-KR"); %>
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
-
-<jsp:include page = "top.jsp"/>
+<%@ page import="wh.*" %>
 <jsp:useBean id="mrDao" class="wh.MrDAO" />
 <jsp:useBean id="dao" class="wh.OrderTDAO"/>
 
-<%	
-	//int total = dao.countOrderT();
+<jsp:include page = "top.jsp"/>
 
+<%	
 	String authLvl =  (String)session.getAttribute("authLvl");
 	if (authLvl == null) return;
 	int whNo =  (Integer)session.getAttribute("whNo");
@@ -50,8 +45,8 @@
 		alist = dao.getOrderTList(whNo);
 	}
 	
-	int total = alist.size();
-	int size2 = total;
+	int size = alist.size();
+	int size2 = size;
 	
 	final int ROWSIZE = 50;
 	final int BLOCK = 5;
@@ -70,7 +65,7 @@
 	int startPage = ((pg-1)/BLOCK*BLOCK)+1;
 	int endPage = ((pg-1)/BLOCK*BLOCK)+BLOCK;
 	
-	allPage = (int)Math.ceil(total/(double)ROWSIZE);
+	allPage = (int)Math.ceil(size/(double)ROWSIZE);
 	
 	if(endPage > allPage) {
 		endPage = allPage;
@@ -78,7 +73,7 @@
 	
 	size2 -=end;
 	if(size2 < 0) {
-		end = total;
+		end = size;
 	}
 	
 	
@@ -94,17 +89,8 @@
 
 <body>
 <center>
-	   <div class="table-title"><h1>T.O.(Transfer order) 목록</h1></div>
-	   <!-- 
+<div class="table-title"><h1>T.O.(Transfer order) 목록</h1></div>
 <table>
-	<tr height="20"></tr>
-	<tr>
-		<td class="td_railway_h0">T.O.(Transfer order)</td>
-	</tr>
-	<tr height="20"></tr>
-</table>
- -->
-<table width="600">
 <tr>
 <td>
 <h2>주문관련 주의사항</h2>
@@ -120,19 +106,20 @@
 
 <table>
 <tr>
-<td width="15%" class="cell-l">
-						<select name=srcWh id=srcWh onchange="onChangeCenter()">
-							<option value=''>서비스센터선택</option>
-							<%
-								for (int i = 0; i < whLength; i++) {
-									Wh wh = whlist.get(i);
-							%>
-							<option value=<%=wh.getWhNo()%>><%=wh.getWhNm()%></option>
-							<%
-								}
-							%>
-					</select>
-</td>
+	<td width="15%" class="cell-l">
+							<select name=srcWh id=srcWh onchange="onChangeCenter()">
+								<option value=''>서비스센터선택</option>
+								<%
+									for (int i = 0; i < whLength; i++) {
+										Wh wh = whlist.get(i);
+								%>
+								<option value=<%=wh.getWhNo()%>><%=wh.getWhNm()%></option>
+								<%
+									}
+								%>
+						</select>
+	</td>
+	<td class="cell-r">total : <%= size %></td>
 </tr>
 <tr height="10"></tr>
 </table>
@@ -149,7 +136,7 @@
 </tr>
 <tbody class="table-hover">
 <%
-	if(total==0) {
+	if(size==0) {
 %>
 		<tr class="row">
 	 	   <td colspan="6" class="cell-c">등록된 내역이 없습니다.</td>
@@ -158,7 +145,7 @@
 	 	} else {
 	 		for(int i=ROWSIZE*(pg-1); i<end;i++){
 				OrderT orderT = alist.get(i);
-				System.out.println(orderT.getStatusNm());
+				//System.out.println(orderT.getStatusNm());
 %>
 
 	<tr class="row">

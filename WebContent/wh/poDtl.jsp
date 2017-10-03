@@ -1,27 +1,18 @@
 <%@ page language="java" contentType="text/html;charset=EUC-KR"%>
-<%
-	request.setCharacterEncoding("EUC-KR");
-%>
-
-<%@ page import="java.sql.*"%>
-<!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
+<% request.setCharacterEncoding("EUC-KR"); %>
+<%@ page import="java.sql.*"%><!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="wh.*"%>
 <%@ page import="java.util.*"%>
+<jsp:useBean id="mrDao" class="wh.MrDAO" />
+<jsp:useBean id="itemDao" class="wh.ItemDAO" />
+<jsp:useBean id="orderPDao" class="wh.OrderPDAO" />
 
-<% 
-
+<%
 String mode = request.getParameter("mode");
 
 if(!mode.equals("V")) { %>
 <jsp:include page = "top.jsp"/>
 <% } %>
-
-
-<jsp:useBean id="mrDao" class="wh.MrDAO" />
-<jsp:useBean id="itemDao" class="wh.ItemDAO" />
-<jsp:useBean id="orderPDao" class="wh.OrderPDAO" />
-
-
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -31,7 +22,6 @@ if(!mode.equals("V")) { %>
 <title>Transfer Order</title>
 <link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
-<script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 
@@ -40,11 +30,16 @@ if(!mode.equals("V")) { %>
 
 	String authLvl =  (String)session.getAttribute("authLvl");
 	if (authLvl == null) return;
+	
+	String userId =  (String)session.getAttribute("userId");
+
 	int userWhNo =  (Integer)session.getAttribute("whNo");
 	String userWhNm =  (String)session.getAttribute("whNm");
-	if(userWhNm == null)
-		return;
 	String userWhId =  (String)session.getAttribute("whId");
+	
+	// PO : MR직원만 가능
+	if(userWhNm == null || !userWhId.equals("mr"))
+		return;
 
 	//out.print("[ "+userWhId+" ]");
 
@@ -64,7 +59,7 @@ if(!mode.equals("V")) { %>
 	float totalAmt = 0;
 	String insertUserId = "";
 
-	ArrayList<OrderItem> orderItemList = null;
+	ArrayList<OrderPItem> orderPItemList = null;
 	ArrayList<Item> itemlist = null;
 	
 	OrderP orderP = null; 
@@ -86,7 +81,7 @@ if(!mode.equals("V")) { %>
 			totalAmt = orderP.getTotalAmt();
 			insertUserId = orderP.getInsertUserId();
 			
-			orderItemList = orderPDao.getOrderItemList(orderNo);
+			orderPItemList = orderPDao.getOrderPItemList(orderNo);
 			
 			if(orderP.getStatusCd().equals("10")) //작성중
 				itemlist = itemDao.getItemList(whNo);
@@ -94,7 +89,7 @@ if(!mode.equals("V")) { %>
 				itemlist = itemDao.getOrderPItemList(orderNo);
 		}
 
-		//		int size = orderItemList.size();		
+		//		int size = orderPItemList.size();		
 	}
 	else // mode C
 	{
@@ -156,14 +151,14 @@ if(!mode.equals("V")) { %>
 			//document.getElementById("tdTotalAmtP").innerHTML = '<%=totalAmt%>';
 			
 <%
-			if (orderItemList != null) {
-				int size = orderItemList.size();
-				OrderItem orderItem = null;
+			if (orderPItemList != null) {
+				int size = orderPItemList.size();
+				OrderPItem orderPItem = null;
 
 				for (int j = 0; j < size; j++) {
-					orderItem = orderItemList.get(j);
-					int itemId = orderItem.getItemNo();
-					int itemCnt = orderItem.getItemCnt();
+					orderPItem = orderPItemList.get(j);
+					int itemId = orderPItem.getItemNo();
+					int itemCnt = orderPItem.getItemCnt();
 %>
 			
 					// 수량 setting
@@ -184,7 +179,7 @@ if(!mode.equals("V")) { %>
 					}		
 <%
 				}//for
-			}//if orderItemList
+			}//if orderPItemList
 %>
 			
 /*
@@ -253,7 +248,7 @@ if(!mode.equals("V")) { %>
 		    		tmpCurCd = curCdList[i].value;
 		    		curCd = tmpCurCd;
 		    	} else if(tmpCurCd != curCdList[i].value) {
-		    		alert("동일 화폐 품목만 주문 가능합니다.");
+		    		alert("한 구매에 동일 화폐 품목만 주문 가능합니다.");
 		    		subtotal = 0;
 		    		curCd = "";
 		    		break;
@@ -484,18 +479,18 @@ if(!mode.equals("V")) { %>
 						
 						// View Only
 						//////////////////////////////////////////////////////////////////////////
-						int nOrderItemCnt = 0;
+						int nOrderPItemCnt = 0;
 						if(mode.equals("V")) 
 						{
-							for(int j = 0; j < orderItemList.size(); j++)
+							for(int j = 0; j < orderPItemList.size(); j++)
 							{
-								OrderItem oItem = orderItemList.get(j); 
+								OrderPItem oItem = orderPItemList.get(j); 
 								if(item.getItemNo() == oItem.getItemNo()){
-									nOrderItemCnt = oItem.getItemCnt();
+									nOrderPItemCnt = oItem.getItemCnt();
 								}
 							}
 							
-							if(nOrderItemCnt == 0)
+							if(nOrderPItemCnt == 0)
 								continue;
 						}
 						//////////////////////////////////////////////////////////////////////////							
@@ -511,9 +506,9 @@ if(!mode.equals("V")) { %>
 							<% if(mode.equals("V")) { %>
 							
 								<td class="cell-r"><%= MrUtil.FormatCurrentDisplay(item.getPrice(), item.getCurCd()) %></td>
-								<td class="cell-r"><%=nOrderItemCnt%></td>
+								<td class="cell-r"><%=nOrderPItemCnt%></td>
 								<td class="cell-r"><%= item.getItemCnt() %></td>
-								<% nTotalAmount += (float)(item.getPrice())*nOrderItemCnt; %>
+								<% nTotalAmount += (float)(item.getPrice())*nOrderPItemCnt; %>
 	
 							<% } else if(mode.equals("C") || (mode.equals("R") && orderP.getStatusCd().equals("10"))){ //작성중 %>
 							
@@ -643,23 +638,23 @@ if(!mode.equals("V")) { %>
 				<tr height="40" valign="bottom">
 					<td colspan="2">
 						<div align="center">
-							<% if (mode.equals("C")) { %>
+							<% if (mode.equals("C") && userWhId.equals("mr")) { // MR직원만 등록 가능 %>	 
 									<input type="submit" class="dtlBtn" value="등록">&nbsp;
 							<% } %> 
-							<% if (mode.equals("R") && orderP.getStatusCd().equals("10")){ // 작성상태 => 수정 삭제 가능 %>
+							<% if (mode.equals("R") && orderP.getStatusCd().equals("10") && (authLvl.equals("S") || orderP.getInsertUserId().equals(userId))){ // 작성중  & (SUPER or 등록자) => 수정/삭제 가능 %>
 									<input type="submit" class="dtlBtn" value="수정">&nbsp;
 									<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
 		     				<% } %>
 		     				<% if(mode.equals("R")){ %>
 		     					<input type="button" class="dtlBtn" value="Print" onclick="window.open('poDtl.jsp?mode=V&orderNo=<%=orderNo%>');">&nbsp;
 							<% } %> 
-							<% if (mode.equals("R") && orderP.getStatusCd().equals("10") && userWhId.equals("mr")) { // 작성중이고  MR 직원인 경우 작성완료 가능 %>
+							<% if (mode.equals("R") && orderP.getStatusCd().equals("10") && (authLvl.equals("S") || orderP.getInsertUserId().equals(userId))) { // 작성중 & (SUPER or 등록자) => 작성완료 가능 %>
 									<input type="button" class="dtlBtn" value="작성완료" onclick="confirmAccept();">&nbsp;
 							<% } %> 
-							<% if (mode.equals("R") && orderP.getStatusCd().equals("20") && userWhId.equals("mr")) { // 작성완료이고  MR 직원인 경우 입고처리 가능 %>
+							<% if (mode.equals("R") && orderP.getStatusCd().equals("20") && (authLvl.equals("S") || userWhId.equals("mr"))) { // 작성완료 & (SUPER or MR직원) => 입고처리 가능 %>
 									<input type="button" class="dtlBtn" value="입고처리" onclick="moveTo('poRcvList.jsp?mode=R&orderNo=<%=orderNo%>&pg=<%=pg%>');">&nbsp;
 							<% } %> 
-							<% if (mode.equals("R") && orderP.getStatusCd().equals("30") && userWhId.equals("mr")) { // 입고처리이고  MR 직원인 경우 입고완료 처리 가능 %>
+							<% if (mode.equals("R") && orderP.getStatusCd().equals("30") && (authLvl.equals("S") || userWhId.equals("mr"))) { // 입고중 & (SUPER or MR직원) => 입고완료처리 가능 %>
 									<input type="button" class="dtlBtn" value="입고완료" onclick="confirmFinish();">&nbsp;
 							<% } %> 
 							

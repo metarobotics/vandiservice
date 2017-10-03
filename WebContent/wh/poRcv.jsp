@@ -1,28 +1,18 @@
 <%@ page language="java" contentType="text/html;charset=EUC-KR"%>
-<%
-	request.setCharacterEncoding("EUC-KR");
-%>
-
-<%@ page import="java.sql.*"%>
-<!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*"%>
+<% request.setCharacterEncoding("EUC-KR"); %>
+<%@ page import="java.sql.*"%><!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="java.util.*"%>
+<%@ page import="wh.*"%>
+<jsp:useBean id="mrDao" class="wh.MrDAO" />
+<jsp:useBean id="itemDao" class="wh.ItemDAO" />
+<jsp:useBean id="orderPDao" class="wh.OrderPDAO" />
 
-<% 
-
+<%
 String mode = request.getParameter("mode");
 
 if(!mode.equals("V")) { %>
 <jsp:include page = "top.jsp"/>
 <% } %>
-
-
-<jsp:useBean id="mrDao" class="wh.MrDAO" />
-<jsp:useBean id="itemDao" class="wh.ItemDAO" />
-<jsp:useBean id="orderPDao" class="wh.OrderPDAO" />
-
-
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -31,9 +21,7 @@ if(!mode.equals("V")) { %>
 <title>Transfer Order</title>
 <link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
-<script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
 
 <%
 	String pg = request.getParameter("pg");
@@ -64,7 +52,7 @@ if(!mode.equals("V")) { %>
 	float totalAmt = 0;
 	String insertUserId = "";
 
-	ArrayList<OrderItem> orderItemList = null;
+	ArrayList<OrderPItem> orderPItemList = null;
 	ArrayList<Item> itemlist = null;
 	
 	OrderP orderP = null; 
@@ -86,7 +74,7 @@ if(!mode.equals("V")) { %>
 			totalAmt = orderP.getTotalAmt();
 			insertUserId = orderP.getInsertUserId();
 			
-			orderItemList = orderPDao.getOrderItemList(orderNo);
+			orderPItemList = orderPDao.getOrderPItemList(orderNo);
 			
 			if(orderP.getStatusCd().equals("10")) //작성중
 				itemlist = itemDao.getItemList(whNo);
@@ -94,7 +82,7 @@ if(!mode.equals("V")) { %>
 				itemlist = itemDao.getOrderPItemList(orderNo);
 		}
 
-		//		int size = orderItemList.size();		
+		//		int size = orderPItemList.size();		
 	}
 	else // mode C
 	{
@@ -131,14 +119,14 @@ if(!mode.equals("V")) { %>
 			document.getElementById("whNo").value = '<%=whNo%>';
 			
 <%
-			if (orderItemList != null) {
-				int size = orderItemList.size();
-				OrderItem orderItem = null;
+			if (orderPItemList != null) {
+				int size = orderPItemList.size();
+				OrderPItem orderPItem = null;
 
 				for (int j = 0; j < size; j++) {
-					orderItem = orderItemList.get(j);
-					int itemId = orderItem.getItemNo();
-					int itemCnt = orderItem.getItemCnt();
+					orderPItem = orderPItemList.get(j);
+					int itemId = orderPItem.getItemNo();
+					int itemCnt = orderPItem.getItemCnt();
 %>
 			
 					// 수량 setting
@@ -158,7 +146,7 @@ if(!mode.equals("V")) { %>
 					}		
 <%
 				}//for
-			}//if orderItemList
+			}//if orderPItemList
 %>
 		
 			
@@ -338,18 +326,18 @@ if(!mode.equals("V")) { %>
 						
 						// View Only
 						//////////////////////////////////////////////////////////////////////////
-						int nOrderItemCnt = 0;
+						int nOrderPItemCnt = 0;
 						if(mode.equals("V")) 
 						{
-							for(int j = 0; j < orderItemList.size(); j++)
+							for(int j = 0; j < orderPItemList.size(); j++)
 							{
-								OrderItem oItem = orderItemList.get(j); 
+								OrderPItem oItem = orderPItemList.get(j); 
 								if(item.getItemNo() == oItem.getItemNo()){
-									nOrderItemCnt = oItem.getItemCnt();
+									nOrderPItemCnt = oItem.getItemCnt();
 								}
 							}
 							
-							if(nOrderItemCnt == 0)
+							if(nOrderPItemCnt == 0)
 								continue;
 						}
 						//////////////////////////////////////////////////////////////////////////							

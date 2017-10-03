@@ -1,22 +1,20 @@
-<%@ page language="java" contentType="text/html;charset=euc_kr" %>
-<% request.setCharacterEncoding("euc-kr"); %>
-
+<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
+<% request.setCharacterEncoding("EUC-KR"); %>
 <%@ page import = "java.sql.*" %>
-<%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="wh.*" %>
+<jsp:useBean id="mrDao" class="wh.MrDAO"/>
+<jsp:useBean id="productEachDao" class="wh.ProductEachDAO"/>
+<jsp:useBean id="itemDao" class="wh.ItemDAO"/>
+<jsp:useBean id="orderSDao" class="wh.OrderSDAO"/>
  
 <% 
-
 String mode = request.getParameter("mode");
 
 if(!mode.equals("V")) { %>
 <jsp:include page = "top.jsp"/>
 <% } %>
 
-<jsp:useBean id="mrDao" class="wh.MrDAO"/>
-<jsp:useBean id="productEachDao" class="wh.ProductEachDAO"/>
-<jsp:useBean id="itemDao" class="wh.ItemDAO"/>
-<jsp:useBean id="orderSDao" class="wh.OrderSDAO"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -25,7 +23,6 @@ if(!mode.equals("V")) { %>
 <title>Service sheet</title>
 <link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
-<script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 <script>
@@ -70,7 +67,7 @@ $('body').html(restorepage);
 	int totalAmt=0;
 	String insertUserId = "";
 
-	ArrayList<OrderItem> orderItemList = null;
+	ArrayList<OrderSItem> orderSItemList = null;
 	
 	OrderS orderS = null;
 	
@@ -94,9 +91,9 @@ $('body').html(restorepage);
 			insertUserId = orderS.getInsertUserId();
 		}
 	
-		orderItemList = orderSDao.getOrderItemList(orderNo);
+		orderSItemList = orderSDao.getOrderSItemList(orderNo);
 		
-		int size = orderItemList.size();
+		int size = orderSItemList.size();
 	}
 
 
@@ -171,20 +168,20 @@ $('body').html(restorepage);
 			document.getElementById("tdTotalAmt").innerHTML = '<%= totalAmt %>';
 			
 <%			
-			if(orderItemList != null){
+			if(orderSItemList != null){
 				
 				float totalSum = 0;
 				
-				int size = orderItemList.size();
-				OrderItem orderItem = null;
+				int size = orderSItemList.size();
+				OrderSItem orderSItem = null;
 				
 				for(int j=0; j<size; j++)
 				{
-					orderItem = orderItemList.get(j);
-					int itemId = orderItem.getItemNo();
-					int itemCnt = orderItem.getItemCnt();
-					float serviceHour = orderItem.getServiceHour();
-					float itemSum = orderItem.getItemCnt() * orderItem.getItemPrice();
+					orderSItem = orderSItemList.get(j);
+					int itemId = orderSItem.getItemNo();
+					int itemCnt = orderSItem.getItemCnt();
+					float serviceHour = orderSItem.getServiceHour();
+					float itemSum = orderSItem.getItemCnt() * orderSItem.getItemPrice();
 					//out.print(itemId + ":" + itemCnt);				
 %>
 				
@@ -214,7 +211,7 @@ $('body').html(restorepage);
 								}
 							}*/
 							
-							float itemSubSum = (int)(orderItem.getItemCnt() * (orderItem.getItemPrice() + orderItem.getServiceHour() *34700));
+							float itemSubSum = (int)(orderSItem.getItemCnt() * (orderSItem.getItemPrice() + orderSItem.getServiceHour() *34700));
 							totalSum += itemSubSum;
 							%>
 							
@@ -226,8 +223,8 @@ $('body').html(restorepage);
 						}
 					}// for item IdList					
 <%
-				}//for orderItemSize
-			}//if(orderItemList != null){
+				}//for orderSItemSize
+			}//if(orderSItemList != null){
 %>
 		}//if(mode == "R") 
 		else { //"C"
@@ -295,7 +292,7 @@ $('body').html(restorepage);
 		if(confirm('삭제하시겠습니까?'))
 		{
 			<% if(mode.equals("R")) { %>   
-				moveTo('soWrite_action.jsp?mode=D&orderNo=<%=orderNo%>');
+				moveTo('soWrite.jsp?mode=D&orderNo=<%=orderNo%>');
 			<% } else { %>
 			<% } %>   		
 		}
@@ -306,7 +303,7 @@ $('body').html(restorepage);
 		
 		if(confirm('확정 후에는 수정/삭제가 불가능하며 보유자재수가 감소합니다. 확정하시겠습니까?'))
 		{
-			moveTo('soWrite_action.jsp?mode=F&orderNo=<%=orderNo%>&whNo=<%=whNo%>');
+			moveTo('soWrite.jsp?mode=F&orderNo=<%=orderNo%>&whNo=<%=whNo%>');
 		}
 	}
 	
@@ -340,7 +337,7 @@ $('body').html(restorepage);
 	<!-- FORM -->
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
 
-		<form name="form1" method="post" action="soWrite_action.jsp?mode=<%= writeMode %>" onsubmit="return soWriteCheck();">
+		<form name="form1" method="post" action="soWrite.jsp?mode=<%= writeMode %>" onsubmit="return soWriteCheck();">
 
 	<!-- ORDER INFO -->
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -463,19 +460,19 @@ $('body').html(restorepage);
 						
 						// View Only
 						//////////////////////////////////////////////////////////////////////////
-						int nOrderItemCnt = 0;
+						int nOrderSItemCnt = 0;
 						float nOrderServiceHour = 0;
 						if(mode.equals("V")){
-							for(int j = 0; j < orderItemList.size(); j++)
+							for(int j = 0; j < orderSItemList.size(); j++)
 							{
-								OrderItem oItem = orderItemList.get(j); 
+								OrderSItem oItem = orderSItemList.get(j); 
 								if(item.getItemNo() == oItem.getItemNo()){
-									nOrderItemCnt = oItem.getItemCnt();
+									nOrderSItemCnt = oItem.getItemCnt();
 									nOrderServiceHour = oItem.getServiceHour();
 								}
 							}
 							
-							if(nOrderItemCnt == 0)
+							if(nOrderSItemCnt == 0)
 								continue;
 						}
 						//////////////////////////////////////////////////////////////////////////
@@ -489,12 +486,12 @@ $('body').html(restorepage);
 							</td>
 						
 						<% if(mode.equals("V")) { %>
-							<td width="10%" class="cell-c"><%=nOrderItemCnt%></td>
+							<td width="10%" class="cell-c"><%=nOrderSItemCnt%></td>
 							<td width="15%" class="cell-r"><%= MrUtil.FormatCurrentDisplay(item.getPriceClient()) %></td>
 							<td width="15%" class="cell-c"><%= nOrderServiceHour%></td>
-							<td width="20%" class="cell-r"><%= item.getPriceClient()*nOrderItemCnt %></td>
-							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceClient()*nOrderItemCnt + nOrderServiceHour*34700*nOrderItemCnt)) %></td>
-							<% nTotalAmount += (int)(item.getPriceClient()*nOrderItemCnt + nOrderServiceHour*34700*nOrderItemCnt); %>
+							<td width="20%" class="cell-r"><%= item.getPriceClient()*nOrderSItemCnt %></td>
+							<td width="20%" class="cell-r"><%= MrUtil.FormatCurrentDisplay((int)(item.getPriceClient()*nOrderSItemCnt + nOrderServiceHour*34700*nOrderSItemCnt)) %></td>
+							<% nTotalAmount += (int)(item.getPriceClient()*nOrderSItemCnt + nOrderServiceHour*34700*nOrderSItemCnt); %>
 						<% } else { %>
 							<td width="10%" class="cell-r">
 								<input type="text" name="txtCnt" size=3

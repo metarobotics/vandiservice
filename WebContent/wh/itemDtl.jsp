@@ -2,49 +2,134 @@
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
-
-<jsp:include page = "top.jsp"/>
 <jsp:useBean id="dao" class="wh.ItemDAO"/>
+<jsp:include page = "top.jsp"/>
 
-<%
-request.setCharacterEncoding("UTF-8");
-
-String mode = request.getParameter("mode");
-String pg = request.getParameter("pg");
-
-	Item item = null;
-
-	int itemNo = 0;
-	String itemId = "";
-	String itemNm = ""; 
-	String itemNmKor = "";
-
-	if(mode.equals("R"))
-	{
-		int idx = Integer.parseInt(request.getParameter("idx"));
-		
-		
-		item = dao.getItemInfo(idx);
-	
-		if(item != null)
-		{
-			itemNo = item.getItemNo();
-			itemId = item.getItemId();
-			itemNm = item.getItemNm();
-			itemNmKor = item.getItemNmKor();
-		}
-	}
-	
-%>
-	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
  	<link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
+
+<%
+	String authLvl =  (String)session.getAttribute("authLvl");
+	if (authLvl == null) return;
+	//if(authLvl.equals("S") || authLvl.equals("A")) // 등록,수정 권한자
+	
+	String mode = request.getParameter("mode");
+	String pg = request.getParameter("pg");
+
+	String writeMode;
+	if(mode.equals("C"))
+		writeMode = "C";
+	else // R
+		writeMode = "U";
+	
+	Item item = null;
+
+	if(mode.equals("R"))
+	{
+		int idx = Integer.parseInt(request.getParameter("idx"));
+		
+		item = dao.getItemInfo(idx);
+	}
+	
+%>
+
+<script type="text/javascript">
+
+	var mode = '<%=mode%>';
+	
+	//alert(mode);
+
+	function chkValid() {
+	
+		if(document.getElementById("itemId").value == '')
+		{
+			alert('품목코드를 입력하세요.');
+			return false;
+		}
+		else if(document.getElementById("itemId").value.length != 4)
+		{
+			alert('품목코드를 숫자 네자리로 입력하세요.');
+			return false;
+		}
+		else if(document.getElementById("itemNm").value == '')
+		{
+			alert('품명(영어)을 입력하세요.');
+			return false;
+		}
+		else if(document.getElementById("itemNmKor").value == '')
+		{
+			alert('품명(한글)을 입력하세요.');
+			return false;
+		}
+		else if(document.getElementById("curCd").value != '' &&document.getElementById("curCd").value != 'WON' && document.getElementById("curCd").value != 'USD' && document.getElementById("curCd").value != 'YEN')
+		{
+			alert('화폐단위를 알맞게 입력하세요.');
+			return false;
+		}
+		/*
+		else if(document.getElementById("curCd").value == '')
+		{
+			alert('화폐단위를 입력하세요.');
+			return false;
+		}
+		else if(document.getElementById("priceCenter").value == '')
+		{
+			alert('구매단가를 입력하세요.');
+			return false;
+		}
+		else if(document.getElementById("priceClient").value == '')
+		{
+			alert('판매단가를 입력하세요.');
+			return false;
+		}
+		else if(document.getElementById("serviceHour").value == '')
+		{
+			alert('공임시간을 입력하세요.(소수점 두자리까지 가능)');
+			return false;
+		}
+		*/
+		
+		// 입력 안한 값들 기본 setting 
+		if(document.getElementById("vendorId").value == '')
+			document.getElementById("vendorId").value = 0;
+		if(document.getElementById("curCd").value == '')
+			document.getElementById("curCd").value = "WON";
+		 
+		if(document.getElementById("price").value == '')
+			document.getElementById("price").value = 0;
+		if(document.getElementById("priceMeta").value == '')
+			document.getElementById("priceMeta").value = 0;
+		if(document.getElementById("priceFactory").value == '')
+			document.getElementById("priceFactory").value = 0;
+		if(document.getElementById("priceCenter").value == '')
+			document.getElementById("priceCenter").value = 0;
+		if(document.getElementById("priceClient").value == '')
+			document.getElementById("priceClient").value = 0;
+		if(document.getElementById("serviceHour").value == '')
+			document.getElementById("serviceHour").value = 0;
+		
+	}
+
+	function confirmDelete() {
+		
+		if(confirm('삭제하시겠습니까?'))
+		{
+			<% if(mode.equals("R")) { %>   
+				moveTo('itemWrite.jsp?mode=D&itemNo=<%= item.getItemNo() %>');	
+			<% } else { %>
+			<% } %>
+		}
+	}
+	
+</script>
+
+
 </head>
-<body translate="no" >
+<body>
 <center>
 
 	<% if(mode.equals("R")) { %>   
@@ -53,33 +138,206 @@ String pg = request.getParameter("pg");
    		<div class="table-title"><h1>자재등록</h1></div>
 	<% } %>   		
 	
-	<table class="table-fill" border="1">
-		<tr>
-			<td width="30%" class="cell-hd">품목번호</td>
-			<td width="70%" class="cell-l"><%=itemNo%></td>
-		</tr>
-		<tr>
-			<td class="cell-hd">품목코드</td>
-			<td class="cell-l"><%=itemId%></td>
-		</tr>
-		<tr>
-			<td class="cell-hd">품명(영어)</td>
-			<td class="cell-l"><%=itemNm%></td>
-		</tr>
-		<tr>
-			<td class="cell-hd">품명(한글)</td>
-			<td class="cell-l"><%=itemNmKor%></td>
-		</tr>
-	</table>
-<br>
-<table class="table-fill" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-	<td align="center">
-         		<input type="button" class="myButton" value="목록" onclick="moveTo('itemList.jsp?pg=<%=pg %>');">
-	
-	</td>
-	</tr>
-</table>
+	<form name="form1" method="post" action="itemWrite.jsp?mode=<%= writeMode %>" onsubmit="return chkValid();">
+		<table>
+		
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">품목코드</td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=itemId id=itemId size=4 maxlength=4
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' >
+					<input type=hidden name=itemNo id=itemNo value='' >
+	<% } else { %>
+					<input type=text disabled size=4 maxlength=4 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= item.getItemId() %>' >
+					<input type=hidden name=itemId id=itemId value='<%= item.getItemId() %>' >
+					<input type=hidden name=itemNo id=itemNo value='<%= item.getItemNo() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">품명(영어)</td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=itemNm id=itemNm size=45 value='' >
+	<% } else { %>
+					<input type=text name=itemNm id=itemNm size=45 value='<%= item.getItemNm() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">품명(한글)</td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=itemNmKor id=itemNmKor size=45 value='' >
+	<% } else { %>
+					<input type=text name=itemNmKor id=itemNmKor size=45 value='<%= item.getItemNmKor() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">벤더ID</td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=vendorId id=vendorId size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' >
+	<% } else { %>
+					<input type=text name=vendorId id=vendorId size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= item.getVendorId() %>' >
+	<% } %>   		
+				</td>
+			</tr>			
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">화폐단위</td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=curCd id=curCd size=15 maxlength=3
+						value='' >
+	<% } else { %>
+					<input type=text name=curCd id=curCd size=15 maxlength=3
+						value='<%= item.getCurCd() %>' >
+	<% } %>   		
+	 				원화 : WON, 미달러 : USD, 엔화 :YEN <!--  , 유로 : EUR-->
+				</td>
+			</tr>
+			
+			<!-- ----------------------------------------------------------------------------------------------------------------- 극비 -->
+			<!--  아래 가격 3개는 SUPER만 보여줌 !!! -->
+<% if(authLvl.equals("S")) { %>			
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r"><font color="red">가격</font></td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=price id=price size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' > 
+	<% } else { %>
+					<input type=text name=price id=price size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= item.getPrice() %>' > 
+	<% } %>   		
+					<font color="red"> (Super 관리자에게만 공개)</font>
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r"><font color="red">메타단가</font></td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=priceMeta id=priceMeta size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' > 
+	<% } else { %>
+					<input type=text name=priceMeta id=priceMeta size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= item.getPriceMeta() %>' >
+	<% } %>   		
+					<font color="red"> (Super 관리자에게만 공개)</font>
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r"><font color="red">공장단가</font></td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=priceFactory id=priceFactory size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' >
+	<% } else { %>
+					<input type=text name=priceFactory id=priceFactory size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= item.getPriceFactory() %>' >
+	<% } %>   		
+					<font color="red"> (Super 관리자에게만 공개)</font>
+				</td>
+			</tr>
+<% } %>   		
+			<!-- ----------------------------------------------------------------------------------------------------------------- 극비 -->
+
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">구매단가</td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=priceCenter id=priceCenter size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' >
+	<% } else { %>
+					<input type=text name=priceCenter id=priceCenter size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= item.getPriceCenter() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">판매단가</td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=priceClient id=priceClient size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' >
+	<% } else { %>
+					<input type=text name=priceClient id=priceClient size=15 maxlength=15
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= item.getPriceClient() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">공임시간</td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=serviceHour id=serviceHour size=15 
+						onKeypress="if(event.keyCode != 46 && (event.keyCode < 48 || event.keyCode > 57)) event.returnValue = false;" 
+						value='' placeholder="ex)2.5" />
+	<% } else { %>
+					<input type=text name=serviceHour id=serviceHour size=15 
+						onKeypress="if(event.keyCode != 46 && (event.keyCode < 48 || event.keyCode > 57)) event.returnValue = false;"
+						value='<%= item.getServiceHour() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+     		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">등록자</td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=insertUserId id=insertUserId size=20 disabled value='<%= (String)session.getAttribute("userId") %>' >
+	<% } else { %>
+					<input type=text name=insertUserId id=insertUserId size=20 disabled value='<%= item.getInsertUserId() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td width="40%" class="cell-r">등록일시</td>
+				<td width="60%" class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=insertDatetime id=insertDatetime size=20 disabled value='javascript:today();' >
+	<% } else { %>
+					<input type=text name=insertDatetime id=insertDatetime size=20 disabled value='<%= item.getInsertDatetime() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+			<tr height="20"/>
+		</table>
+		
+		<table>
+    		<tr height="40" valign="bottom">
+     			<td colspan="2">
+     				<div align="center">
+     				<% if(mode.equals("C") && authLvl.equals("S")) { %>
+     					<input type="submit" class="dtlBtn" value="등록">&nbsp;
+     				<% }else if(mode.equals("R") && authLvl.equals("S")) { %>
+     					<input type="submit" class="dtlBtn" value="수정">&nbsp;
+     					<!-- <input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp; -->
+     				<% } %>
+         				<input type="button" class="dtlBtn" value="목록" onclick="moveTo('itemList.jsp?pg=<%=pg%>');">
+         			</div>
+     			</td>
+    		</tr>
+		</table>    		 
+	</form> 
 </center>
 </body>
 </html>

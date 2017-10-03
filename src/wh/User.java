@@ -110,6 +110,5 @@ public class User {
 		this.insertDatetime = insertDatetime;
 	}
 
-
 }
 

@@ -1,21 +1,13 @@
 <%@ page language="java" contentType="text/html;charset=EUC-KR"%>
-<%
-	request.setCharacterEncoding("EUC-KR");
-%>
-
-<%@ page import="java.sql.*"%>
-<!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*"%>
+<% request.setCharacterEncoding("EUC-KR"); %>
+<%@ page import="java.sql.*"%><!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="java.util.*"%>
-
-<jsp:include page = "top.jsp"/>
-
+<%@ page import="wh.*"%>
 <jsp:useBean id="mrDao" class="wh.MrDAO" />
 <jsp:useBean id="itemDao" class="wh.ItemDAO" />
 <jsp:useBean id="orderTDao" class="wh.OrderTDAO" />
 
-
-
+<jsp:include page = "top.jsp"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -24,9 +16,7 @@
 <title>Transfer Order</title>
 <link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
-<script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
 
 <%
 	String mode = request.getParameter("mode");
@@ -55,7 +45,7 @@
 	int totalAmt = 0;
 	String insertUserId = "";
 
-	ArrayList<OrderItem> orderItemList = null;
+	ArrayList<OrderTItem> orderTItemList = null;
 	ArrayList<Item> itemlist = null;
 	
 	OrderT orderT = null; 
@@ -77,7 +67,7 @@
 			totalAmt = orderT.getTotalAmt();
 			insertUserId = orderT.getInsertUserId();
 			
-			orderItemList = orderTDao.getOrderItemList(orderNo);
+			orderTItemList = orderTDao.getOrderTItemList(orderNo);
 			
 			itemlist = itemDao.getItemList(srcWhNo, destWhNo);
 		}
@@ -169,14 +159,14 @@
 			document.getElementById("tdTotalAmt").innerHTML = '<%=totalAmt%>';
 			
 <%
-			if (orderItemList != null) {
-				int size = orderItemList.size();
-				OrderItem orderItem = null;
+			if (orderTItemList != null) {
+				int size = orderTItemList.size();
+				OrderTItem orderTItem = null;
 
 				for (int j = 0; j < size; j++) {
-					orderItem = orderItemList.get(j);
-					int itemId = orderItem.getItemNo();
-					int itemCnt = orderItem.getItemCnt();
+					orderTItem = orderTItemList.get(j);
+					int itemId = orderTItem.getItemNo();
+					int itemCnt = orderTItem.getItemCnt();
 %>
 			
 					// 수량 setting
@@ -259,7 +249,7 @@
 	    backOrderFg = false;
 	    
 	    for (i = 0; i < tot; i++) {
-	    	
+   		
 	    	// 주문정보 setting
 	    	if(!isNull(cntList[i]) && cntList[i].value != 0)
 	    	{
@@ -267,6 +257,7 @@
 	    			str = idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value;
 	    		else
 	    			str = str + "/" + idList[i].value + ":" +  cntList[i].value + ":" +  priceList[i].value; // seperator | 는 사용하면 안됨. 변형되는지 split이 안돼 
+	    		
 	    		subtotal = subtotal + parseInt(priceList[i].value) * parseInt(cntList[i].value);
 	    	}
 	    	
@@ -298,7 +289,7 @@
 	function confirmDelete() {
 		if(confirm('삭제하시겠습니까?'))
 		{
-			moveTo('toWrite_action.jsp?version=1&mode=D&orderNo=<%=orderNo%>');
+			moveTo('toWrite.jsp?version=1&mode=D&orderNo=<%=orderNo%>');
 		}
 	}
 	
@@ -306,7 +297,7 @@
 	function confirmAccept() {
 		if(confirm('접수 후에는 수정/삭제가 불가능합니다. 접수하시겠습니까?'))
 		{
-			moveTo('toWrite_action.jsp?mode=A&orderNo=<%=orderNo%>');
+			moveTo('toWrite.jsp?mode=A&orderNo=<%=orderNo%>');
 		}
 	}
 		
@@ -314,7 +305,7 @@
 	function confirmShip() {
 		if(confirm('배송처리 하시겠습니까?'))
 		{
-			moveTo('toWrite_action.jsp?mode=S&orderNo=<%=orderNo%>');
+			moveTo('toWrite.jsp?mode=S&orderNo=<%=orderNo%>');
 		}
 	}
 		
@@ -322,7 +313,7 @@
 	function confirmFinish() {
 		if(confirm('완료처리 하시겠습니까?'))
 		{
-			moveTo('toWrite_action.jsp?mode=F&orderNo=<%=orderNo%>');
+			moveTo('toWrite.jsp?mode=F&orderNo=<%=orderNo%>');
 		}
 	}
 		
@@ -335,7 +326,7 @@
 	   <div class="table-title"><h1>T.O.(Transfer order) 정보</h1></div>
 
 		<form name="form_order" method="post"
-			action="toWrite_action.jsp?mode=<%=writeMode%>"
+			action="toWrite.jsp?mode=<%=writeMode%>"
 			onsubmit="return toWriteCheck();">
 
 
@@ -344,7 +335,7 @@
 					<td width="15%" class="cell-hd">주문번호</td>
 					<td width="35%" class="cell-l">
  
- <% if(mode.equals("C")) { %>   
+ 	<% if(mode.equals("C")) { %>   
 					<input type=text size=10 disabled value='' style="border: 0px; text-align: left;" >
 					<input type=hidden name=orderNo id=orderNo >
 	<% } else { %>
@@ -387,10 +378,10 @@
 						<%
 							if (mode.equals("C")) {
 						%> <%=(String) session.getAttribute("userId")%> <%
- 	} else {
- %> <%=insertUserId%> <%
- 	}
- %>
+						 	} else {
+						 %> <%=insertUserId%> <%
+						 	}
+						 %>
 					</td>
 					
 					<td width="35%" class="cell-r">배송지</td>

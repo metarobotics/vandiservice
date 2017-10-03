@@ -9,8 +9,6 @@ import java.util.Date;
 
 public class OrderSDAO extends DAO { 
 	
-	private String orderFg = "S";
-	
 	public OrderSDAO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -23,9 +21,10 @@ public class OrderSDAO extends DAO {
 		
 		try { 
 			sql = "select ifnull(max(orderNo),0)+1 from orderS"; 
+			
 			pstmt = con.prepareStatement(sql); 
 			rs = pstmt.executeQuery(); 
-			System.out.println(sql);
+			//System.out.println(sql);
 			
 			if(rs.next()) { 
 				no = rs.getInt(1); 
@@ -45,10 +44,11 @@ public class OrderSDAO extends DAO {
 		int cnt = 0; 
 		
 		try { 
-			sql = "SELECT COUNT(*) FROM orderS"; 
+			sql = "SELECT COUNT(0) FROM orderS"; 
+			
 			pstmt = con.prepareStatement(sql); 
 			rs = pstmt.executeQuery(); 
-			System.out.println(sql);
+			//System.out.println(sql);
 			
 			if(rs.next()) { 
 				cnt=rs.getInt(1); 
@@ -61,19 +61,6 @@ public class OrderSDAO extends DAO {
 		return cnt; 
 	} 
 	
-	public String incoding(String data) { 
-		try { 
-			//data = new String(data.getBytes("8859_1"), "euc-kr");
-			//data = new String(data.getBytes("KSC5601"), "8859_1");
-			
-//			sql = new String(",  statusNm ".getBytes("8859_1"), "euc-kr");
-//			sql = new String(",  statusNm ".getBytes("KSC5601"), "8859_1");
-			
-		}catch (Exception e){ } 
-		return data; 
-	} 
-	
-	
 	public OrderS getOrderSInfo(int orderNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
@@ -82,45 +69,42 @@ public class OrderSDAO extends DAO {
 		
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
-			/*
-			private int orderNo;
-			private String orderDt;
-			private int whNo;
-			private String productSerialNo;//4
-			private String statusCd;
-			private int subtotal;
-			private int tax;
-			private int totalAmt;
-			private int depositPrgAmt;
-			private int creditPrgAmt;//10
-			private int depositAmt;
-			private int creditAmt;
-			private int receiptAmt;
-			private String note;//14
 			
-			private String insertUserId;
-			private String insertDatetime;
-			private String updateUserId;
-			private String updateDatetime;//18
-
-			private String centerNm;
-			private int clientNo;
-			private String clientNm;
-			private String statusNm;//22
-			*/
+			sqlBuf.append("		select  a.orderNo, ");
+			sqlBuf.append("				a.orderDt, ");
+			sqlBuf.append("				a.whNo, ");
+			sqlBuf.append("				a.productSerialNo, ");
+			sqlBuf.append("				a.statusCd, ");
+			sqlBuf.append("				a.subtotal, ");
+			sqlBuf.append("				a.tax, ");
+			sqlBuf.append("				a.totalAmt, ");
+			sqlBuf.append("				a.depositPrgAmt, ");
+			sqlBuf.append("				a.creditPrgAmt, ");//10
+			sqlBuf.append("				a.depositAmt, ");
+			sqlBuf.append("				a.creditAmt, ");
+			sqlBuf.append("				a.receiptAmt, ");
+			sqlBuf.append("				a.note, "); //14
 			
-			sqlBuf.append("		select a.*, b.whNm centerNm, d.clientNo clientNo, d.clientNm clientNm "); 
-			sqlBuf.append("      		" + incoding(", case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm "));
+			sqlBuf.append("				a.insertUserId, ");
+			sqlBuf.append("				a.insertDatetime, ");
+			sqlBuf.append("				a.updateUserId, ");
+			sqlBuf.append("				a.updateDatetime,  "); //18
+			
+			sqlBuf.append("				b.whNm centerNm, ");
+			sqlBuf.append("				d.clientNo clientNo, ");
+			sqlBuf.append("				d.clientNm clientNm ");			
+			//sqlBuf.append("      		" + incoding(", case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm "));
+			sqlBuf.append("      		, case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm "); //22
 			sqlBuf.append("        from orderS a ");
 			sqlBuf.append("        left join wh b on a.whNo = b.whNo");
 			sqlBuf.append("        left join productEach c on a.productSerialNo = c.serialNo");
 			sqlBuf.append("        left join client d on c.clientNo = d.clientNo");
-			sqlBuf.append("        where a.orderNo = ?; ");
+			sqlBuf.append("       where a.orderNo = ?; ");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			pstmt.setInt(1, orderNo); 
 			rs = pstmt.executeQuery(); 
-			System.out.println(sqlBuf.toString());
+			//System.out.println(sqlBuf.toString());
 			
 			if(rs.next()) { 
 /*				
@@ -154,17 +138,38 @@ public class OrderSDAO extends DAO {
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
 
-			sqlBuf.append("		select a.*, b.whNm centerNm, d.clientNo clientNo, d.clientNm clientNm "); 
-			sqlBuf.append("      		" + incoding(", case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm "));
+			sqlBuf.append("		select  a.orderNo, ");
+			sqlBuf.append("				a.orderDt, ");
+			sqlBuf.append("				a.whNo, ");
+			sqlBuf.append("				a.productSerialNo, ");
+			sqlBuf.append("				a.statusCd, ");
+			sqlBuf.append("				a.subtotal, ");
+			sqlBuf.append("				a.tax, ");
+			sqlBuf.append("				a.totalAmt, ");
+			sqlBuf.append("				a.depositPrgAmt, ");
+			sqlBuf.append("				a.creditPrgAmt, ");
+			sqlBuf.append("				a.depositAmt, ");
+			sqlBuf.append("				a.creditAmt, ");
+			sqlBuf.append("				a.receiptAmt, ");
+			sqlBuf.append("				a.note, ");
+			sqlBuf.append("				a.insertUserId, ");
+			sqlBuf.append("				a.insertDatetime, ");
+			sqlBuf.append("				a.updateUserId, ");
+			sqlBuf.append("				a.updateDatetime,  ");
+			sqlBuf.append("				b.whNm centerNm, ");
+			sqlBuf.append("				d.clientNo clientNo, ");
+			sqlBuf.append("				d.clientNm clientNm ");			
+//			sqlBuf.append("      		" + incoding(", case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm "));
+			sqlBuf.append("      		, case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm ");
 			sqlBuf.append("        from orderS a ");
 			sqlBuf.append("        left join wh b on a.whNo = b.whNo");
 			sqlBuf.append("        left join productEach c on a.productSerialNo = c.serialNo");
 			sqlBuf.append("        left join client d on c.clientNo = d.clientNo");
-			sqlBuf.append("        order by orderNo desc;");
+			sqlBuf.append("       order by orderNo desc;");
  
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			rs = pstmt.executeQuery();
-			System.out.println(sqlBuf.toString());
+			//System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) { 
 
@@ -191,8 +196,29 @@ public class OrderSDAO extends DAO {
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
 
-			sqlBuf.append("		select a.*, b.whNm centerNm, d.clientNo clientNo, d.clientNm clientNm "); 
-			sqlBuf.append("      		" + incoding(", case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm "));
+			sqlBuf.append("		select  a.orderNo, ");
+			sqlBuf.append("				a.orderDt, ");
+			sqlBuf.append("				a.whNo, ");
+			sqlBuf.append("				a.productSerialNo, ");
+			sqlBuf.append("				a.statusCd, ");
+			sqlBuf.append("				a.subtotal, ");
+			sqlBuf.append("				a.tax, ");
+			sqlBuf.append("				a.totalAmt, ");
+			sqlBuf.append("				a.depositPrgAmt, ");
+			sqlBuf.append("				a.creditPrgAmt, ");
+			sqlBuf.append("				a.depositAmt, ");
+			sqlBuf.append("				a.creditAmt, ");
+			sqlBuf.append("				a.receiptAmt, ");
+			sqlBuf.append("				a.note, ");
+			sqlBuf.append("				a.insertUserId, ");
+			sqlBuf.append("				a.insertDatetime, ");
+			sqlBuf.append("				a.updateUserId, ");
+			sqlBuf.append("				a.updateDatetime,  ");
+			sqlBuf.append("				b.whNm centerNm, ");
+			sqlBuf.append("				d.clientNo clientNo, ");
+			sqlBuf.append("				d.clientNm clientNm ");			
+			//sqlBuf.append("      		" + incoding(", case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm "));
+			sqlBuf.append("      		, case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm ");
 			sqlBuf.append("        from orderS a ");
 			sqlBuf.append("        left join wh b on a.whNo = b.whNo");
 			sqlBuf.append("        left join productEach c on a.productSerialNo = c.serialNo");
@@ -203,7 +229,7 @@ public class OrderSDAO extends DAO {
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			pstmt.setInt(1, whNo); 
 			rs = pstmt.executeQuery();
-			System.out.println(sqlBuf.toString());
+			//System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) { 
 
@@ -221,44 +247,42 @@ public class OrderSDAO extends DAO {
 		return alist; 
 	} 	
 	
-	public ArrayList<OrderItem> getOrderItemList(int orderNo) throws Exception { 
+	public ArrayList<OrderSItem> getOrderSItemList(int orderNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
-		ArrayList<OrderItem> alist = new ArrayList<OrderItem>(); 
+		ArrayList<OrderSItem> alist = new ArrayList<OrderSItem>(); 
 		
 		try { 
-			StringBuffer sqlBuf=new StringBuffer(); 
-/*
-			private String orderFg;
-			private int orderNo;
-			private int seq;
-			private int itemNo;
-			private int itemCnt;
-			private int itemPrice;
-			private float serviceHour; // for SO
+			StringBuffer sqlBuf=new StringBuffer();
 			
-			private String insertUserId; //8
-			private String insertDatetime;
-			private String updateUserId;
-			private String updateDatetime;
-*/			
-			sqlBuf.append("		select a.* "); 
-			sqlBuf.append("        from orderItem a ");
-			sqlBuf.append("        where orderFg='" + orderFg + "' and orderNo = ? ");
-			sqlBuf.append("        order by seq;");
+			sqlBuf.append("		select  a.orderNo, ");
+			sqlBuf.append("				a.seq, ");
+			sqlBuf.append("				a.itemNo, ");
+			sqlBuf.append("				a.itemCnt, ");
+			
+			sqlBuf.append("				a.itemPrice, ");
+			sqlBuf.append("				a.serviceHour, ");
+			
+			sqlBuf.append("				a.insertUserId, "); //7
+			sqlBuf.append("				a.insertDatetime, ");
+			sqlBuf.append("				a.updateUserId, ");
+			sqlBuf.append("				a.updateDatetime  ");
+			sqlBuf.append("        from orderSItem a ");
+			sqlBuf.append("       where orderNo = ? ");
+			sqlBuf.append("       order by seq;");
  			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			pstmt.setInt(1, orderNo);
 			rs = pstmt.executeQuery();
-			System.out.println(sqlBuf.toString());
+			//System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) { 
 				
-				System.out.println("[OrderSDAO ServiceHour] " + rs.getFloat(7));
-				OrderItem orderItem = new OrderItem(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getFloat(8), rs.getString(9)); 
+				//System.out.println("[OrderSDAO ServiceHour] " + rs.getFloat(7));
+				OrderSItem orderSItem = new OrderSItem(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getFloat(6), rs.getString(7)); 
 				
-				alist.add(orderItem); 
+				alist.add(orderSItem); 
 			} 
 		}catch(Exception e) { 
 			throw e;
@@ -277,10 +301,12 @@ public class OrderSDAO extends DAO {
 		try { 
 			
 			sql = "insert into orderS (orderNo, orderDt, whNo, productSerialNo, statusCd, subtotal, tax, totalAmt, note, insertUserId, insertDatetime) VALUES (?,?,?,?,?,?,?,?,?,?, current_timestamp())"; 
+
 			pstmt = con.prepareStatement(sql); 
 
 			pstmt.setInt(1, orderS.getOrderNo());
-			pstmt.setString(2, incoding(orderS.getOrderDt())); 
+			//pstmt.setString(2, incoding(orderS.getOrderDt())); 
+			pstmt.setString(2, orderS.getOrderDt());
 			pstmt.setInt(3, orderS.getWhNo()); 
 			pstmt.setString(4, orderS.getProductSerialNo());
 			pstmt.setString(5, "10"); //statusCd
@@ -291,7 +317,7 @@ public class OrderSDAO extends DAO {
 			pstmt.setString(10, orderS.getInsertUserId());
 			
 			pstmt.execute(); 
-			System.out.println(sql);
+			//System.out.println(sql);
 			
 		}catch(Exception e) { 
 			throw e;
@@ -300,25 +326,26 @@ public class OrderSDAO extends DAO {
 		} 
 	} 
 	
-	public void insertOrderItem(OrderItem orderItem) throws Exception { 
+	public void insertOrderSItem(OrderSItem orderSItem) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		
 		try { 
-			sql = "insert into orderItem (orderFg, orderNo, seq, itemNo, itemCnt, itemPrice, serviceHour, insertUserId, insertDatetime) VALUES (?,?,?,?,?,?,?,?, current_timestamp())"; 
+			sql = "insert into orderSItem (orderNo, seq, itemNo, itemCnt, itemPrice, serviceHour, insertUserId, insertDatetime) VALUES (?,?,?,?,?,?,?, current_timestamp())"; 
+
 			pstmt = con.prepareStatement(sql); 
 
-			pstmt.setString(1, orderFg);
-			pstmt.setInt(2, orderItem.getOrderNo()); 
-			pstmt.setInt(3, orderItem.getSeq()); 
-			pstmt.setInt(4, orderItem.getItemNo());
-			pstmt.setInt(5, orderItem.getItemCnt());
-			pstmt.setFloat(6, orderItem.getItemPrice());
-			pstmt.setFloat(7, orderItem.getServiceHour());
-			pstmt.setString(8, orderItem.getInsertUserId());
+			pstmt.setInt(1, orderSItem.getOrderNo()); 
+			pstmt.setInt(2, orderSItem.getSeq()); 
+			pstmt.setInt(3, orderSItem.getItemNo());
+			pstmt.setInt(4, orderSItem.getItemCnt());
+			pstmt.setFloat(5, orderSItem.getItemPrice());
+			pstmt.setFloat(6, orderSItem.getServiceHour());
+			pstmt.setString(7, orderSItem.getInsertUserId());
 			
+//System.out.println(pstmt);
 			pstmt.execute(); 
-			System.out.println(sql);
+			//System.out.println(sql);
 		}catch(Exception e) { 
 			throw e;
 		}finally { 
@@ -330,6 +357,7 @@ public class OrderSDAO extends DAO {
 	public void modifyOrderS(OrderS orderS) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
+		
 		try { 
 			sql = "update orderS set whNo=?, productSerialNo=?, subtotal=?, tax=?, totalAmt=?, note=?, updateDatetime=current_timestamp() where orderNo=?";
 			
@@ -341,12 +369,12 @@ public class OrderSDAO extends DAO {
 			pstmt.setInt(4, orderS.getTax());
 			pstmt.setInt(5, orderS.getTotalAmt());
 			pstmt.setString(6, orderS.getNote());
-System.out.println("note = " + orderS.getNote());			
-System.out.println("note = " + incoding(orderS.getNote()));			
+			//System.out.println("note = " + orderS.getNote());			
+			//System.out.println("note = " + incoding(orderS.getNote()));			
 			pstmt.setInt(7, orderS.getOrderNo());
 						
 			pstmt.executeUpdate(); 
-			System.out.println(sql);
+			//System.out.println(sql);
 			
 		}catch(Exception e) { 
 			throw e;
@@ -362,12 +390,14 @@ System.out.println("note = " + incoding(orderS.getNote()));
 	public void deleteOrderS(int orderNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
+		
 		try { 
 			sql = "delete from orderS where orderNo = ?"; 
+			
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setInt(1, orderNo); 
 			pstmt.executeUpdate();
-			System.out.println(sql);
+			//System.out.println(sql);
 		}catch(Exception e) { 
 			throw e;
 		}finally { 
@@ -376,15 +406,17 @@ System.out.println("note = " + incoding(orderS.getNote()));
 	} 
 	
 	
-	public void deleteOrderItem(int orderNo) throws Exception { 
+	public void deleteOrderSItem(int orderNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
+		
 		try { 
-			sql = "delete from orderItem where orderFg='" + orderFg + "' and orderNo = ?"; 
+			sql = "delete from orderSItem where orderNo = ?"; 
+			
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setInt(1, orderNo); 
 			pstmt.executeUpdate(); 
-			System.out.println(sql);
+			//System.out.println(sql);
 		}catch(Exception e) { 
 			throw e;
 		}finally { 
@@ -421,7 +453,7 @@ System.out.println("note = " + incoding(orderS.getNote()));
 			pstmt.setString(1, statusCd);
 			pstmt.setInt(2, orderNo);
 			pstmt.executeUpdate();
-			System.out.println(sql);
+			//System.out.println(sql);
 			
 		}catch(Exception e) { 
 			throw e;
@@ -442,21 +474,21 @@ System.out.println("note = " + incoding(orderS.getNote()));
 			StringBuffer sqlBuf=new StringBuffer(); 
 
 			sqlBuf.append("update whItem a "); 
-			sqlBuf.append("inner join ");
-			sqlBuf.append("(" );
-			sqlBuf.append("	select * ");
-			sqlBuf.append("	from orderItem ");
-			sqlBuf.append(" where orderFg = 'S' and orderNo = ? ");
-			sqlBuf.append(") aa ");
-			sqlBuf.append("on a.itemNo = aa.itemNo ");
-			sqlBuf.append("set a.itemCnt = a.itemCnt - aa.itemCnt ");
-			sqlBuf.append("where whNo = ? ");
+			sqlBuf.append(" inner join ");
+			sqlBuf.append("      (" );
+			sqlBuf.append("	      select * ");
+			sqlBuf.append("	        from orderSItem ");
+			sqlBuf.append("        where orderNo = ? ");
+			sqlBuf.append("      ) aa ");
+			sqlBuf.append("    on a.itemNo = aa.itemNo ");
+			sqlBuf.append("   set a.itemCnt = a.itemCnt - aa.itemCnt ");
+			sqlBuf.append(" where whNo = ? ");
  
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			pstmt.setInt(1, orderNo); 
 			pstmt.setInt(2, whNo); 
 			pstmt.executeUpdate();
-			System.out.println(sqlBuf.toString());
+			//System.out.println(sqlBuf.toString());
 			
 		}catch(Exception e) { 
 			throw e;

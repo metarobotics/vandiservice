@@ -1,25 +1,15 @@
 <%@ page language="java" contentType="text/html;charset=EUC-KR"%>
-<%
-	request.setCharacterEncoding("EUC-KR");
-%>
-
-<%@ page import="java.sql.*"%>
-<!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*"%>
+<% request.setCharacterEncoding("EUC-KR"); %>
+<%@ page import="java.sql.*"%><!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="java.util.*"%>
-
-<% 
-
-String mode = request.getParameter("mode");
-
-%>
-
+<%@ page import="wh.*"%>
 <jsp:useBean id="mrDao" class="wh.MrDAO" />
 <jsp:useBean id="itemDao" class="wh.ItemDAO" />
 <jsp:useBean id="orderPDao" class="wh.OrderPDAO" />
 
-
-
+<%
+String mode = request.getParameter("mode");
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -28,9 +18,7 @@ String mode = request.getParameter("mode");
 <title>입고처리</title>
 <link rel="stylesheet" href="../css/vandiservice.css">
 <script type="text/javascript" src="../js/mr.js"></script>
-<script type="text/javascript" src="../js/chkValid.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
 
 <%
 	String authLvl =  (String)session.getAttribute("authLvl");
@@ -64,7 +52,7 @@ String mode = request.getParameter("mode");
 	float totalAmt = 0;
 	String insertUserId = "";
 
-	//ArrayList<OrderItem> orderItemList = null;
+	//ArrayList<OrderPItem> orderPItemList = null;
 	ArrayList<Item> itemList = null;
 	OrderPRcv orderPRcv = null;
 	//ArrayList<OrderPRcvItem> orderPRcvItemList = null;
@@ -87,7 +75,7 @@ String mode = request.getParameter("mode");
 		totalAmt = orderP.getTotalAmt();
 		insertUserId = orderP.getInsertUserId();
 		
-		//orderItemList = orderPDao.getOrderItemList(orderNo);
+		//orderPItemList = orderPDao.getOrderPItemList(orderNo);
 		
 	}
 
@@ -140,7 +128,7 @@ String mode = request.getParameter("mode");
 				for (int j = 0; j < size; j++) {
 					item = itemList.get(j);
 					int itemId = item.getItemNo();
-					int orderItemCnt = item.getOrderItemCnt();
+					int orderPItemCnt = item.getOrderItemCnt();
 					int itemRcvCnt = item.getItemNewRcvCnt();
 %>
 			
@@ -157,13 +145,13 @@ String mode = request.getParameter("mode");
 						if(idList[i].value == '<%=itemId%>')
 						{
 						
-							cntList[i].value = '<%=orderItemCnt%>';
+							cntList[i].value = '<%=orderPItemCnt%>';
 							rcvCntList[i].value = '<%=itemRcvCnt%>';
 						}
 					}		
 <%
 				}//for
-			}//if orderItemList
+			}//if orderPItemList
 %>
 		
 			

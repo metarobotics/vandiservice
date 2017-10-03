@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
-<%@ page import="wh.*" %>
 <%@ page import="java.util.*" %>
- 
-<jsp:include page = "top.jsp"/>
+<%@ page import="wh.*" %>
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
+<jsp:include page = "top.jsp"/>
 
 <%	
 	String authLvl =  (String)session.getAttribute("authLvl");
@@ -103,7 +102,7 @@
 
 <tr class="row">
 <td class="cell-c"><%=item.getItemId()%></td>
-<td class="cell-l"><a href="itemDtl.jsp?mode=R&idx=<%=item.getItemNo()%>&pg=<%=pg%>"><%=item.getItemNm()%></td>
+<td class="cell-l"><a href="itemDtl.jsp?mode=R&idx=<%=item.getItemNo()%>&pg=<%=pg%>"><%=item.getItemNm()%></a></td>
 <td class="cell-r"><%=item.getPriceCenterStr()%></td>
 <td class="cell-r"><%=item.getPriceClientStr()%></td>
 <td class="cell-c"><%=item.getServiceHour()%></td>
@@ -120,45 +119,50 @@
 </table>
 <br>
 <table class="table-fill2" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-	<td align="center">
-		<%
-			if(pg>BLOCK) {
-		%>
-			[<a href="itemList.jsp?pg=1">◀◀</a>]
-			[<a href="itemList.jsp?pg=<%=startPage-1%>">◀</a>]
-		<%
-			}
-		%>
-		
-		<%
-			for(int i=startPage; i<= endPage; i++){
-				if(i==pg){
-		%>
-					<u><b>[<%=i %>]</b></u>
-		<%
-				}else{
-		%>
-					[<a href="itemList.jsp?pg=<%=i %>"><%=i %></a>]
-		<%
+  	<tr>
+		<td align="center">
+			<%
+				if(pg>BLOCK) {
+			%>
+				[<a href="itemList.jsp?pg=1">◀◀</a>]
+				[<a href="itemList.jsp?pg=<%=startPage-1%>">◀</a>]
+			<%
 				}
-			}
-		%>
-		
-		<%
-			if(endPage<allPage){
-		%>
-			[<a href="itemList.jsp?pg=<%=endPage+1%>">▶</a>]
-			[<a href="itemList.jsp?pg=<%=allPage%>">▶▶</a>]
-		<%
-			}
-		%>
+			%>
+			
+			<%
+				for(int i=startPage; i<= endPage; i++){
+					if(i==pg){
+			%>
+						<u><b>[<%=i %>]</b></u>
+			<%
+					}else{
+			%>
+						[<a href="itemList.jsp?pg=<%=i %>"><%=i %></a>]
+			<%
+					}
+				}
+			%>
+			
+			<%
+				if(endPage<allPage){
+			%>
+				[<a href="itemList.jsp?pg=<%=endPage+1%>">▶</a>]
+				[<a href="itemList.jsp?pg=<%=allPage%>">▶▶</a>]
+			<%
+				}
+			%>
 		</td>
-		</tr>
-	<!-- <tr align="right">
-   		<td ><input type=button class="myButton" value="등록" OnClick="window.location='itemDtl.jsp?mode=C&pg=<%=pg%>'"></td>
-  </tr> -->
-
+	</tr>
+	<tr height="10"></tr>
+	<tr>
+		<%
+		if(authLvl.equals("S")) { // 등록,수정 권한자
+		%>
+	   		<td align="center"><input type=button class="myButton" value="등록" OnClick="window.location='itemDtl.jsp?mode=C&pg=<%=pg%>'"></td>
+	   	<%} else { %>
+	   	<%} %>
+  	</tr>
 </tbody>
 </table>
 </center>

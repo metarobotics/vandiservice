@@ -10,7 +10,7 @@ public class Item {
 	private String itemNm;
 	private String itemNmKor;
 	private String sku;
-	private String vendorId;
+	private int vendorId;
 	private float price;
 	private String curCd;
 	private int priceMeta;
@@ -45,38 +45,62 @@ public class Item {
 	
 	public Item() {
 	}
-	
+	/*
 	public Item(int itemNo, String itemId, String itemNm, String itemNmKor) {
 		this.itemNo = itemNo;
 		this.itemId = itemId;
 		this.itemNm = itemNm;
 		this.itemNmKor = itemNmKor;
-	}
+	}*/
 	
-	// basic Item table info 
-	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, String vendorId, float price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime) {
+	// for insert 
+	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, 
+			int vendorId, float price, String curCd, int priceMeta, int priceFactory, 
+			int priceCenter, int priceClient, float serviceHour, String insertUserId, String updateUserId) {
 		this.itemNo = itemNo;
 		this.itemId = itemId;
 		this.itemNm = itemNm;
 		this.itemNmKor = itemNmKor;
 		
-		this.sku = sku;
 		this.vendorId = vendorId;
 		this.price = price;
 		this.curCd = curCd;
 		this.priceMeta = priceMeta;
 		this.priceFactory = priceFactory;
+
+		this.priceCenter = priceCenter;
+		this.priceClient = priceClient;
+		this.serviceHour = serviceHour;
+		this.insertUserId = insertUserId;
+		this.updateUserId = updateUserId;
+	}
+	
+	// basic Item table info 
+	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, int vendorId, float price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime) {
+		this.itemNo = itemNo;
+		this.itemId = itemId;
+		this.itemNm = itemNm;
+		this.itemNmKor = itemNmKor;
+		this.sku = sku;
+		
+		this.vendorId = vendorId;
+		this.price = price;
+		this.curCd = curCd;
+		this.priceMeta = priceMeta;
+		this.priceFactory = priceFactory;
+		
 		this.priceCenter = priceCenter;
 		this.priceClient = priceClient;
 		this.serviceHour = serviceHour;
 		this.moqVendor = moqVendor;
 		this.moqCenter = moqCenter;
+		
 		this.requiredStockCnt = requiredStockCnt;
 		this.defectStockCnt = defectStockCnt;
 		this.linkItem = linkItem;
-		
 		this.linkInvoice = linkInvoice;
 		this.note = note;
+		
 		this.insertUserId = insertUserId;
 		this.insertDatetime = insertDatetime;
 		this.updateUserId = updateUserId;
@@ -84,7 +108,7 @@ public class Item {
 	}
 
 	// include itemCnt
-	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, String vendorId, float price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime, int itemCnt) {
+	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, int vendorId, float price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime, int itemCnt) {
 		this.itemNo = itemNo;
 		this.itemId = itemId;
 		this.itemNm = itemNm;
@@ -116,7 +140,7 @@ public class Item {
 	}
 	
 	// include srcItemCnt, destItemCnt
-	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, String vendorId, float price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime, int srcItemCnt, int destItemCnt) {
+	public Item(int itemNo, String itemId, String itemNm, String itemNmKor, String sku, int vendorId, float price, String curCd, int priceMeta, int priceFactory, int priceCenter, int priceClient, float serviceHour, int moqVendor, int moqCenter, int requiredStockCnt, int defectStockCnt, String linkItem, String linkInvoice, String note, String insertUserId, String insertDatetime, String updateUserId, String updateDatetime, int srcItemCnt, int destItemCnt) {
 		this.itemNo = itemNo;
 		this.itemId = itemId;
 		this.itemNm = itemNm;
@@ -244,11 +268,11 @@ public class Item {
 		this.sku = sku;
 	}
 
-	public String getVendorId() {
+	public int getVendorId() {
 		return vendorId;
 	}
 
-	public void setVendorId(String vendorId) {
+	public void setVendorId(int vendorId) {
 		this.vendorId = vendorId;
 	}
 
