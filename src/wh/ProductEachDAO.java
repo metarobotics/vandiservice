@@ -54,6 +54,16 @@ public class ProductEachDAO extends DAO {
 			sqlBuf.append("				a.certDt, ");
 			sqlBuf.append("				a.registerNo, ");
 			sqlBuf.append("				a.clientNo, ");
+			
+			sqlBuf.append("				a.productCost, ");
+			sqlBuf.append("				a.salesDt, ");
+			sqlBuf.append("				a.salesAmt, ");
+			sqlBuf.append("				a.addSalesAmt, ");
+			sqlBuf.append("				a.payDt, ");
+			sqlBuf.append("				a.payAmt, ");
+			sqlBuf.append("				a.creditSalesAmt, ");
+			sqlBuf.append("				a.note, ");
+			
 			sqlBuf.append("				a.insertUserId, ");
 			sqlBuf.append("				a.insertDatetime, ");
 			sqlBuf.append("				a.updateUserId, ");
@@ -74,8 +84,9 @@ public class ProductEachDAO extends DAO {
 			
 			if(rs.next()) { 
 				productEach = new ProductEach(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), 
-						rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), 
-						rs.getString(12), rs.getString(13));
+						rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getInt(11), rs.getString(12), rs.getInt(13), rs.getInt(14), rs.getString(15), 
+						rs.getString(16), rs.getString(17), rs.getString(18), rs.getString(19), 
+						rs.getString(20), rs.getString(21));
 			} 
 		}catch(Exception e) { 
 			throw e;
@@ -104,6 +115,16 @@ public class ProductEachDAO extends DAO {
 			sqlBuf.append("				a.certDt, ");
 			sqlBuf.append("				a.registerNo, ");
 			sqlBuf.append("				a.clientNo, ");
+			
+			sqlBuf.append("				a.productCost, ");
+			sqlBuf.append("				a.salesDt, ");
+			sqlBuf.append("				a.salesAmt, ");
+			sqlBuf.append("				a.addSalesAmt, ");
+			sqlBuf.append("				a.payDt, ");
+			sqlBuf.append("				a.payAmt, ");
+			sqlBuf.append("				a.creditSalesAmt, ");
+			sqlBuf.append("				a.note, ");
+			
 			sqlBuf.append("				a.insertUserId, ");
 			sqlBuf.append("				a.insertDatetime, ");
 			sqlBuf.append("				a.updateUserId, ");
@@ -120,9 +141,11 @@ public class ProductEachDAO extends DAO {
 			//System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) {
+				
 				ProductEach productEach = new ProductEach(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7), 
-						rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11), 
-						rs.getString(12), rs.getString(13));
+						rs.getInt(8), rs.getString(9), rs.getInt(10), rs.getInt(11), rs.getString(12), rs.getInt(13), rs.getInt(14), rs.getString(15), 
+						rs.getString(16), rs.getString(17), rs.getString(18), rs.getString(19), 
+						rs.getString(20), rs.getString(21));
 				
 				alist.add(productEach); 
 			} 
@@ -140,7 +163,9 @@ public class ProductEachDAO extends DAO {
 		PreparedStatement pstmt = null; 
 		
 		try { 
-			sql = "insert into productEach (productEachNo, productNo, serialNo, prodDt, certDt, registerNo, clientNo, insertUserId, insertDatetime) VALUES (?,?,?,?,?,?,?,?, current_timestamp())"; 
+			sql = "insert into productEach (productEachNo, productNo, serialNo, prodDt, certDt, registerNo, clientNo, "
+					+ "productCost, salesDt, salesAmt, addSalesAmt, payDt, payAmt, creditSalesAmt, note, "
+					+ "insertUserId, insertDatetime) VALUES (?,?,?,?,?,?,?,?, ?,?,?,?,?,?,?,?, current_timestamp())"; 
 			
 			pstmt = con.prepareStatement(sql); 
 
@@ -151,7 +176,17 @@ public class ProductEachDAO extends DAO {
 			pstmt.setString(5, productEach.getCertDt());
 			pstmt.setString(6, productEach.getRegisterNo());
 			pstmt.setInt(7, productEach.getClientNo());
-			pstmt.setString(8, productEach.getInsertUserId());
+			
+			pstmt.setInt(8, productEach.getProductCost());
+			pstmt.setString(9, productEach.getSalesDt());
+			pstmt.setInt(10, productEach.getSalesAmt());
+			pstmt.setInt(11, productEach.getAddSalesAmt());
+			pstmt.setString(12, productEach.getPayDt());
+			pstmt.setInt(13, productEach.getPayAmt());
+			pstmt.setInt(14, productEach.getCreditSalesAmt());
+			pstmt.setString(15, productEach.getNote());
+			
+			pstmt.setString(16, productEach.getInsertUserId());
 			
 			pstmt.execute(); 
 			//System.out.println(sql);
@@ -170,7 +205,11 @@ public class ProductEachDAO extends DAO {
 		PreparedStatement pstmt = null; 
 		
 		try { 
-			sql = "update productEach set productNo=?, serialNo=?, prodDt=?, certDt=?, registerNo=?, clientNo=?, updateUserId=?, updateDatetime=current_timestamp() where productEachNo=?";
+			sql = "update productEach "
+					+ "set productNo=?, serialNo=?, prodDt=?, certDt=?, registerNo=?, clientNo=?, "
+					+ "productCost=?, salesDt=?, salesAmt=?, addSalesAmt=?, payDt=?, payAmt=?, creditSalesAmt=?, note=?, "
+					+ "updateUserId=?, updateDatetime=current_timestamp() "
+					+ "where productEachNo=?";
 			
 			pstmt = con.prepareStatement(sql);
 
@@ -180,8 +219,18 @@ public class ProductEachDAO extends DAO {
 			pstmt.setString(4, productEach.getCertDt());
 			pstmt.setString(5, productEach.getRegisterNo());
 			pstmt.setInt(6, productEach.getClientNo());
-			pstmt.setString(7, productEach.getUpdateUserId());
-			pstmt.setInt(8, productEach.getProductEachNo());
+			
+			pstmt.setInt(7, productEach.getProductCost());
+			pstmt.setString(8, productEach.getSalesDt());
+			pstmt.setInt(9, productEach.getSalesAmt());
+			pstmt.setInt(10, productEach.getAddSalesAmt());
+			pstmt.setString(11, productEach.getPayDt());
+			pstmt.setInt(12, productEach.getPayAmt());
+			pstmt.setInt(13, productEach.getCreditSalesAmt());
+			pstmt.setString(14, productEach.getNote());
+			
+			pstmt.setString(15, productEach.getUpdateUserId());
+			pstmt.setInt(16, productEach.getProductEachNo());
 			
 			pstmt.executeUpdate();
 			//System.out.println(sql);

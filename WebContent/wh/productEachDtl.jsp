@@ -138,9 +138,9 @@
 				<td width="40%" class="cell-r">제품일련번호</td>
 				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
-					<input type=text name=serialNo id=serialNo size=15 value='' >
+					<input type=text name=serialNo id=serialNo size=10 value='' >
 	<% } else { %>
-					<input type=text name=serialNo id=serialNo size=15 value='<%= productEach.getSerialNo() %>' >
+					<input type=text name=serialNo id=serialNo size=10 value='<%= productEach.getSerialNo() %>' >
 	<% } %>   		
 				</td>
 			</tr>
@@ -169,16 +169,16 @@
 			</tr>
 			
     		<tr class="row_bottom_only">
-				<td width="40%" class="cell-r">항공청 등록번호</td>
+				<td width="40%" class="cell-r">기체번호 (항공청 등록번호)</td>
 				<td width="60%" class="cell-l">
 	<% if(mode.equals("C")) { %>   
-					<input type=text name=registerNo id=registerNo size=20 value='' >
+					<input type=text name=registerNo id=registerNo size=10 value='' >
 	<% } else { %>
-					<input type=text name=registerNo id=registerNo size=20 value='<%= productEach.getRegisterNo() %>' >
+					<input type=text name=registerNo id=registerNo size=10 value='<%= productEach.getRegisterNo() %>' >
 	<% } %>   		
 				</td>
 			</tr>
-			
+
     		<tr class="row_bottom_only">
      			<td class="cell-r">고객명</td>
      			<td class="cell-l">
@@ -195,6 +195,111 @@
      				</select>
      			</td>
      		</tr>
+
+<!--  2017.10. 추가 컬럼  -->
+    		<tr class="row_bottom_only">
+				<td class="cell-r">제품원가</td>
+				<td class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=productCost id=productCost size=15 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' >
+	<% } else { %>
+					<input type=text name=productCost id=productCost size=15 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= productEach.getProductCost() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td class="cell-r">매출일자</td>
+				<td class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=date name=salesDt id=salesDt size=20 value='' >
+	<% } else { %>
+					<input type=date name=salesDt id=salesDt size=20 value='<%= productEach.getSalesDt() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td class="cell-r">매출액</td>
+				<td class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=salesAmt id=salesAmt size=15 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' >
+	<% } else { %>
+					<input type=text name=salesAmt id=salesAmt size=15 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= productEach.getSalesAmt() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td class="cell-r">추가매출액</td>
+				<td class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=addSalesAmt id=addSalesAmt size=15 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' >
+	<% } else { %>
+					<input type=text name=addSalesAmt id=addSalesAmt size=15 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= productEach.getAddSalesAmt() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td class="cell-r">입금일자</td>
+				<td class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=date name=payDt id=payDt size=20 value='' >
+	<% } else { %>
+					<input type=date name=payDt id=payDt size=20 value='<%= productEach.getPayDt() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td class="cell-r">입금액</td>
+				<td class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=payAmt id=payAmt size=15 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' >
+	<% } else { %>
+					<input type=text name=payAmt id=payAmt size=15 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= productEach.getPayAmt() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td class="cell-r">외상매출액</td>
+				<td class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<input type=text name=creditSalesAmt id=creditSalesAmt size=15 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='' >
+	<% } else { %>
+					<input type=text name=creditSalesAmt id=creditSalesAmt size=15 
+						onKeypress="if(event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"
+						value='<%= productEach.getCreditSalesAmt() %>' >
+	<% } %>   		
+				</td>
+			</tr>
+    		<tr class="row_bottom_only">
+				<td class="cell-r">비고</td>
+				<td class="cell-l">
+	<% if(mode.equals("C")) { %>   
+					<textarea rows="3" cols="10" name="note" style="width:300;"></textarea>
+	<% } else { %>
+					<textarea rows="3" cols="10" name="note" style="width:300;"><%= productEach.getNote() %></textarea>
+	<% } %>   		
+				</td>
+			</tr>
+ 
+
+			
 			<tr height="30"/></tr>
 		</table>
 		<table>

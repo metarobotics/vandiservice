@@ -7,6 +7,9 @@
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
 
 <%
+	// session 
+	String userId = (String)session.getAttribute("userId");
+
 	//parameter
 	String mode = request.getParameter("mode"); //CUD + A(Accept.접수), S(Ship.배송중), F(Finish.완료)
 	String modeStr = "";
@@ -62,8 +65,8 @@
 		//out.print("\n6:"+Integer.parseInt(request.getParameter("totalAmt")));
 		
 		
-		int srcWhId = Integer.parseInt(request.getParameter("srcWh"));
-		int destWhId = Integer.parseInt(request.getParameter("destWh"));
+		int srcWhNo = Integer.parseInt(request.getParameter("srcWh"));
+		int destWhNo = Integer.parseInt(request.getParameter("destWh"));
 		
 		int subtotal = Integer.parseInt(request.getParameter("subtotal"));
 		int tax = Integer.parseInt(request.getParameter("tax"));
@@ -72,16 +75,14 @@
 		
 		String orderStr = request.getParameter("orderStr").toString(); // 1:3:25000|2:5:15000
 		
-		// session 
-		String userId = (String)session.getAttribute("userId");
 		
-		//out.print(srcWhId +"<br>"+destWhId +"<br>"+ subtotal +"<br>"+ tax +"<br>"+ totalAmt +"<br>"+ orderStr + "<br>" + userId + "<br>");
+		//out.print(srcWhNo +"<br>"+destWhNo +"<br>"+ subtotal +"<br>"+ tax +"<br>"+ totalAmt +"<br>"+ orderStr + "<br>" + userId + "<br>");
 	
 		//
 		// orderT
 		//
 		
-		OrderT orderT = new OrderT(orderNo, orderDt, srcWhId, destWhId, null, subtotal, tax, totalAmt, note, userId, userId);
+		OrderT orderT = new OrderT(orderNo, orderDt, srcWhNo, destWhNo, null, subtotal, tax, totalAmt, note, userId, userId);
 	
 		if(mode.equals("C"))
 		{
@@ -148,8 +149,10 @@
 	else if(mode.equals("F")) // 완료 
 	{
 		int orderNo = Integer.parseInt(request.getParameter("orderNo"));
+		int srcWhNo = Integer.parseInt(request.getParameter("srcWhNo"));
 
 		orderTDao.finishOrderT(orderNo);
+		orderTDao.minusWhItemCnt(orderNo, srcWhNo, userId);
 	}	
 	
 %>

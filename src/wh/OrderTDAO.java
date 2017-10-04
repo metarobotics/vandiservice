@@ -392,6 +392,32 @@ public class OrderTDAO extends DAO {
 			DBClose.close(con,pstmt); 
 		} 
 	} 
+
+	
+	// 출고지 자재갯수 감소 (배송완료시) 
+	public void minusWhItemCnt(int orderNo, int srcWhNo, String updateUserId) throws Exception {
+
+		ArrayList<OrderTItem> itemList = this.getOrderTItemList(orderNo);
+		int size = itemList.size();
+		
+		OrderTItem orderTItem;
+		WhItem whItem;
+		WhItemDAO whItemDao = new WhItemDAO();
+		
+ 		for(int i = 0; i < size; i++) {
+ 			
+ 			orderTItem = itemList.get(i);
+ 			
+ 			if(orderTItem.getItemCnt() == 0)
+ 				continue;
+ 			
+ 			whItem = new WhItem(srcWhNo, orderTItem.getItemNo(), orderTItem.getItemCnt()*(-1), updateUserId, updateUserId);
+ 			whItemDao.addWhItemCnt(whItem);
+ 		}
+	}
+
+	
+	
 }
 
 

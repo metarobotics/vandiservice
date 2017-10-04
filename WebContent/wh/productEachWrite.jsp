@@ -50,7 +50,17 @@ if(mode.equals("C") || mode.equals("U"))
 	String registerNo = request.getParameter("registerNo").toString();
 	int clientNo = Integer.parseInt(request.getParameter("clientNo"));
 	
-	productEach = new ProductEach(productEachNo, productNo, serialNo, prodDt, certDt, registerNo, clientNo, userId, null, userId, null);
+	int productCost = Integer.parseInt(request.getParameter("productCost"));
+	String salesDt = request.getParameter("salesDt").toString();
+	int salesAmt = Integer.parseInt(request.getParameter("salesAmt"));
+	int addSalesAmt = Integer.parseInt(request.getParameter("addSalesAmt"));
+	String payDt = request.getParameter("payDt").toString();
+	int payAmt = Integer.parseInt(request.getParameter("payAmt"));
+	int creditSalesAmt = Integer.parseInt(request.getParameter("creditSalesAmt"));
+	String note = request.getParameter("note").toString();
+
+	
+	productEach = new ProductEach(productEachNo, productNo, serialNo, prodDt, certDt, registerNo, clientNo, productCost, salesDt, salesAmt, addSalesAmt, payDt, payAmt, creditSalesAmt, note, userId, null, userId, null);
 	
 	if(mode.equals("C"))
 	{

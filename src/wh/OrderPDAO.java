@@ -321,8 +321,8 @@ public class OrderPDAO extends DAO {
 			pstmt.setString(8, orderP.getCurCd());
 			pstmt.setString(9, orderP.getInsertUserId());
 			
+System.out.println(pstmt.toString());
 			pstmt.execute(); 
-			//System.out.println(sql);
 			
 		}catch(Exception e) { 
 			throw e;
@@ -349,6 +349,7 @@ public class OrderPDAO extends DAO {
 			pstmt.setString(6, orderPItem.getCurCd());
 			pstmt.setString(7, orderPItem.getInsertUserId());
 			
+System.out.println(pstmt.toString());
 			pstmt.execute(); 
 			//System.out.println(sql);
 			
@@ -366,7 +367,7 @@ public class OrderPDAO extends DAO {
 		PreparedStatement pstmt = null; 
 		
 		try { 
-			sql = "update orderP set orderDt=?, whNo=?, subtotal=?, tax=?, totalAmt=?, curCd=?, updateDatetime=current_timestamp() where orderNo=?";
+			sql = "update orderP set orderDt=?, whNo=?, subtotal=?, tax=?, totalAmt=?, curCd=?, updateUserId=?, updateDatetime=current_timestamp() where orderNo=?";
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -376,7 +377,8 @@ public class OrderPDAO extends DAO {
 			pstmt.setFloat(4, orderP.getTax()); 
 			pstmt.setFloat(5, orderP.getTotalAmt()); 
 			pstmt.setString(6, orderP.getCurCd());
-			pstmt.setInt(7, orderP.getOrderNo());
+			pstmt.setString(7, orderP.getUpdateUserId());
+			pstmt.setInt(8, orderP.getOrderNo());
 						
 			pstmt.executeUpdate();
 			//System.out.println(sql);
@@ -490,12 +492,15 @@ public class OrderPDAO extends DAO {
 			sqlBuf.append("				a.rcvSeq, ");
 			sqlBuf.append("				a.rcvDt, ");
 			sqlBuf.append("				a.note, ");
+			sqlBuf.append("				b.whNo, ");//5 
 			sqlBuf.append("				a.insertUserId, ");
 			sqlBuf.append("				a.insertDatetime, ");
 			sqlBuf.append("				a.updateUserId, ");
 			sqlBuf.append("				a.updateDatetime  ");
 			sqlBuf.append("        from orderPRcv a ");
-			sqlBuf.append("       where orderNo = ?");
+			sqlBuf.append("        left outer join orderP b ");
+			sqlBuf.append("          on a.orderNo = b.orderNo ");
+			sqlBuf.append("       where a.orderNo = ?");
 			sqlBuf.append("         and rcvSeq = ?;");
  
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
@@ -505,7 +510,7 @@ public class OrderPDAO extends DAO {
 			//System.out.println(sqlBuf.toString());
 			
 			if(rs.next()) { 
-				orderPRcv = new OrderPRcv(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(7)); 
+				orderPRcv = new OrderPRcv(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(8)); 
 			}
 			
 		}catch(Exception e) { 
@@ -530,12 +535,15 @@ public class OrderPDAO extends DAO {
 			sqlBuf.append("				a.rcvSeq, ");
 			sqlBuf.append("				a.rcvDt, ");
 			sqlBuf.append("				a.note, ");
+			sqlBuf.append("				b.whNo, ");//5 
 			sqlBuf.append("				a.insertUserId, ");
 			sqlBuf.append("				a.insertDatetime, ");
 			sqlBuf.append("				a.updateUserId, ");
 			sqlBuf.append("				a.updateDatetime  ");
 			sqlBuf.append("        from orderPRcv a ");
-			sqlBuf.append("       where orderNo = ?");
+			sqlBuf.append("        left outer join orderP b ");
+			sqlBuf.append("          on a.orderNo = b.orderNo ");
+			sqlBuf.append("       where a.orderNo = ?");
 			sqlBuf.append("       order by rcvSeq;");
  
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
@@ -544,7 +552,7 @@ public class OrderPDAO extends DAO {
 			//System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) { 
-				OrderPRcv orderPRcv = new OrderPRcv(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(7)); 
+				OrderPRcv orderPRcv = new OrderPRcv(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(8)); 
 				
 				alist.add(orderPRcv); 
 			} 
@@ -571,13 +579,16 @@ public class OrderPDAO extends DAO {
 			sqlBuf.append("				a.rcvSeq, ");
 			sqlBuf.append("				a.seq, ");
 			sqlBuf.append("				a.itemNo, ");
-			sqlBuf.append("				a.itemCnt, ");
-			sqlBuf.append("				a.insertUserId, ");
+			sqlBuf.append("				a.itemCnt, ");//5
+			sqlBuf.append("				b.whNo, ");//6 
+			sqlBuf.append("				a.insertUserId, ");//7
 			sqlBuf.append("				a.insertDatetime, ");
-			sqlBuf.append("				a.updateUserId, ");
+			sqlBuf.append("				a.updateUserId, ");//9
 			sqlBuf.append("				a.updateDatetime  ");
 			sqlBuf.append("        from orderPRcvItem a ");
-			sqlBuf.append("       where orderNo = ?");
+			sqlBuf.append("        left outer join orderP b ");
+			sqlBuf.append("          on a.orderNo = b.orderNo ");
+			sqlBuf.append("       where a.orderNo = ?");
 			sqlBuf.append("         and rcvSeq = ?");
 			sqlBuf.append("       order by seq;");
  
@@ -588,7 +599,7 @@ public class OrderPDAO extends DAO {
 			//System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) { 
-				OrderPRcvItem orderPRcvItem = new OrderPRcvItem(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getString(6), rs.getString(8)); 
+				OrderPRcvItem orderPRcvItem = new OrderPRcvItem(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getString(9)); 
 				
 				alist.add(orderPRcvItem); 
 			} 
@@ -601,8 +612,53 @@ public class OrderPDAO extends DAO {
 		return alist; 
 	}  	
 	
-	
-	
+	public OrderPRcvItem getOrderPRcvItem(int orderNo, int rcvSeq, int itemNo) throws Exception { 
+		Connection con = dbconnect.getConnection(); 
+		PreparedStatement pstmt = null; 
+		ResultSet rs = null; 
+		OrderPRcvItem orderPRcvItem = null; 
+		
+		try { 
+			StringBuffer sqlBuf=new StringBuffer(); 
+
+			sqlBuf.append("		select  a.orderNo, ");
+			sqlBuf.append("				a.rcvSeq, ");
+			sqlBuf.append("				a.seq, ");
+			sqlBuf.append("				a.itemNo, ");
+			sqlBuf.append("				a.itemCnt, ");//5
+			sqlBuf.append("				b.whNo, ");//6 
+			sqlBuf.append("				a.insertUserId, ");//7
+			sqlBuf.append("				a.insertDatetime, ");
+			sqlBuf.append("				a.updateUserId, ");//9
+			sqlBuf.append("				a.updateDatetime  ");
+			sqlBuf.append("        from orderPRcvItem a ");
+			sqlBuf.append("        left outer join orderP b ");
+			sqlBuf.append("          on a.orderNo = b.orderNo ");
+			sqlBuf.append("       where a.orderNo = ?");
+			sqlBuf.append("         and rcvSeq = ?");
+			sqlBuf.append("         and itemNo = ?");
+			sqlBuf.append("       order by seq;");
+ 
+			pstmt = con.prepareStatement(sqlBuf.toString()); 
+			pstmt.setInt(1, orderNo);
+			pstmt.setInt(2, rcvSeq);
+			pstmt.setInt(3, itemNo);
+			rs = pstmt.executeQuery(); 
+System.out.println(pstmt.toString());			
+			
+			while(rs.next()) { 
+				orderPRcvItem = new OrderPRcvItem(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getString(9));
+			} 
+		}catch(Exception e) { 
+			throw e;
+		}finally { 
+			DBClose.close(con,pstmt,rs); 
+		} 
+		
+		return orderPRcvItem; 
+	}  	
+		
+		
 	public void insertOrderPRcv(OrderPRcv orderPRcv) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
@@ -620,6 +676,7 @@ public class OrderPDAO extends DAO {
 			pstmt.setString(4, orderPRcv.getNote());
 			pstmt.setString(5, orderPRcv.getInsertUserId());
 			
+System.out.println(pstmt.toString());
 			pstmt.execute(); 
 			//System.out.println(sql);
 			
@@ -647,6 +704,7 @@ public class OrderPDAO extends DAO {
 			pstmt.setInt(5, orderPRcvItem.getItemCnt());
 			pstmt.setString(6, orderPRcvItem.getInsertUserId());
 			
+System.out.println(pstmt.toString());
 			pstmt.execute(); 
 			//System.out.println(sql);
 			
@@ -656,8 +714,65 @@ public class OrderPDAO extends DAO {
 			DBClose.close(con,pstmt); 
 		} 
 	} 
+
+	
+	//-------------------------------------------
+	// WhItem itemCnt 처리   
+	//-------------------------------------------
+	
+	// 1. 입고처리 등록 (수량 등록) : 개별 item 수량 등록 
+	// 2. 입고처리 수정 (수량 변경) : 개별 item 수량 삭제 후 등록  
+	// 3. 입고처리 삭제                  : item 전체 삭제 
 	
 	
+	// 새 갯수를 더하기만 함 
+	public void addWhItemCnt(OrderPRcvItem rcvItem) throws Exception {
+		
+		WhItem whItem = new WhItem(rcvItem.getWhNo(), rcvItem.getItemNo(), rcvItem.getItemCnt(), rcvItem.getInsertUserId(), rcvItem.getUpdateUserId());
+
+		WhItemDAO whItemDAO = new WhItemDAO();
+		
+		whItemDAO.addWhItemCnt(whItem); 	// 새 갯수 더하기 
+	}
+		
+	/*
+	// 기존 갯수를 빼고 새 갯수를 더함
+	public void setWhItemCnt(OrderPRcvItem rcvItem) throws Exception {
+		
+		WhItem whItem = new WhItem(rcvItem.getWhNo(), rcvItem.getItemNo(), rcvItem.getItemCnt(), rcvItem.getInsertUserId(), rcvItem.getUpdateUserId());
+
+		// 기존 갯수 구하기 
+		OrderPRcvItem oldRcvItem = getOrderPRcvItem(rcvItem.getOrderNo(), rcvItem.getRcvSeq(), rcvItem.getItemNo());
+		WhItem oldWhItem = new WhItem(oldRcvItem.getWhNo(), oldRcvItem.getItemNo(), oldRcvItem.getItemCnt()*(-1), rcvItem.getInsertUserId(), rcvItem.getUpdateUserId());
+				
+		WhItemDAO whItemDAO = new WhItemDAO();
+		
+		whItemDAO.addWhItemCnt(oldWhItem); 	// 기존 갯수 빼기 
+		whItemDAO.addWhItemCnt(whItem); 	// 새 갯수 더하기 
+	}
+		*/
+	
+	public void minusWhItemCnt(int orderNo, int rcvSeq, String updateUserId) throws Exception {
+
+		ArrayList<OrderPRcvItem> rcvItemList = this.getOrderPRcvItemList(orderNo, rcvSeq);
+		int size = rcvItemList.size();
+		
+		OrderPRcvItem rcvItem;
+		WhItem whItem;
+		WhItemDAO whItemDao = new WhItemDAO();
+		
+ 		for(int i = 0; i < size; i++) {
+ 			rcvItem = rcvItemList.get(i);
+ 			if(rcvItem.getItemCnt() == 0)
+ 				continue;
+ 			whItem = new WhItem(rcvItem.getWhNo(), rcvItem.getItemNo(), rcvItem.getItemCnt()*(-1), updateUserId, updateUserId);
+ 			whItemDao.addWhItemCnt(whItem);
+ 		}
+	}
+
+	
+
+
 	public void modifyOrderPRcv(OrderPRcv orderPRcv) throws Exception {
 		
 		Connection con = dbconnect.getConnection(); 
@@ -731,7 +846,7 @@ public class OrderPDAO extends DAO {
 		} 
 	} 
 	
-	
+
 	
 /*
 	public ArrayList<Item> getOrderPRcvItemList(int orderNo) throws Exception { 

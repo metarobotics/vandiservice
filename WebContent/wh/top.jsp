@@ -33,14 +33,14 @@ String whNm =  (String)session.getAttribute("whNm");
    		<td class="cell-l">
 	   		<ul>
 <% if(!authLvl.equals("A")) { %>
-			  <li><a href="itemList.jsp">자재목록</a></li>
+			  <li><a href="itemList.jsp">자재정보</a></li>
 			  <li><a href="toList.jsp">자재구매요청</a></li>
 			  <li><a href="soList.jsp">견적서</a></li>
 <% } %>			  
 <% if(whId.equals("mr")) { %>
-			  <li><a href="poList.jsp">구매</a></li>
+			  <li><a href="poList.jsp">자재구매</a></li>
 <% } %>			  
-			  <li><a href="productEachList.jsp">제품관리</a></li>
+			  <li><a href="productEachList.jsp">제품현황</a></li>
 			  <li><a href="clientList.jsp">고객관리</a></li>
 <% if(authLvl.equals("S")) { %>
 			   <li><a href="companyDtl.jsp?mode=R">회사정보</a></li> 

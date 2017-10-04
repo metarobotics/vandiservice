@@ -11,6 +11,8 @@ public class OrderPRcv {
 	private String updateUserId;
 	private String updateDatetime;
 	
+	private int whNo;
+	
 	public OrderPRcv()
 	{
 		
@@ -22,6 +24,19 @@ public class OrderPRcv {
 		this.rcvSeq = rcvSeq;
 		this.rcvDt = rcvDt;
 		this.note = note;
+		
+		this.insertUserId = insertUserId;
+		this.updateUserId = updateUserId;
+	}
+	
+	public OrderPRcv(int orderNo, int rcvSeq, String rcvDt, String note, int whNo, String insertUserId, String updateUserId)
+	{
+		this.orderNo = orderNo;
+		this.rcvSeq = rcvSeq;
+		this.rcvDt = rcvDt;
+		this.note = note;
+		
+		this.whNo = whNo;
 		
 		this.insertUserId = insertUserId;
 		this.updateUserId = updateUserId;
@@ -76,6 +91,13 @@ public class OrderPRcv {
 		this.updateDatetime = updateDatetime;
 	}
 	
+	public int getWhNo() {
+		return whNo;
+	}
+
+	public void setWhNo(int whNo) {
+		this.whNo = whNo;
+	}
 	
 	
 }

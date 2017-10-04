@@ -1,70 +1,35 @@
 package wh;
 
-public class OrderPRcvItem {
-	
-	private int orderNo;
-	private int rcvSeq;
-	private int seq;
+public class WhItem {
+
+	private int whNo;
 	private int itemNo;
 	private int itemCnt;
 	
-	private String insertUserId; 
+	private String insertUserId;
 	private String insertDatetime;
 	private String updateUserId;
 	private String updateDatetime;
 	
-	private int whNo;
-	
+	public WhItem(){
 		
-	public OrderPRcvItem() {
 	}
 	
-	public OrderPRcvItem(int orderNo, int rcvSeq, int seq, int itemNo, int itemCnt, String insertUserId, String updateUserId) {
-		this.orderNo = orderNo;
-		this.rcvSeq = rcvSeq;
-		this.seq = seq;
-		this.itemNo = itemNo;
-		this.itemCnt = itemCnt;
-		
-		this.insertUserId = insertUserId;
-		this.updateUserId = updateUserId;
-	}
-
-	public OrderPRcvItem(int orderNo, int rcvSeq, int seq, int itemNo, int itemCnt, int whNo, String insertUserId, String updateUserId) {
-		this.orderNo = orderNo;
-		this.rcvSeq = rcvSeq;
-		this.seq = seq;
-		this.itemNo = itemNo;
-		this.itemCnt = itemCnt;
-		
+	public WhItem(int whNo, int itemNo, int itemCnt, String insertUserId, String updateUserId) {
 		this.whNo = whNo;
-
+		this.itemNo = itemNo;
+		this.itemCnt = itemCnt;
 		this.insertUserId = insertUserId;
 		this.updateUserId = updateUserId;
 	}
+	
 
-	public int getOrderNo() {
-		return orderNo;
+	public int getWhNo() {
+		return whNo;
 	}
 
-	public void setOrderNo(int orderNo) {
-		this.orderNo = orderNo;
-	}
-
-	public int getRcvSeq() {
-		return rcvSeq;
-	}
-
-	public void setRcvSeq(int rcvSeq) {
-		this.rcvSeq = rcvSeq;
-	}
-
-	public int getSeq() {
-		return seq;
-	}
-
-	public void setSeq(int seq) {
-		this.seq = seq;
+	public void setWhNo(int whNo) {
+		this.whNo = whNo;
 	}
 
 	public int getItemNo() {
@@ -114,15 +79,4 @@ public class OrderPRcvItem {
 	public void setUpdateDatetime(String updateDatetime) {
 		this.updateDatetime = updateDatetime;
 	}
-
-	public int getWhNo() {
-		return whNo;
-	}
-
-	public void setWhNo(int whNo) {
-		this.whNo = whNo;
-	}
-
-
 }
-

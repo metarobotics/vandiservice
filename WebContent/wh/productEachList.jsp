@@ -70,8 +70,8 @@
 	<tr class="header">
 		<th width="23%" class="text-center">제품일련번호</th>
 		<th width="16%" class="text-center">제작일자</th>
-		<th width="13%" class="text-center">등록번호</th>
-		<th width="22%" class="text-center">고객명</th>
+		<th width="13%" class="text-center">기체번호</th>
+		<th width="22%" class="text-center">납품처</th>
 		<th width="10%" class="text-center">지역</th>
 		<th width="16%" class="text-center">검사일자</th>
 	</tr>

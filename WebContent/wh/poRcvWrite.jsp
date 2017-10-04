@@ -9,6 +9,11 @@
 <%
 response.setContentType("text/html;charset=EUC-KR");
 	
+	// session 
+	String userId = (String)session.getAttribute("userId");
+	int userWhNo =  (Integer)session.getAttribute("whNo"); // 현재 구매는 mr 0만 사용하나 확장성을 위하여 세션값으로 설정함. 단 super는 모두 mr이라고 가정.
+
+	
 	//parameter
 	String mode = request.getParameter("mode"); //CUD
 	String modeStr = "";
@@ -49,10 +54,6 @@ response.setContentType("text/html;charset=EUC-KR");
 		String note = request.getParameter("note").toString();
 		
 		String rcvStr = request.getParameter("rcvStr").toString(); // 1:3|2:5 (itemNo:itemCnt)
-
-		
-		// session 
-		String userId = (String)session.getAttribute("userId");
 		
 		//out.print(srcWhId +"<br>"+destWhId +"<br>"+ subtotal +"<br>"+ tax +"<br>"+ totalAmt +"<br>"+ orderStr + "<br>" + userId + "<br>");
 	
@@ -60,8 +61,6 @@ response.setContentType("text/html;charset=EUC-KR");
 		// orderPRcv
 		//
 		
-		//public OrderPRcv(int orderNo, int rcvSeq, String rcvDt, String note, String insertUserId, String updateUserId)
-
 		OrderPRcv orderPRcv = new OrderPRcv(orderNo, rcvSeq, rcvDt, note, userId, userId);
 	
 		if(mode.equals("C"))
@@ -81,6 +80,8 @@ response.setContentType("text/html;charset=EUC-KR");
 		
 		if(mode.equals("U"))
 		{
+			// 순서 바뀌면 안됨. 
+			orderPDao.minusWhItemCnt(orderNo, rcvSeq, userId);
 			orderPDao.deleteOrderPRcvItem(orderNo, rcvSeq);
 		}
 		
@@ -101,19 +102,22 @@ response.setContentType("text/html;charset=EUC-KR");
 			itemNo = Integer.parseInt(arr[0]);
 			itemCnt = Integer.parseInt(arr[1]);
 			
-//			public OrderPRcvItem(int orderNo, int rcvSeq, int seq, int itemNo, int itemCnt, String insertUserId, String updateUserId) {
+			OrderPRcvItem rcvItem = new OrderPRcvItem(orderNo, rcvSeq, i+1, itemNo, itemCnt, userId, userId);
+			rcvItem.setWhNo(userWhNo);
 
-			OrderPRcvItem rcvItem = new OrderPRcvItem(orderNo, rcvSeq, i+1, itemNo, itemCnt, userId, userId); 
 			orderPDao.insertOrderPRcvItem(rcvItem);
+			orderPDao.addWhItemCnt(rcvItem);
 		}
-		
 	}
 	else if(mode.equals("D"))
 	{
 		rcvSeq = Integer.parseInt(request.getParameter("rcvSeq"));
 		
-		orderPDao.deleteOrderPRcv(orderNo, rcvSeq);
+		// 순서 바뀌면 안됨. 
+		orderPDao.minusWhItemCnt(orderNo, rcvSeq, userId);
 		orderPDao.deleteOrderPRcvItem(orderNo, rcvSeq);
+		
+		orderPDao.deleteOrderPRcv(orderNo, rcvSeq);
 	}
 	
 %>

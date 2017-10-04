@@ -10,6 +10,16 @@ public class ProductEach {
 	private String registerNo;
 	private int clientNo;//7
 	
+	// 8°³ Ãß°¡ 
+	private int productCost;
+	private String salesDt;
+	private int salesAmt;
+	private int  addSalesAmt;
+	private String payDt;
+	private int  payAmt;
+	private int creditSalesAmt;
+	private String note;
+	
 	private String insertUserId;
 	private String insertDatetime;
 	private String updateUserId;
@@ -23,6 +33,7 @@ public class ProductEach {
 	}
 
 	public ProductEach(int productEachNo, int productNo, String serialNo, String prodDt, String certDt, String registerNo, int clientNo, 
+			int productCost, String salesDt, int salesAmt, int addSalesAmt, String payDt, int payAmt, int creditSalesAmt, String note, 
 			String insertUserId, String insertDatetime, String updateUserId, String updateDatetime) {
 	
 		this.productEachNo = productEachNo;
@@ -33,6 +44,15 @@ public class ProductEach {
 		this.registerNo = registerNo;
 		this.clientNo = clientNo;
 		
+		this.productCost = productCost;
+		this.salesDt = salesDt;
+		this.salesAmt = salesAmt;
+		this.addSalesAmt = addSalesAmt;
+		this.payDt = payDt;
+		this.payAmt = payAmt;
+		this.creditSalesAmt = creditSalesAmt;
+		this.note = note;
+		
 		this.insertUserId = insertUserId;
 		this.insertDatetime = insertDatetime;
 		this.updateUserId = updateUserId;
@@ -41,6 +61,7 @@ public class ProductEach {
 	}
 	
 	public ProductEach(int productEachNo, int productNo, String serialNo, String prodDt, String certDt, String registerNo, int clientNo, 
+					int productCost, String salesDt, int salesAmt, int addSalesAmt, String payDt, int payAmt, int creditSalesAmt, String note, 
 					String insertUserId, String insertDatetime, String updateUserId, String updateDatetime,
 					String clientNm, String clientLocation) {
 		
@@ -51,6 +72,15 @@ public class ProductEach {
 		this.certDt = certDt;
 		this.registerNo = registerNo;
 		this.clientNo = clientNo;
+		
+		this.productCost = productCost;
+		this.salesDt = salesDt;
+		this.salesAmt = salesAmt;
+		this.addSalesAmt = addSalesAmt;
+		this.payDt = payDt;
+		this.payAmt = payAmt;
+		this.creditSalesAmt = creditSalesAmt;
+		this.note = note;
 		
 		this.insertUserId = insertUserId;
 		this.insertDatetime = insertDatetime;
@@ -159,6 +189,70 @@ public class ProductEach {
 
 	public String getClientLocation() {
 		return clientLocation;
+	}
+
+	public int getProductCost() {
+		return productCost;
+	}
+
+	public void setProductCost(int productCost) {
+		this.productCost = productCost;
+	}
+
+	public String getSalesDt() {
+		return salesDt;
+	}
+
+	public void setSalesDt(String salesDt) {
+		this.salesDt = salesDt;
+	}
+
+	public int getSalesAmt() {
+		return salesAmt;
+	}
+
+	public void setSalesAmt(int salesAmt) {
+		this.salesAmt = salesAmt;
+	}
+
+	public int getAddSalesAmt() {
+		return addSalesAmt;
+	}
+
+	public void setAddSalesAmt(int addSalesAmt) {
+		this.addSalesAmt = addSalesAmt;
+	}
+
+	public String getPayDt() {
+		return payDt;
+	}
+
+	public void setPayDt(String payDt) {
+		this.payDt = payDt;
+	}
+
+	public int getPayAmt() {
+		return payAmt;
+	}
+
+	public void setPayAmt(int payAmt) {
+		this.payAmt = payAmt;
+	}
+
+	public int getCreditSalesAmt() {
+		return creditSalesAmt;
+	}
+
+	public void setCreditSalesAmt(int creditSalesAmt) {
+		this.creditSalesAmt = creditSalesAmt;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 }
 
