@@ -41,7 +41,7 @@ public class WhItemDAO extends DAO {
 			pstmt.setInt(2, itemNo); 
 			
 			rs = pstmt.executeQuery(); 
-System.out.println(pstmt.toString());
+//System.out.println(pstmt.toString());
 			
 			if(rs.next()) { 
 				cnt=rs.getInt(1); 
@@ -75,7 +75,7 @@ System.out.println(pstmt.toString());
 			pstmt.setString(4, whItem.getInsertUserId());
 			
 			pstmt.execute(); 
-System.out.println(pstmt.toString());
+//System.out.println(pstmt.toString());
 			
 		}catch(Exception e) { 
 			throw e;
@@ -108,7 +108,7 @@ System.out.println(pstmt.toString());
 			pstmt.setInt(4, whItem.getItemNo());
 						
 			pstmt.executeUpdate();
-System.out.println(pstmt.toString());
+//System.out.println(pstmt.toString());
 			
 		}catch(Exception e) { 
 			throw e;

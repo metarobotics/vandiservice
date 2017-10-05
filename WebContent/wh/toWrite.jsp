@@ -73,14 +73,14 @@
 		int totalAmt = Integer.parseInt(request.getParameter("totalAmt"));
 		String note = request.getParameter("note").toString();
 		
-		String orderStr = request.getParameter("orderStr").toString(); // 1:3:25000|2:5:15000
+		String orderStr = request.getParameter("orderStr").toString(); // 1:3:25000/2:5:15000
 		
 		
 		//out.print(srcWhNo +"<br>"+destWhNo +"<br>"+ subtotal +"<br>"+ tax +"<br>"+ totalAmt +"<br>"+ orderStr + "<br>" + userId + "<br>");
 	
-		//
+		//-------------------------
 		// orderT
-		//
+		//-------------------------
 		
 		OrderT orderT = new OrderT(orderNo, orderDt, srcWhNo, destWhNo, null, subtotal, tax, totalAmt, note, userId, userId);
 	
@@ -95,9 +95,9 @@
 		}
 	
 		
-		//
+		//-------------------------
 		// orderItem
-		//
+		//-------------------------
 		
 		if(mode.equals("U"))
 		{

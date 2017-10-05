@@ -6,16 +6,20 @@ public class User {
 	private String userId;
 	private String userNm;
 	private String authLvl;
+	
 	private int whNo;
 	private String whId;
 	private String whNm;
-	private int insertUserNo;
+	
+	private String insertUserId;
 	private String insertDatetime;
+	private String updateUserId;
+	private String updateDatetime;
 	
 	public User() {
 	}
-	
-	public User(int userNo, String userId, String userNm, String authLvl, int whNo, String whId, String whNm, int insertUserNo, String insertDatetime) {
+	/*
+	public User(int userNo, String userId, String userNm, String authLvl, int whNo, String whId, String whNm, String insertUserId, String insertDatetime) {
 		this.userNo = userNo;
 		this.userId = userId;
 		this.userNm = userNm;
@@ -23,9 +27,9 @@ public class User {
 		this.whNo = whNo;
 		this.whId = whId;
 		this.whNm = whNm;
-		this.insertUserNo = insertUserNo;
+		this.insertUserId = insertUserId;
 		this.insertDatetime = insertDatetime;
-	}
+	}*/
 
 	public User(int userNo, String userId, String userNm, String authLvl, int whNo, String whId, String whNm) {
 		this.userNo = userNo;
@@ -94,12 +98,12 @@ public class User {
 		this.whNm = whNm;
 	}
 	
-	public int getInsertUserNo() {
-		return insertUserNo;
+	public String getInsertUserId() {
+		return insertUserId;
 	}
 
-	public void setInsertUserNo(int insertUserNo) {
-		this.insertUserNo = insertUserNo;
+	public void setInsertUserId(String insertUserId) {
+		this.insertUserId = insertUserId;
 	}
 
 	public String getInsertDatetime() {
@@ -108,6 +112,22 @@ public class User {
 
 	public void setInsertDatetime(String insertDatetime) {
 		this.insertDatetime = insertDatetime;
+	}
+
+	public String getUpdateUserId() {
+		return updateUserId;
+	}
+
+	public void setUpdateUserId(String updateUserId) {
+		this.updateUserId = updateUserId;
+	}
+
+	public String getUpdateDatetime() {
+		return updateDatetime;
+	}
+
+	public void setUpdateDatetime(String updateDatetime) {
+		this.updateDatetime = updateDatetime;
 	}
 
 }

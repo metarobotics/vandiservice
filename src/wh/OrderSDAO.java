@@ -97,7 +97,7 @@ public class OrderSDAO extends DAO {
 			sqlBuf.append("      		, case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm "); //22
 			sqlBuf.append("        from orderS a ");
 			sqlBuf.append("        left join wh b on a.whNo = b.whNo");
-			sqlBuf.append("        left join productEach c on a.productSerialNo = c.serialNo");
+			sqlBuf.append("        left join product c on a.productSerialNo = c.serialNo");
 			sqlBuf.append("        left join client d on c.clientNo = d.clientNo");
 			sqlBuf.append("       where a.orderNo = ?; ");
 			
@@ -163,7 +163,7 @@ public class OrderSDAO extends DAO {
 			sqlBuf.append("      		, case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm ");
 			sqlBuf.append("        from orderS a ");
 			sqlBuf.append("        left join wh b on a.whNo = b.whNo");
-			sqlBuf.append("        left join productEach c on a.productSerialNo = c.serialNo");
+			sqlBuf.append("        left join product c on a.productSerialNo = c.serialNo");
 			sqlBuf.append("        left join client d on c.clientNo = d.clientNo");
 			sqlBuf.append("       order by orderNo desc;");
  
@@ -221,7 +221,7 @@ public class OrderSDAO extends DAO {
 			sqlBuf.append("      		, case a.statusCd when '10' then '주문' when '20' then '확정' else '' end statusNm ");
 			sqlBuf.append("        from orderS a ");
 			sqlBuf.append("        left join wh b on a.whNo = b.whNo");
-			sqlBuf.append("        left join productEach c on a.productSerialNo = c.serialNo");
+			sqlBuf.append("        left join product c on a.productSerialNo = c.serialNo");
 			sqlBuf.append("        left join client d on c.clientNo = d.clientNo");
 			sqlBuf.append("       where a.whNo = ?");
 			sqlBuf.append("        order by orderNo desc;");

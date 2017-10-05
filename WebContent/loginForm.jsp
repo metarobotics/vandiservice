@@ -46,8 +46,13 @@ function chk(f)
       <p><input class="input_style" type="password" placeholder="Password" name="pwd"></p>
       <p><button class="submit_style" type="submit">Sign in</button></p>
     </form>
+    <form class="register-form">
+      <p class="message_h2">Registered? <a href="#" onclick="window.open('pwdForm.jsp');">Change Password</a></p>
+    <p></p>
+<!--
     <form class="register-form" action="register.jsp" method="post" onSubmit="return chk(this)">
       <p class="message_h2">Not registered? <a href="#">Create an account</a></p>
+-->
 <!--
       <input type="text" placeholder="id">
       <input type="password" placeholder="pwd">

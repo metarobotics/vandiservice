@@ -2,35 +2,93 @@ package wh;
 
 public class Product {
 	
-	private int productNo;//1
+	private int productNo;
+	private int modelNo;
+	private String serialNo;
+	private String prodDt;
+	private String certDt;
+	private String registerNo;
+	private int clientNo;//7
 	
-	private String productId;//2
-	private String productNmKor;
-	private String productNmEng;
-	private String createDt;//5
+	// 2017.10. 8°³ Ãß°¡ 
+	private int productCost;
+	private String salesDt;
+	private int salesAmt;
+	private int  addSalesAmt;
+	private String payDt;
+	private int  payAmt;
+	private int creditSalesAmt;
+	private String note;
 	
-	private String insertUserId;//6
+	private String insertUserId;
 	private String insertDatetime;
 	private String updateUserId;
-	private String updateDatetime;//9
+	private String updateDatetime;//11
+	
+	private String clientNm;
+	private String clientLocation;
+
 	
 	public Product() {
 	}
+
+	public Product(int productNo, int modelNo, String serialNo, String prodDt, String certDt, String registerNo, int clientNo, 
+			int productCost, String salesDt, int salesAmt, int addSalesAmt, String payDt, int payAmt, int creditSalesAmt, String note, 
+			String insertUserId, String insertDatetime, String updateUserId, String updateDatetime) {
 	
-	public Product(int productNo, String productId, String productNmKor, String productNmEng, String createDt, 
-					String insertUserId, String insertDatetime, String updateUserId, String updateDatetime) {
-		
 		this.productNo = productNo;
+		this.modelNo = modelNo;
+		this.serialNo = serialNo;
+		this.prodDt = prodDt;
+		this.certDt = certDt;
+		this.registerNo = registerNo;
+		this.clientNo = clientNo;
 		
-		this.productId = productId;
-		this.productNmKor = productNmKor;
-		this.productNmEng = productNmEng;
-		this.createDt = createDt;
+		this.productCost = productCost;
+		this.salesDt = salesDt;
+		this.salesAmt = salesAmt;
+		this.addSalesAmt = addSalesAmt;
+		this.payDt = payDt;
+		this.payAmt = payAmt;
+		this.creditSalesAmt = creditSalesAmt;
+		this.note = note;
 		
 		this.insertUserId = insertUserId;
 		this.insertDatetime = insertDatetime;
 		this.updateUserId = updateUserId;
 		this.updateDatetime = updateDatetime;
+		
+	}
+	
+	public Product(int productNo, int modelNo, String serialNo, String prodDt, String certDt, String registerNo, int clientNo, 
+					int productCost, String salesDt, int salesAmt, int addSalesAmt, String payDt, int payAmt, int creditSalesAmt, String note, 
+					String insertUserId, String insertDatetime, String updateUserId, String updateDatetime,
+					String clientNm, String clientLocation) {
+		
+		this.productNo = productNo;
+		this.modelNo = modelNo;
+		this.serialNo = serialNo;
+		this.prodDt = prodDt;
+		this.certDt = certDt;
+		this.registerNo = registerNo;
+		this.clientNo = clientNo;
+		
+		this.productCost = productCost;
+		this.salesDt = salesDt;
+		this.salesAmt = salesAmt;
+		this.addSalesAmt = addSalesAmt;
+		this.payDt = payDt;
+		this.payAmt = payAmt;
+		this.creditSalesAmt = creditSalesAmt;
+		this.note = note;
+		
+		this.insertUserId = insertUserId;
+		this.insertDatetime = insertDatetime;
+		this.updateUserId = updateUserId;
+		this.updateDatetime = updateDatetime;
+		
+		this.clientNm = clientNm;
+		this.clientLocation = clientLocation;
 	}
 
 	public int getProductNo() {
@@ -41,36 +99,52 @@ public class Product {
 		this.productNo = productNo;
 	}
 
-	public String getProductId() {
-		return productId;
+	public int getModelNo() {
+		return modelNo;
 	}
 
-	public void setProductId(String productId) {
-		this.productId = productId;
+	public void setModelNo(int modelNo) {
+		this.modelNo = modelNo;
 	}
 
-	public String getProductNmKor() {
-		return productNmKor;
+	public String getSerialNo() {
+		return serialNo;
 	}
 
-	public void setProductNmKor(String productNmKor) {
-		this.productNmKor = productNmKor;
+	public void setSerialNo(String serialNo) {
+		this.serialNo = serialNo;
 	}
 
-	public String getProductNmEng() {
-		return productNmEng;
+	public String getProdDt() {
+		return prodDt;
 	}
 
-	public void setProductNmEng(String productNmEng) {
-		this.productNmEng = productNmEng;
+	public void setProdDt(String prodDt) {
+		this.prodDt = prodDt;
 	}
 
-	public String getCreateDt() {
-		return createDt;
+	public String getCertDt() {
+		return certDt;
 	}
 
-	public void setCreateDt(String createDt) {
-		this.createDt = createDt;
+	public void setCertDt(String certDt) {
+		this.certDt = certDt;
+	}
+
+	public String getRegisterNo() {
+		return registerNo;
+	}
+
+	public void setRegisterNo(String registerNo) {
+		this.registerNo = registerNo;
+	}
+
+	public int getClientNo() {
+		return clientNo;
+	}
+
+	public void setClientNo(int clientNo) {
+		this.clientNo = clientNo;
 	}
 
 	public String getInsertUserId() {
@@ -105,5 +179,80 @@ public class Product {
 		this.updateDatetime = updateDatetime;
 	}
 
+	public String getClientNm() {
+		return clientNm;
+	}
+
+	public void setClientNm(String clientNm) {
+		this.clientNm = clientNm;
+	}
+
+	public String getClientLocation() {
+		return clientLocation;
+	}
+
+	public int getProductCost() {
+		return productCost;
+	}
+
+	public void setProductCost(int productCost) {
+		this.productCost = productCost;
+	}
+
+	public String getSalesDt() {
+		return salesDt;
+	}
+
+	public void setSalesDt(String salesDt) {
+		this.salesDt = salesDt;
+	}
+
+	public int getSalesAmt() {
+		return salesAmt;
+	}
+
+	public void setSalesAmt(int salesAmt) {
+		this.salesAmt = salesAmt;
+	}
+
+	public int getAddSalesAmt() {
+		return addSalesAmt;
+	}
+
+	public void setAddSalesAmt(int addSalesAmt) {
+		this.addSalesAmt = addSalesAmt;
+	}
+
+	public String getPayDt() {
+		return payDt;
+	}
+
+	public void setPayDt(String payDt) {
+		this.payDt = payDt;
+	}
+
+	public int getPayAmt() {
+		return payAmt;
+	}
+
+	public void setPayAmt(int payAmt) {
+		this.payAmt = payAmt;
+	}
+
+	public int getCreditSalesAmt() {
+		return creditSalesAmt;
+	}
+
+	public void setCreditSalesAmt(int creditSalesAmt) {
+		this.creditSalesAmt = creditSalesAmt;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
 }
 

@@ -64,36 +64,36 @@ public class MrDAO extends DAO {
 	
 	
 	/********************
-	 * Product
+	 * Model
 	 ********************/
 	
-	public Product getProductInfo(int productNo) throws Exception { 
+	public Model getModelInfo(int modelNo) throws Exception { 
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
-		Product product = null; 
+		Model model = null; 
 		
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
 
-			sqlBuf.append("		select  a.productNo, ");
-			sqlBuf.append("				a.productId, ");
-			sqlBuf.append("				a.productNmKor, ");
-			sqlBuf.append("				a.productNmEng, ");
+			sqlBuf.append("		select  a.modelNo, ");
+			sqlBuf.append("				a.modelId, ");
+			sqlBuf.append("				a.modelNmKor, ");
+			sqlBuf.append("				a.modelNmEng, ");
 			sqlBuf.append("				a.createDt, ");
 			sqlBuf.append("				a.insertUserId, ");
 			sqlBuf.append("				a.insertDatetime, ");
 			sqlBuf.append("				a.updateUserId, ");
 			sqlBuf.append("				a.updateDatetime  ");
-			sqlBuf.append("		  from product a ");
-			sqlBuf.append("		 where productNo = ?;");
+			sqlBuf.append("		  from model a ");
+			sqlBuf.append("		 where modelNo = ?;");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
-			pstmt.setInt(1, productNo); 
+			pstmt.setInt(1, modelNo); 
 			rs = pstmt.executeQuery(); 
 			
 			if(rs.next()) { 
-				product = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9)); 
+				model = new Model(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9)); 
 			} 
 		}catch(Exception e) { 
 			throw e;
@@ -101,41 +101,41 @@ public class MrDAO extends DAO {
 			DBClose.close(con,pstmt,rs); 
 		} 
 		
-		return product; 
+		return model; 
 	} 
 		
 	
-	public ArrayList<Product> getProductList() throws Exception { 
+	public ArrayList<Model> getModelList() throws Exception { 
 		
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
 		
-		ArrayList<Product> alist = new ArrayList<Product>(); 
+		ArrayList<Model> alist = new ArrayList<Model>(); 
 		
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
 
 			sqlBuf.append("		select  ");
-			sqlBuf.append("				a.productNo, ");
-			sqlBuf.append("				a.productId, ");
-			sqlBuf.append("				a.productNmKor, ");
-			sqlBuf.append("				a.productNmEng, ");
+			sqlBuf.append("				a.modelNo, ");
+			sqlBuf.append("				a.modelId, ");
+			sqlBuf.append("				a.modelNmKor, ");
+			sqlBuf.append("				a.modelNmEng, ");
 			sqlBuf.append("				a.createDt, ");
 			
 			sqlBuf.append("				a.insertUserId, ");
 			sqlBuf.append("				a.insertDatetime, ");
 			sqlBuf.append("				a.updateUserId, ");
 			sqlBuf.append("				a.updateDatetime  ");//9
-			sqlBuf.append("		  from product a ");
-			sqlBuf.append("		 order by productNo ");
+			sqlBuf.append("		  from model a ");
+			sqlBuf.append("		 order by modelNo ");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				Product product = new Product(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9)); 
-				alist.add(product); 
+				Model model = new Model(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9)); 
+				alist.add(model); 
 			} 
 		}catch(Exception e) { 
 			throw e;
@@ -149,21 +149,21 @@ public class MrDAO extends DAO {
 	
 	
 	/********************
-	 * ProductItem
+	 * ModelItem
 	 ********************/
 	
-	public ArrayList<ProductItem> getProductItemList(int productNo) throws Exception { 
+	public ArrayList<ModelItem> getModelItemList(int modelNo) throws Exception { 
 		
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 
 		
-		ArrayList<ProductItem> alist = new ArrayList<ProductItem>(); 
+		ArrayList<ModelItem> alist = new ArrayList<ModelItem>(); 
 		
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
 
-			sqlBuf.append("		select  a.productNo, ");
+			sqlBuf.append("		select  a.modelNo, ");
 			sqlBuf.append("				a.itemId, ");
 			sqlBuf.append("				a.itemCnt, ");
 			sqlBuf.append("				a.insertUserId, ");
@@ -171,19 +171,19 @@ public class MrDAO extends DAO {
 			sqlBuf.append("				a.updateUserId, ");
 			sqlBuf.append("				a.updateDatetime  ");
 			sqlBuf.append("          , ifnull(b.itemNm, ''), ifnull(b.itemNmKor, '') ");
-			sqlBuf.append("		 from productItem a ");
+			sqlBuf.append("		 from modelItem a ");
 			sqlBuf.append("		 left join item b ");
 			sqlBuf.append("		   on a.itemId = b.itemId ");
-			sqlBuf.append("		where a.productNo = ?");
+			sqlBuf.append("		where a.modelNo = ?");
 			sqlBuf.append("		  and a.itemCnt > 0");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
-			pstmt.setInt(1, productNo); 
+			pstmt.setInt(1, modelNo); 
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				ProductItem productItem = new ProductItem(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9)); 
-				alist.add(productItem); 
+				ModelItem modelItem = new ModelItem(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9)); 
+				alist.add(modelItem); 
 			} 
 		}catch(Exception e) { 
 			throw e;
@@ -215,6 +215,7 @@ public class MrDAO extends DAO {
 			sqlBuf.append("		select  a.whNo, ");
 			sqlBuf.append("				a.whId, ");
 			sqlBuf.append("				a.whNm, ");
+			sqlBuf.append("				a.whType, ");
 			sqlBuf.append("				a.location, ");
 			sqlBuf.append("				a.addr, ");
 			sqlBuf.append("				a.mgrUserNo, ");
@@ -232,7 +233,7 @@ public class MrDAO extends DAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				Wh wh = new Wh(rs.getInt(1), rs.getString(2), rs.getString(3)); 
+				Wh wh = new Wh(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)); 
 				alist.add(wh); 
 			} 
 		}catch(Exception e) { 
@@ -244,7 +245,54 @@ public class MrDAO extends DAO {
 		return alist; 
 	} 
 
-	
+	public ArrayList<Wh> getWhList(String whType) throws Exception { 
+		
+		Connection con = dbconnect.getConnection(); 
+		PreparedStatement pstmt = null; 
+		ResultSet rs = null; 
+		
+		ArrayList<Wh> alist = new ArrayList<Wh>(); 
+		
+		try { 
+			
+			StringBuffer sqlBuf=new StringBuffer(); 
+
+			sqlBuf.append("		select  a.whNo, ");
+			sqlBuf.append("				a.whId, ");
+			sqlBuf.append("				a.whNm, ");
+			sqlBuf.append("				a.whType, ");
+			sqlBuf.append("				a.location, ");
+			sqlBuf.append("				a.addr, ");
+			sqlBuf.append("				a.mgrUserNo, ");
+			sqlBuf.append("				a.note, ");
+			sqlBuf.append("				a.useYn, ");
+			sqlBuf.append("				a.insertUserId, ");
+			sqlBuf.append("				a.insertDatetime, ");
+			sqlBuf.append("				a.updateUserId, ");
+			sqlBuf.append("				a.updateDatetime  ");
+			sqlBuf.append("		  from wh a ");
+			sqlBuf.append("		 where useYn = 'Y' ");
+			sqlBuf.append("		   and whType = ? ");
+			sqlBuf.append("		 order by whNo ");
+			
+			pstmt = con.prepareStatement(sqlBuf.toString()); 
+			pstmt.setString(1, whType);
+//System.out.println(pstmt.toString());			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Wh wh = new Wh(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)); 
+				alist.add(wh); 
+			} 
+		}catch(Exception e) { 
+			throw e;
+		}finally { 
+			DBClose.close(con,pstmt,rs); 
+		} 
+		
+		return alist; 
+	} 
+
 	/********************
 	 * ItemGrp
 	 ********************/	
@@ -318,4 +366,46 @@ public class MrDAO extends DAO {
 		return cnt; 
 	} 
 	
+	
+
+	/********************
+	 * Accessory
+	 ********************/	
+	
+	public ArrayList<Accessory> getAccessoryList() throws Exception { 
+		
+		Connection con = dbconnect.getConnection(); 
+		PreparedStatement pstmt = null; 
+		ResultSet rs = null; 
+		
+		ArrayList<Accessory> alist = new ArrayList<Accessory>(); 
+		
+		try { 
+			StringBuffer sqlBuf=new StringBuffer(); 
+
+			sqlBuf.append("	select  a.accNo, ");
+			sqlBuf.append("			a.accId, ");
+			sqlBuf.append("			a.accNm, ");
+			sqlBuf.append("			a.salesAmt ");
+			sqlBuf.append("	  from accessory a ");
+			sqlBuf.append("	 order by accId ");
+			
+			pstmt = con.prepareStatement(sqlBuf.toString());
+//System.out.println(pstmt.toString());
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Accessory accessory = new Accessory(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)); 
+				alist.add(accessory); 
+			} 
+		}catch(Exception e) { 
+			throw e;
+		}finally { 
+			DBClose.close(con,pstmt,rs); 
+		} 
+		
+		return alist; 
+	} 
+	
+		
 }

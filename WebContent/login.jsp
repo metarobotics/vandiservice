@@ -8,8 +8,7 @@ String id = request.getParameter("id");
 String pwd = request.getParameter("pwd");
 %>
 
-<jsp:useBean id="dao" class="wh.UserDAO"/>
-<jsp:useBean id="mRdao" class="wh.MrDAO"/>
+<jsp:useBean id="userDao" class="wh.UserDAO"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,13 +18,11 @@ String pwd = request.getParameter("pwd");
 <body>
 
 <%	
-	User user = dao.getUserInfo(id, pwd);
+	User user = userDao.getUserInfo(id, pwd);
 
 	if(user != null)
 	{
-		dao.setLoginDatetime(id);
-		
-		//public User(int userNo, String userId, String userNm, String authLvl, int whNo, String whNm) {
+		userDao.setLoginDatetime(id);
 		
 		session.setAttribute("userId",id);
 		session.setAttribute("userNo",user.getUserNo());
@@ -34,21 +31,7 @@ String pwd = request.getParameter("pwd");
 		session.setAttribute("whNo",user.getWhNo());
 		session.setAttribute("whId",user.getWhId());
 		session.setAttribute("whNm",user.getWhNm());
-		
-		/*
-		ArrayList<Wh> wareHouses = mRdao.getWhList();
-		for(int i = 0; i < wareHouses.size(); i++)
-		{
-			Wh wh = wareHouses.get(i);
-			if(user.getUserWhNo() == wh.getWhNo())
-			{
-				System.out.print("[D] WhName:" + wh.getWhNm() + " WhNo:" + user.getUserWhNo());
-				session.setAttribute("centerName",wh.getWhNm());
-				break;
-			}
-		}
-		*/
-		
+
 		session.setMaxInactiveInterval(60 * 60);
 
  		//out.print("Welcome " + id + " !!  ^^");
@@ -87,11 +70,18 @@ else
 {
 	
 %>	
+<!--
 	Login failed !! 
 	<br>
 	<br>
 	<a href="loginForm.jsp">Go back to Login Page</a>
+-->
 
+		<script>
+			alert("로그인에 실패했습니다.");
+			window.history.back();
+		</script>
+		
 <% } %>
  
 </body>

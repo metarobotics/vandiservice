@@ -40,7 +40,7 @@ String whNm =  (String)session.getAttribute("whNm");
 <% if(whId.equals("mr")) { %>
 			  <li><a href="poList.jsp">자재구매</a></li>
 <% } %>			  
-			  <li><a href="productEachList.jsp">제품현황</a></li>
+			  <li><a href="productList.jsp">제품현황</a></li>
 			  <li><a href="clientList.jsp">고객관리</a></li>
 <% if(authLvl.equals("S")) { %>
 			   <li><a href="companyDtl.jsp?mode=R">회사정보</a></li> 

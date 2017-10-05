@@ -4,7 +4,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="wh.*" %>
 <jsp:useBean id="mrDao" class="wh.MrDAO"/>
-<jsp:useBean id="productEachDao" class="wh.ProductEachDAO"/>
+<jsp:useBean id="productDao" class="wh.ProductDAO"/>
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
 <jsp:useBean id="orderSDao" class="wh.OrderSDAO"/>
  
@@ -111,8 +111,8 @@ $('body').html(restorepage);
 		}
 	}
 
-	ArrayList<ProductEach> productEachList = productEachDao.getProductEachList();
-	int productEachLength = productEachList.size();
+	ArrayList<Product> productList = productDao.getProductList();
+	int productLength = productList.size();
 	
 	ArrayList<Item> itemList = itemDao.getItemList();
 	int itemLength = itemList.size();
@@ -134,7 +134,7 @@ $('body').html(restorepage);
 			alert('Service Center를 선택하세요.');
 			return false;
 		}
-		else if(isNull(document.getElementById("productEach")))
+		else if(isNull(document.getElementById("product")))
 		{
 			alert('제품을 선택하세요.');
 			return false;
@@ -160,7 +160,7 @@ $('body').html(restorepage);
 			document.getElementById("whNo").value = '<%= whNo %>';
 			//document.getElementById("whNo").disabled = true;
 			
-			document.getElementById("productEach").value = '<%= productSerialNo %>';
+			document.getElementById("product").value = '<%= productSerialNo %>';
 			//document.getElementById("client").disabled = true;
 			
 			document.getElementById("tdSubtotal").innerHTML = '<%= subtotal %>';
@@ -402,14 +402,14 @@ $('body').html(restorepage);
      			<td width="100" class="cell-l">
      <% if(mode.equals("V")) { %><%= productSerialNo %>
      <% } else { %>
-     				<select id=productEach name=productEach>
+     				<select id=product name=product>
      
 	     				<option value=''>선택</option>
 		   				<%
-					 		for(int i=0; i<productEachLength;i++){
-					 			ProductEach productEach = productEachList.get(i);
+					 		for(int i=0; i<productLength;i++){
+					 			Product product = productList.get(i);
 		     			%>
-		      			    <option value=<%= productEach.getSerialNo() %>><%= productEach.getSerialNo() %></option>
+		      			    <option value=<%= product.getSerialNo() %>><%= product.getSerialNo() %></option>
 		     			<%
 		     				}
 		     			%>
