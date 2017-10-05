@@ -321,7 +321,7 @@ public class OrderPDAO extends DAO {
 			pstmt.setString(8, orderP.getCurCd());
 			pstmt.setString(9, orderP.getInsertUserId());
 			
-System.out.println(pstmt.toString());
+//System.out.println(pstmt.toString());
 			pstmt.execute(); 
 			
 		}catch(Exception e) { 
@@ -349,7 +349,7 @@ System.out.println(pstmt.toString());
 			pstmt.setString(6, orderPItem.getCurCd());
 			pstmt.setString(7, orderPItem.getInsertUserId());
 			
-System.out.println(pstmt.toString());
+//System.out.println(pstmt.toString());
 			pstmt.execute(); 
 			//System.out.println(sql);
 			
@@ -644,7 +644,7 @@ System.out.println(pstmt.toString());
 			pstmt.setInt(2, rcvSeq);
 			pstmt.setInt(3, itemNo);
 			rs = pstmt.executeQuery(); 
-System.out.println(pstmt.toString());			
+//System.out.println(pstmt.toString());			
 			
 			while(rs.next()) { 
 				orderPRcvItem = new OrderPRcvItem(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getString(9));
@@ -676,7 +676,7 @@ System.out.println(pstmt.toString());
 			pstmt.setString(4, orderPRcv.getNote());
 			pstmt.setString(5, orderPRcv.getInsertUserId());
 			
-System.out.println(pstmt.toString());
+//System.out.println(pstmt.toString());
 			pstmt.execute(); 
 			//System.out.println(sql);
 			
@@ -704,7 +704,7 @@ System.out.println(pstmt.toString());
 			pstmt.setInt(5, orderPRcvItem.getItemCnt());
 			pstmt.setString(6, orderPRcvItem.getInsertUserId());
 			
-System.out.println(pstmt.toString());
+//System.out.println(pstmt.toString());
 			pstmt.execute(); 
 			//System.out.println(sql);
 			

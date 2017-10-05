@@ -27,7 +27,7 @@
 	int userWhNo =  (Integer)session.getAttribute("whNo");
 	String userWhId =  (String)session.getAttribute("whId");
 
-	//out.print("[ "+userWhId+" ]");
+//System.out.println(mode + " " + authLvl +" "+ userWhNo + " " + userWhId);
 
 	String writeMode;
 	if (mode.equals("C"))
@@ -264,7 +264,7 @@
 			// 재고 체크 
 	    	if(!isNull(cntList[i]))
 	    	{
-	    		<% if(!orderT.getStatusCd().equals("40")) { // 배송완료 상태가 아닌 경우 %> 
+	    		<% if(orderT == null || !orderT.getStatusCd().equals("40")) { // 배송완료 상태가 아닌 경우 %> 
 				if (parseInt(cntList[i].value) > parseInt(srcCntList[i].value))
 				{
 					cntList[i].style.backgroundColor = "orange";
@@ -313,10 +313,12 @@
 		
 	// 완료 
 	function confirmFinish() {
+		<% if(mode.equals("R")) { %>
 		if(confirm('완료처리 하시겠습니까?'))
 		{
 			moveTo('toWrite.jsp?mode=F&orderNo=<%=orderNo%>&srcWhNo=<%=orderT.getSrcWhNo()%>');
 		}
+		<% } %>
 	}	
 		
 	

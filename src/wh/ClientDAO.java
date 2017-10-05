@@ -127,7 +127,7 @@ public class ClientDAO extends DAO {
 			sqlBuf.append("				a.insertDatetime, ");
 			sqlBuf.append("				a.updateUserId, ");
 			sqlBuf.append("				a.updateDatetime "); 
-			sqlBuf.append("			, (select count(0) from orderS where productSerialNo in (select serialNo from productEach where clientNo = a.clientNo)) as dealCnt");
+			sqlBuf.append("			, (select count(0) from orderS where productSerialNo in (select serialNo from product where clientNo = a.clientNo)) as dealCnt");
 			sqlBuf.append("		from client a ");
 			sqlBuf.append("		order by clientNm;");
 			

@@ -12,15 +12,17 @@
 	String authLvl =  (String)session.getAttribute("authLvl");
 	if (authLvl == null) return;
 	int whNo =  (Integer)session.getAttribute("whNo");
-	String strRequestWhNo = request.getParameter("whNo");
-	int nRequestWhNo = 0;
-	if(strRequestWhNo != null){
-		nRequestWhNo = Integer.parseInt(strRequestWhNo);
-	}
 	
+	String strParamWhNo = request.getParameter("whNo");
+	int intParamWhNo = 0;
+	if(strParamWhNo != null){
+		intParamWhNo = Integer.parseInt(strParamWhNo);
+	}
+//System.out.println(strParamWhNo + " " + intParamWhNo);
+
 	ArrayList<OrderT> alist = null;
 	
-	ArrayList<Wh> whlist = mrDao.getWhList();
+	ArrayList<Wh> whlist = mrDao.getWhList("CTR");
 	int whLength = whlist.size();
 	
 	boolean isSuper = false;
@@ -31,13 +33,13 @@
 	
 	if(isSuper)
 	{
-		if(nRequestWhNo == 0)
+		if(intParamWhNo == 0)
 		{
 			alist = dao.getOrderTList();
 		}
 		else
 		{
-			alist = dao.getOrderTList(nRequestWhNo);
+			alist = dao.getOrderTList(intParamWhNo);
 		}
 	}
 	else
@@ -106,17 +108,22 @@
 
 <table>
 <tr>
-	<td width="15%" class="cell-l">
+	<td width="50%" class="cell-l">서비스센터 &nbsp;
 							<select name=srcWh id=srcWh onchange="onChangeCenter()">
-								<option value=''>서비스센터선택</option>
+								<option value=''>전체</option>
 								<%
 									for (int i = 0; i < whLength; i++) {
 										Wh wh = whlist.get(i);
-								%>
-								<option value=<%=wh.getWhNo()%>><%=wh.getWhNm()%></option>
+										
+										if(intParamWhNo != 0 && intParamWhNo == wh.getWhNo()) {					
+					 			%>
+											<option value=<%=wh.getWhNo()%> selected><%=wh.getWhNm()%></option>
+								<% 		} else { %>  				    
+											<option value=<%=wh.getWhNo()%>><%=wh.getWhNm()%></option>
 								<%
+										}
 									}
-								%>
+					 			%>
 						</select>
 	</td>
 	<td class="cell-r">total : <%= size %></td>
@@ -217,6 +224,10 @@ function onChangeCenter() {
 	if(x > 0)
 	{
 		window.location='toList.jsp?whNo='+ x;
+	}
+	else
+	{
+		window.location='toList.jsp';
 	}
 		
 }

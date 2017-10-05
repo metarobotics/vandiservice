@@ -3,7 +3,7 @@
 <%@ page import = "java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="java.util.*" %>
 <%@ page import="wh.*" %>
-<jsp:useBean id="dao" class="wh.ProductEachDAO"/>
+<jsp:useBean id="dao" class="wh.ProductDAO"/>
 
 <%
 response.setContentType("text/html;charset=EUC-KR");
@@ -29,21 +29,21 @@ out.println(mode);
 String userId = (String)session.getAttribute("userId");
 
 
-ProductEach productEach;
+Product product;
 
 if(mode.equals("C") || mode.equals("U")) 
 {
-	int productEachNo = 0;
+	int productNo = 0;
 	if(mode.equals("C")) 
 	{
-		productEachNo = dao.getNextProductEachNo();
+		productNo = dao.getNextProductNo();
 	}
 	else //U
 	{
-		productEachNo = Integer.parseInt(request.getParameter("productEachNo"));
+		productNo = Integer.parseInt(request.getParameter("productNo"));
 	}
 
-	int productNo = Integer.parseInt(request.getParameter("productNo"));
+	int modelNo = Integer.parseInt(request.getParameter("modelNo"));
 	String serialNo = request.getParameter("serialNo").toString();
 	String prodDt = request.getParameter("prodDt").toString();
 	String certDt = request.getParameter("certDt").toString();
@@ -60,29 +60,29 @@ if(mode.equals("C") || mode.equals("U"))
 	String note = request.getParameter("note").toString();
 
 	
-	productEach = new ProductEach(productEachNo, productNo, serialNo, prodDt, certDt, registerNo, clientNo, productCost, salesDt, salesAmt, addSalesAmt, payDt, payAmt, creditSalesAmt, note, userId, null, userId, null);
+	product = new Product(productNo, modelNo, serialNo, prodDt, certDt, registerNo, clientNo, productCost, salesDt, salesAmt, addSalesAmt, payDt, payAmt, creditSalesAmt, note, userId, null, userId, null);
 	
 	if(mode.equals("C"))
 	{
-		dao.insertProductEach(productEach); 
+		dao.insertProduct(product); 
 	} 
 	else if(mode.equals("U")) 
 	{
-		//out.println(productEach.getProductNo());
-		//out.println(productEach.getSerialNo());
+		//out.println(product.getModelNo());
+		//out.println(product.getSerialNo());
 			
-		dao.modifyProductEach(productEach); 
+		dao.modifyProduct(product); 
 	}
 }
 else //D
 {
-	int productEachNo = Integer.parseInt(request.getParameter("productEachNo"));
+	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	
-	dao.deleteProductEach(productEachNo); 
+	dao.deleteProduct(productNo); 
 }
 
 %>
 <script>
 	alert("<%= modeStr %>되었습니다.");
-	document.location.href="productEachList.jsp";
+	document.location.href="productList.jsp";
 </script>

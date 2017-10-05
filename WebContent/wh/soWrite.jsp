@@ -44,7 +44,7 @@ if(mode.equals("C") || mode.equals("U"))
 	
 	String orderDt = request.getParameter("orderDt").toString();
 	int whNo = Integer.parseInt(request.getParameter("whNo"));
-	String productSerialNo = request.getParameter("productEach").toString();
+	String productSerialNo = request.getParameter("product").toString();
 	
 	int subtotal = Integer.parseInt(request.getParameter("subtotal"));
 	int tax = Integer.parseInt(request.getParameter("tax"));

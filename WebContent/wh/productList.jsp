@@ -3,16 +3,35 @@
 <%@ page import="java.sql.*" %>                    <!-- JSP에서 JDBC의 객체를 사용하기 위해 java.sql 패키지를 import 한다 -->
 <%@ page import="java.util.*" %>
 <%@ page import="wh.*" %>
-<jsp:useBean id="dao" class="wh.ProductEachDAO"/>
+<jsp:useBean id="dao" class="wh.ProductDAO"/>
+<jsp:useBean id="mrDao" class="wh.MrDAO"/>
 <jsp:include page = "top.jsp"/>
 
 <%	
 	String authLvl =  (String)session.getAttribute("authLvl");
 	if (authLvl == null) return;
 //	if(authLvl.equals("S") || authLvl.equals("A")) // 등록,수정 권한자
+
+	ArrayList<Model> modelList = mrDao.getModelList();
+	int modelLength = modelList.size();
+
+	String strParamModelNo = request.getParameter("modelNo");
+	int intParamModelNo = 0;
+	if(strParamModelNo != null){
+		intParamModelNo = Integer.parseInt(strParamModelNo);
+	}
+
+	ArrayList<Product> alist = null; 
+	if(intParamModelNo == 0)
+	{
+		alist = dao.getProductList();
+	}
+	else
+	{
+		alist = dao.getProductList(intParamModelNo);
+	}
 	
-	ArrayList<ProductEach> alist = dao.getProductEachList();
-	int productEachListSize = alist.size();
+	int productListSize = alist.size();
 	
 	int size = alist.size();
 	int size2 = size;
@@ -34,7 +53,7 @@
 	int startPage = ((pg-1)/BLOCK*BLOCK)+1;
 	int endPage = ((pg-1)/BLOCK*BLOCK)+BLOCK;
 	
-	allPage = (int)Math.ceil(productEachListSize/(double)ROWSIZE);
+	allPage = (int)Math.ceil(productListSize/(double)ROWSIZE);
 	
 	if(endPage > allPage) {
 		endPage = allPage;
@@ -54,16 +73,50 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
  	<link rel="stylesheet" href="../css/vandiservice.css">
+ 	
+<script>
+function onChangeModel() {
+	var x = document.getElementById("modelNo").value;
+	if(x > 0)
+	{
+		window.location='productList.jsp?modelNo='+ x;
+	}
+	else
+	{
+		window.location='productList.jsp';
+	}
+}
+
+</script> 	
 </head>
 
 <body>
 <center>
    <div class="table-title"><h1>제품목록</h1></div>
 
-<table cellpadding="0" cellspacing="0" border="0">
+<table>
 <tr>
+	<td width="50%" class="cell-l">모델명 &nbsp; 
+		<select id=modelNo name=modelNo onchange="onChangeModel()">
+				<option value=''>전체</option>
+			<%
+				for(int i=0; i<modelLength; i++){
+					Model model = modelList.get(i);
+					
+					if(intParamModelNo != 0 && intParamModelNo == model.getModelNo()) {					
+ 			%>
+  				    	<option value=<%= model.getModelNo() %> selected><%= model.getModelNmEng() %></option>
+			<% 		} else { %>  				    
+  				    	<option value=<%= model.getModelNo() %>><%= model.getModelNmEng() %></option>
+ 			<%
+					}
+				}
+ 			%>
+		</select>
+	</td>
 	<td class="cell-r">total : <%= size %></td>
 </tr>
+<tr height="10"></tr>
 </table>
 
 <table border="1" width="600">
@@ -77,7 +130,7 @@
 	</tr>
 	
 	<%
-		if(productEachListSize==0) {
+		if(productListSize==0) {
 	%>
 			<tr class="row">
 		 	   <td colspan="6" class="cell-c">등록된 내역이 없습니다.</td>
@@ -85,7 +138,7 @@
 	<%
 	 	} else {
 	 		for(int i=ROWSIZE*(pg-1); i<end;i++){
-	 			ProductEach productEach = alist.get(i);
+	 			Product product = alist.get(i);
 	//			indent = item.getIndent();
 				/*int itemNo = item.getItemNo();
 				String itemNm = item.getItemNm();
@@ -94,12 +147,12 @@
 	%>
 	
 			<tr class="row">
-				<td class="cell-c"><a href="productEachDtl.jsp?mode=R&productEachNo=<%=productEach.getProductEachNo()%>&pg=<%=pg%>"><%= productEach.getSerialNo() %></a></td>
-				<td class="cell-c"><%=productEach.getProdDt()%></td>
-				<td class="cell-c"><%=productEach.getRegisterNo()%></td>
-				<td class="cell-c"><%=productEach.getClientNm()%></td>
-				<td class="cell-c"><%=productEach.getClientLocation()%></td>
-				<td class="cell-c"><%=productEach.getCertDt()%></td>
+				<td class="cell-c"><a href="productDtl.jsp?mode=R&productNo=<%=product.getProductNo()%>&pg=<%=pg%>"><%= product.getSerialNo() %></a></td>
+				<td class="cell-c"><%=product.getProdDt()%></td>
+				<td class="cell-c"><%=product.getRegisterNo()%></td>
+				<td class="cell-c"><%=product.getClientNm()%></td>
+				<td class="cell-c"><%=product.getClientLocation()%></td>
+				<td class="cell-c"><%=product.getCertDt()%></td>
 			</tr>
 
 	<%
@@ -150,7 +203,7 @@
 		<%
 		if(authLvl.equals("S") || authLvl.equals("A")) { // 등록,수정 권한자
 		%>
-	   		<td align="center"><input type=button class="dtlBtn" value="등록" OnClick="window.location='productEachDtl.jsp?mode=C&pg=<%=pg%>'"></td>
+	   		<td align="center"><input type=button class="dtlBtn" value="등록" OnClick="window.location='productDtl.jsp?mode=C&pg=<%=pg%>'"></td>
 	   	<%} else { %>
 	   	<%} %>
   	</tr>
