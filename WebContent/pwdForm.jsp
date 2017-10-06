@@ -11,25 +11,41 @@
 function chk(f)
 {
     if(f.id.value==""){
-		alert("id..");
+		alert("아이디를 입력하세요.");
 		f.id.focus();
 		return false;
 	}
 
     if(f.oldPwd.value=="")
     {
-		alert("old password..");
+		alert("기존 패스워드를 입력하세요.");
 		f.oldPwd.focus();
 		return false;
 	} 
 	
     if(f.newPwd.value=="")
     {
-		alert("new password..");
+		alert("새 패스워드를 입력하세요.");
 		f.newPwd.focus();
 		return false;
 	} 
 	
+    if(f.newPwd2.value=="")
+    {
+		alert("새 패스워드 두번째를 입력하세요.");
+		f.newPwd2.focus();
+		return false;
+	} 
+
+	if(f.newPwd.value != f.newPwd2.value)
+	{
+		alert("새 패스워드 두개가 일치하지 않습니다.");
+		f.newPwd.value = '';
+		f.newPwd2.value = '';
+		
+		f.newPwd.focus();
+		return false;
+	}
     return true;
 }
 
@@ -44,6 +60,7 @@ function chk(f)
       <p><input id="form_login" type="text" placeholder="ID" name="id"></p>
       <p><input class="input_style" type="password" placeholder="Old Password" name="oldPwd"></p>
       <p><input class="input_style" type="password" placeholder="New Password" name="newPwd"></p>
+      <p><input class="input_style" type="password" placeholder="New Password" name="newPwd2"></p>
       <p><button class="submit_style" type="submit">Change Password</button></p>
     </form>
   </div>

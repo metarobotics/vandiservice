@@ -47,7 +47,7 @@ function chk(f)
       <p><button class="submit_style" type="submit">Sign in</button></p>
     </form>
     <form class="register-form">
-      <p class="message_h2">Registered? <a href="#" onclick="window.open('pwdForm.jsp');">Change Password</a></p>
+      <p class="message_h2"><a href="#" onclick="window.open('pwdForm.jsp');">Change Password</a></p>
     <p></p>
 <!--
     <form class="register-form" action="register.jsp" method="post" onSubmit="return chk(this)">

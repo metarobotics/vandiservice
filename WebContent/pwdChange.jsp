@@ -42,7 +42,7 @@ String newPwd = request.getParameter("newPwd");
 		
 	%>	
 		<script>
-			alert("기존 패스워드가 일치하지 않습니다.");
+			alert("기존 패스워드가 맞지 않습니다.");
 			window.history.back();
 		</script>
 	
