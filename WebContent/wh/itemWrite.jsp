@@ -48,7 +48,7 @@ if(mode.equals("C") || mode.equals("U"))
 	String itemNm = request.getParameter("itemNm").toString();
 	String itemNmKor = request.getParameter("itemNmKor").toString();
 	
-	int vendorId = Integer.parseInt(request.getParameter("vendorId").toString());
+	int vendorNo = Integer.parseInt(request.getParameter("vendorNo").toString());
 	String curCd = request.getParameter("curCd").toString();
 	
 	float price = Float.parseFloat(request.getParameter("price").toString());
@@ -59,7 +59,7 @@ if(mode.equals("C") || mode.equals("U"))
 	int priceClient = Integer.parseInt(request.getParameter("priceClient").toString());
 	float serviceHour = Float.parseFloat(request.getParameter("serviceHour").toString());
 	
-	item = new Item(itemNo, itemId, itemNm, itemNmKor, vendorId, price, curCd, priceMeta, priceFactory, priceCenter, priceClient, serviceHour, userId, userId);
+	item = new Item(itemNo, itemId, itemNm, itemNmKor, vendorNo, price, curCd, priceMeta, priceFactory, priceCenter, priceClient, serviceHour, userId, userId);
 
 	if(mode.equals("C"))
 	{
@@ -75,6 +75,8 @@ else //D
 	int itemNo = Integer.parseInt(request.getParameter("itemNo"));
 	
 	itemDao.deleteItem(itemNo); 
+	
+	result = true;
 }
 %>
 <script>

@@ -250,7 +250,7 @@
      			<td class="cell-r">고객명</td>
      			<td class="cell-l">
      				<select id=clientNo name=clientNo>
-	     				<option value="0">없음</option>
+	     				<option value="0">선택</option>
 		   				<%
 					 		for(int i=0; i<clientLength; i++){
 								Client client = clientList.get(i);

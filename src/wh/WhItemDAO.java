@@ -3,7 +3,10 @@ package wh;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList; 
+import java.util.ArrayList;
+
+import common.DAO;
+import common.DBClose; 
 
 //---------------------
 // 창고 자재갯수 관리 

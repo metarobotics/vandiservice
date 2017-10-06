@@ -1,4 +1,4 @@
-package wh; 
+package common; 
 
 import java.sql.Connection; 
 import java.sql.PreparedStatement; 
@@ -9,8 +9,8 @@ import java.util.Date;
 
 public class DAO { 
 	
-	DBConnect dbconnect = null; 
-	String sql=""; 
+	public DBConnect dbconnect = null; 
+	public String sql=""; 
 	
 	public DAO() { 
 		dbconnect = new DBConnect(); 

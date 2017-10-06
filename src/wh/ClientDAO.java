@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet; 
 import java.text.SimpleDateFormat; 
 import java.util.ArrayList; 
-import java.util.Date; 
+import java.util.Date;
+
+import common.DAO;
+import common.DBClose; 
 
 public class ClientDAO extends DAO { 
 	
@@ -69,26 +72,27 @@ public class ClientDAO extends DAO {
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
 
-			sqlBuf.append("		select 	a.clientNo, ");
-			sqlBuf.append("				a.clientNm, ");
-			sqlBuf.append("				a.phoneNo, ");
-			sqlBuf.append("				a.mobileNo, ");
-			sqlBuf.append("				a.email, ");
+			sqlBuf.append("	select 	a.clientNo, ");
+			sqlBuf.append("			a.clientNm, ");
+			sqlBuf.append("			a.phoneNo, ");
+			sqlBuf.append("			a.mobileNo, ");
+			sqlBuf.append("			a.email, ");
 			
-			sqlBuf.append("				a.location, ");
-			sqlBuf.append("				a.addr, ");
-			sqlBuf.append("				a.note, ");
-			sqlBuf.append("				a.insertUserId, ");
-			sqlBuf.append("				a.insertDatetime, ");
+			sqlBuf.append("			a.location, ");
+			sqlBuf.append("			a.addr, ");
+			sqlBuf.append("			a.note, ");
+			sqlBuf.append("			a.insertUserId, ");
+			sqlBuf.append("			a.insertDatetime, ");
 			
-			sqlBuf.append("				a.updateUserId, ");
-			sqlBuf.append("				a.updateDatetime "); 
-			sqlBuf.append("				, (select count(0) from orderS where clientNo = a.clientNo) as dealCnt");
+			sqlBuf.append("			a.updateUserId, ");
+			sqlBuf.append("			a.updateDatetime "); 
+			sqlBuf.append("			, (select count(0) from product where clientNo = a.clientNo) as dealCnt	");
 			sqlBuf.append("		  from client a ");
 			sqlBuf.append("		 where clientNo = ?;");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
 			pstmt.setInt(1, clientNo); 
+//System.out.println(pstmt.toString());
 			rs = pstmt.executeQuery(); 
 			
 			if(rs.next()) { 
@@ -115,25 +119,27 @@ public class ClientDAO extends DAO {
 		try { 
 			StringBuffer sqlBuf=new StringBuffer(); 
 
-			sqlBuf.append("		select 	a.clientNo, ");
-			sqlBuf.append("				a.clientNm, ");
-			sqlBuf.append("				a.phoneNo, ");
-			sqlBuf.append("				a.mobileNo, ");
-			sqlBuf.append("				a.email, ");
-			sqlBuf.append("				a.location, ");
-			sqlBuf.append("				a.addr, ");
-			sqlBuf.append("				a.note, ");
-			sqlBuf.append("				a.insertUserId, ");
-			sqlBuf.append("				a.insertDatetime, ");
-			sqlBuf.append("				a.updateUserId, ");
-			sqlBuf.append("				a.updateDatetime "); 
-			sqlBuf.append("			, (select count(0) from orderS where productSerialNo in (select serialNo from product where clientNo = a.clientNo)) as dealCnt");
+			sqlBuf.append("	select 	a.clientNo, ");
+			sqlBuf.append("			a.clientNm, ");
+			sqlBuf.append("			a.phoneNo, ");
+			sqlBuf.append("			a.mobileNo, ");
+			sqlBuf.append("			a.email, ");
+			
+			sqlBuf.append("			a.location, ");
+			sqlBuf.append("			a.addr, ");
+			sqlBuf.append("			a.note, ");
+			sqlBuf.append("			a.insertUserId, ");
+			sqlBuf.append("			a.insertDatetime, ");
+			
+			sqlBuf.append("			a.updateUserId, ");
+			sqlBuf.append("			a.updateDatetime "); 
+			sqlBuf.append("			, (select count(0) from product where clientNo = a.clientNo) as dealCnt	");
 			sqlBuf.append("		from client a ");
 			sqlBuf.append("		order by clientNm;");
 			
 			pstmt = con.prepareStatement(sqlBuf.toString()); 
+//System.out.println(pstmt.toString());
 			rs = pstmt.executeQuery(); 
-			//System.out.println(sqlBuf.toString());
 			
 			while(rs.next()) { 
 				Client client = new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getInt(13)); 

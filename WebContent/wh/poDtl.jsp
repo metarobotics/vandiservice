@@ -644,6 +644,8 @@ if(!mode.equals("V")) { %>
 							<% if (mode.equals("R") && orderP.getStatusCd().equals("10") && (authLvl.equals("S") || orderP.getInsertUserId().equals(userId))){ // 작성중  & (SUPER or 등록자) => 수정/삭제 가능 %>
 									<input type="submit" class="dtlBtn" value="수정">&nbsp;
 									<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
+		     				<% } else if(mode.equals("R") && userId.equals("bona")) { %>
+									<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
 		     				<% } %>
 		     				<% if(mode.equals("R")){ %>
 		     					<input type="button" class="dtlBtn" value="Print" onclick="window.open('poDtl.jsp?mode=V&orderNo=<%=orderNo%>');">&nbsp;

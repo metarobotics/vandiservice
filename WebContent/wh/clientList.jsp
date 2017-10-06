@@ -71,6 +71,7 @@
 		<th width="35%" class="text-center">거주지</th>
 		<th width="20%" class="text-center">거래건수</th>
 	</tr>
+	<tbody class="table-hover">
 	
 	<%
 		if(size==0) {
@@ -102,6 +103,7 @@
 
 %>
 
+	</tbody>
 </table>
 <table cellpadding="0" cellspacing="0" border="0">
 	<tr height="10"/>

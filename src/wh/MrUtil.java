@@ -37,6 +37,11 @@ public class MrUtil {
 		return String.format("%7s", clientNo).replace(' ', '0');
 	}
 	
+	public static String getVendorNoStr(int vendorNo)
+	{
+		return String.format("%7s", vendorNo).replace(' ', '0');
+	}
+	
 	public static String getNoStr2(int no)
 	{
 		return String.format("%2s", no).replace(' ', '0');

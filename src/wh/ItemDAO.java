@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet; 
 import java.text.SimpleDateFormat; 
 import java.util.ArrayList; 
-import java.util.Date; 
+import java.util.Date;
+
+import common.DAO;
+import common.DBClose; 
 
 public class ItemDAO extends DAO { 
 	
@@ -81,7 +84,7 @@ public class ItemDAO extends DAO {
 			sqlBuf.append("				a.itemNmKor, ");
 			sqlBuf.append("				a.sku, ");
 			
-			sqlBuf.append("				a.vendorId, ");
+			sqlBuf.append("				a.vendorNo, ");
 			sqlBuf.append("				a.price, ");
 			sqlBuf.append("				a.curCd, ");
 			sqlBuf.append("				a.priceMeta, ");
@@ -158,7 +161,7 @@ public class ItemDAO extends DAO {
 			sqlBuf.append("				a.itemNmKor, ");
 			sqlBuf.append("				a.sku, ");
 			
-			sqlBuf.append("				a.vendorId, ");
+			sqlBuf.append("				a.vendorNo, ");
 			sqlBuf.append("				a.price, ");
 			sqlBuf.append("				a.curCd, ");
 			sqlBuf.append("				a.priceMeta, ");
@@ -243,7 +246,7 @@ public class ItemDAO extends DAO {
 			sqlBuf.append("				a.itemNmKor, ");
 			sqlBuf.append("				a.sku, ");
 			
-			sqlBuf.append("				a.vendorId, ");
+			sqlBuf.append("				a.vendorNo, ");
 			sqlBuf.append("				a.price, ");
 			sqlBuf.append("				a.curCd, ");
 			sqlBuf.append("				a.priceMeta, ");
@@ -331,7 +334,7 @@ public class ItemDAO extends DAO {
 			sqlBuf.append("				a.itemNm, ");
 			sqlBuf.append("				a.itemNmKor, ");
 			sqlBuf.append("				a.sku, ");
-			sqlBuf.append("				a.vendorId, ");
+			sqlBuf.append("				a.vendorNo, ");
 			sqlBuf.append("				a.price, ");
 			sqlBuf.append("				a.curCd, ");
 			sqlBuf.append("				a.priceMeta, ");
@@ -541,7 +544,7 @@ public class ItemDAO extends DAO {
 				return false;
 			
 			// itemNo : AI
-			sql = "insert into item (itemNo, itemId, itemNm, itemNmKor, vendorId, curCd, price, priceMeta, priceFactory, priceCenter, priceClient, serviceHour, insertUserId, insertDatetime) values (?,?,?,?,?,?,?,?,?,?,?,?,?, current_timestamp())"; 
+			sql = "insert into item (itemNo, itemId, itemNm, itemNmKor, vendorNo, curCd, price, priceMeta, priceFactory, priceCenter, priceClient, serviceHour, insertUserId, insertDatetime) values (?,?,?,?,?,?,?,?,?,?,?,?,?, current_timestamp())"; 
 			pstmt = con.prepareStatement(sql); 
 
 			pstmt.setInt(1, item.getItemNo()); 
@@ -549,7 +552,7 @@ public class ItemDAO extends DAO {
 			pstmt.setString(3, item.getItemNm()); 
 			pstmt.setString(4, item.getItemNmKor());
 			
-			pstmt.setInt(5, item.getVendorId());
+			pstmt.setInt(5, item.getVendorNo());
 			pstmt.setString(6, item.getCurCd());
 		
 			pstmt.setFloat(7, item.getPrice());
@@ -620,7 +623,7 @@ public class ItemDAO extends DAO {
 			sqlBuf.append("				a.itemNmKor, ");//4
 			sqlBuf.append("				a.sku, ");
 			
-			sqlBuf.append("				a.vendorId, ");//6
+			sqlBuf.append("				a.vendorNo, ");//6
 			sqlBuf.append("				a.price, ");
 			sqlBuf.append("				a.curCd, ");
 			sqlBuf.append("				a.priceMeta, ");
@@ -687,13 +690,13 @@ public class ItemDAO extends DAO {
 		
 		try { 
 			
-			sql = "update item set itemNm=?, itemNmKor=?, vendorId=?, curCd=?, price=?, priceMeta=?, priceFactory=?, priceCenter=?, priceClient=?, serviceHour=?, updateUserId=?, updateDatetime=current_timestamp() where itemNo=?"; 
+			sql = "update item set itemNm=?, itemNmKor=?, vendorNo=?, curCd=?, price=?, priceMeta=?, priceFactory=?, priceCenter=?, priceClient=?, serviceHour=?, updateUserId=?, updateDatetime=current_timestamp() where itemNo=?"; 
 			
 			pstmt = con.prepareStatement(sql); 
 			//pstmt.setString(1, item.getItemId()); 
 			pstmt.setString(1, item.getItemNm()); 
 			pstmt.setString(2, item.getItemNmKor());
-			pstmt.setInt(3, item.getVendorId());
+			pstmt.setInt(3, item.getVendorNo());
 			pstmt.setString(4, item.getCurCd());
 			
 			pstmt.setFloat(5, item.getPrice());

@@ -55,8 +55,8 @@ String pwd = request.getParameter("pwd");
 			String authLvl =  (String)session.getAttribute("authLvl");
 %>
 			
-			<% if(authLvl.equals("A")) { %>
-				document.location.href = "./wh/productEachList.jsp";
+			<% if(authLvl.equals("C")) { %>
+				document.location.href = "./wh/toList.jsp";
 			<% } else { %>
 				document.location.href = "./wh/itemList.jsp";
 			<% } %>

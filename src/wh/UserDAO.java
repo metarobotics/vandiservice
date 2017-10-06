@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList; 
 import java.util.Date;
 
+import common.DAO;
+import common.DBClose;
 import util.Encryptor; 
 
 public class UserDAO extends DAO { 

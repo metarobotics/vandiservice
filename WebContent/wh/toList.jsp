@@ -104,10 +104,9 @@
 <tr height="30"/>
 </table>
 
-<% if(isSuper) { %>
-
 <table>
 <tr>
+<% if(isSuper) { %>
 	<td width="50%" class="cell-l">서비스센터 &nbsp;
 							<select name=srcWh id=srcWh onchange="onChangeCenter()">
 								<option value=''>전체</option>
@@ -126,11 +125,11 @@
 					 			%>
 						</select>
 	</td>
+<% } %>
 	<td class="cell-r">total : <%= size %></td>
 </tr>
 <tr height="10"></tr>
 </table>
-<% } %>
 
 <table width="600" border="1">
 <tr class="header">

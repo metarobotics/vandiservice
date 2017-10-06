@@ -119,7 +119,7 @@ function onChangeModel() {
 <tr height="10"></tr>
 </table>
 
-<table border="1" width="600">
+<table border="1">
 	<tr class="header">
 		<th width="23%" class="text-center">제품일련번호</th>
 		<th width="16%" class="text-center">제작일자</th>
@@ -128,6 +128,7 @@ function onChangeModel() {
 		<th width="10%" class="text-center">지역</th>
 		<th width="16%" class="text-center">검사일자</th>
 	</tr>
+	<tbody class="table-hover">
 	
 	<%
 		if(productListSize==0) {
@@ -160,6 +161,7 @@ function onChangeModel() {
 		}
 	%>
 
+</tbody>
 </table>
 <table cellpadding="0" cellspacing="0" border="0">
 	<tr height="10"/>
