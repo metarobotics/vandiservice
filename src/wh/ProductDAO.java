@@ -315,7 +315,7 @@ public class ProductDAO extends DAO {
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, productNo); 
-System.out.println(pstmt.toString());
+//System.out.println(pstmt.toString());
 			pstmt.executeUpdate();
 			
 		}catch(Exception e) { 
@@ -377,7 +377,7 @@ System.out.println(pstmt.toString());
 			
 			pstmt = con.prepareStatement(sql); 
 			pstmt.setInt(1, productNo); 
-System.out.println(pstmt.toString());
+//System.out.println(pstmt.toString());
 			pstmt.executeUpdate(); 
 			
 		}catch(Exception e) { 
@@ -410,8 +410,7 @@ System.out.println(pstmt.toString());
 			DBClose.close(con,pstmt); 
 		} 
 	} 
-		
-		
+	
 }
 
 
