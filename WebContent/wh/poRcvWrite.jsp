@@ -5,6 +5,7 @@
 <%@ page import="wh.*" %>
 <jsp:useBean id="orderPDao" class="wh.OrderPDAO"/>
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
+<jsp:useBean id="itemStockHistDao" class="wh.ItemStockHistDAO"/>
 
 <%
 response.setContentType("text/html;charset=EUC-KR");
@@ -106,6 +107,17 @@ response.setContentType("text/html;charset=EUC-KR");
 			rcvItem.setWhNo(userWhNo);
 
 			orderPDao.insertOrderPRcvItem(rcvItem);
+			
+			// 입고 등록시 자재재고history쌓기
+			// 수정/삭제 불가 원칙이므로 수정/삭제시는 history 처리 불필요
+			// beforCnt를 whItem에서 가져오므로 아래 addWhItemCnt와 순서 바뀌면 안됨. 
+			if(mode.equals("C"))
+			{
+				ItemStockHist itemStockHist = new ItemStockHist(userWhNo, itemNo, "01", "P", orderNo, itemCnt, userId); //01:IN, 02:OUT
+//System.out.println(userWhNo + " "+ itemNo + " " +orderNo +" "+itemCnt +" " + userId);
+				itemStockHistDao.insertItemStockHist(itemStockHist);
+			}
+			
 			orderPDao.addWhItemCnt(rcvItem);
 		}
 	}

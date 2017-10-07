@@ -36,7 +36,7 @@ String whNm =  (String)session.getAttribute("whNm");
 <% if(!whId.equals("mr") && !authLvl.equals("A")) { // center %>
 			  <li><a href="toList.jsp">자재구매요청</a></li>
 			  <li><a href="soList.jsp">견적서</a></li>
-			  <li><a href="productList.jsp">제품현황</a></li> 
+			  <li><a href="productList.jsp">출고관리</a></li> 
 			  <li><a href="clientList.jsp">고객관리</a></li>
 <% } %>			  
 
@@ -45,9 +45,10 @@ String whNm =  (String)session.getAttribute("whNm");
 			  <li><a href="soList.jsp">견적서</a></li>
 			  <li><a href="itemList.jsp">자재정보</a></li>
 			  <li><a href="poList.jsp">자재구매</a></li>
-			  <li><a href="productList.jsp">제품현황</a></li> 
+			  <li><a href="productList.jsp">출고관리</a></li> 
 			  <li><a href="clientList.jsp">고객관리</a></li>
 			  <li><a href="vendorList.jsp">벤더관리</a></li>
+			  <li><a href="stockHist.jsp">입출고이력</a></li> 
 <% } %>			  
 <% //if(authLvl.equals("S")) 
 	if(userId.equals("bona"))

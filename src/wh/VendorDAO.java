@@ -64,6 +64,7 @@ public class VendorDAO extends DAO {
 	} 
 	
 	public Vendor getVendorInfo(int vendorNo) throws Exception { 
+		
 		Connection con = dbconnect.getConnection(); 
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null; 

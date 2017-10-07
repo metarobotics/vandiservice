@@ -117,11 +117,7 @@ if(!mode.equals("V")) { %>
 			document.getElementById("whNo").value = '<%=whNo%>';
 			
 		}//if(mode == "R")
-		
-		if('<%= authLvl %>' == 'S')
-		{
-			document.getElementById('whNo').disabled='';
-		}
+
 	}//setPage
 	
 	function reload()
@@ -181,9 +177,9 @@ if(!mode.equals("V")) { %>
 					
 					
 	<% if(mode.equals("C")) { %>   
-					<input type=date name=orderDt id=orderDt size=10 value='<%= MrUtil.getDateStr() %>' >
+					<input type=date name=orderDt id=orderDt size=10 value='<%= MrUtil.getDateStr() %>' disabled>
 	<% } else if(mode.equals("R")) { %>
-					<input type=date name=orderDt id=orderDt size=10 value='<%= orderDt %>' >
+					<input type=date name=orderDt id=orderDt size=10 value='<%= orderDt %>' disabled>
 	<% } else if(mode.equals("V")) { %><%= orderDt %>
 	<% } %>   		
 

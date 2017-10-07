@@ -14,6 +14,40 @@ import common.DBClose;
 
 public class WhItemDAO extends DAO {
 	
+	public int getWhItemCnt(int whNo, int itemNo) throws Exception {
+		
+		Connection con = dbconnect.getConnection(); 
+		PreparedStatement pstmt = null; 
+		ResultSet rs = null; 
+		int cnt = 0; 
+		
+		try { 
+			StringBuffer sqlBuf = new StringBuffer(); 
+
+			sqlBuf.append("		select itemCnt ");
+			sqlBuf.append("		  from whItem ");
+			sqlBuf.append("		 where whNo = ? ");
+			sqlBuf.append("		   and itemNo = ? ");
+			
+			pstmt = con.prepareStatement(sqlBuf.toString()); 
+			pstmt.setInt(1, whNo); 
+			pstmt.setInt(2, itemNo); 
+			
+//System.out.println(pstmt.toString());
+			rs = pstmt.executeQuery(); 
+			
+			if(rs.next()) { 
+				cnt=rs.getInt(1); 
+			}
+			
+		}catch(Exception e) { 
+			throw e;
+		}finally { 
+			DBClose.close(con,pstmt,rs); 
+		} 
+		return cnt; 
+	} 
+	
 	// whItem 테이블에 해당 item이 없으면 insert. 있으면 count를 더하여 update 
 	// itemCnt는 +,- 모두 가능  
 	public void addWhItemCnt(WhItem whItem) throws Exception {

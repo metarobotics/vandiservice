@@ -92,7 +92,7 @@ function onChangeModel() {
 
 <body>
 <center>
-   <div class="table-title"><h1>力前格废</h1></div>
+   <div class="table-title"><h1>免绊格废</h1></div>
 
 <table>
 <tr>

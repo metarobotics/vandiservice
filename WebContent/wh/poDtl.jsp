@@ -311,11 +311,15 @@ if(!mode.equals("V")) { %>
 		}
 	}
 	
-	// 작성완료
+	// 구매확정 (<=작성완료 용어 변경) 
 	function confirmAccept() {
-		if(confirm('작성완료 후에는 수정/삭제가 불가능합니다. 처리하시겠습니까?'))
+		if(confirm('구매확정 후에는 수정/삭제가 불가능합니다.\n현재 화면의 구매정보대로 구매확정 하시겠습니까?'))
 		{
-			moveTo('poWrite.jsp?mode=A&orderNo=<%=orderNo%>');
+			document.getElementById("hidMode").value = "A";
+		
+			// moveTo('poWrite.jsp?mode=A&orderNo=<%=orderNo%>');
+			
+			return true;
 		}
 	}
 		
@@ -357,7 +361,7 @@ if(!mode.equals("V")) { %>
 	   	<% if(mode.equals("V")) { %>
 	   		<div class="table-title"><h1>구매요청서</h1></div>
 	   	<% } else { %>
-	   		<div class="table-title"><h1>구매정보</h1></div>
+	   		<div class="table-title"><h1>자재구매정보</h1></div>
 	   	<% } %>
 
 	<!-- FORM -->
@@ -459,7 +463,7 @@ if(!mode.equals("V")) { %>
 						<th width="10%" class="cell-c">화폐</th>
 						<th width="10%" class="cell-r">주문수량</th>
 						<th width="10%" class="cell-r">센터 재고</th>
-						<% } else { //작성완료 이후 %>
+						<% } else { //구매확정 이후 %>
 						<th width="52%" nowrap>품목</th>
 						<th width="8%" class="cell-r">판매가격</th>
 						<th width="8%" class="cell-c">화폐</th>
@@ -526,7 +530,7 @@ if(!mode.equals("V")) { %>
 									style="border: 0px; text-align: right;" value='<%=item.getItemCnt()%>'
 									disabled /></td>
 
-							<% } else { //작성완료 이후 %>
+							<% } else { //구매확정 이후 %>
 							
 								<td class="cell-r"><input type="text" name="txtPrice" size=4
 									style="border: 0px; text-align: right;" value='<%= MrUtil.FormatCurrentDisplay2(item.getPrice(), item.getCurCd()) %>'
@@ -633,6 +637,7 @@ if(!mode.equals("V")) { %>
 			<input type="hidden" id="curCd" name="curCd" /> 
 			<input type="hidden" id="orderStr" name="orderStr" />
 			<input type="hidden" id="rcvStr" name="rcvStr" />
+			<input type="hidden" id="hidMode" name="hidMode" />
 			
 			<table>
 				<tr height="40" valign="bottom">
@@ -650,10 +655,10 @@ if(!mode.equals("V")) { %>
 		     				<% if(mode.equals("R")){ %>
 		     					<input type="button" class="dtlBtn" value="Print" onclick="window.open('poDtl.jsp?mode=V&orderNo=<%=orderNo%>');">&nbsp;
 							<% } %> 
-							<% if (mode.equals("R") && orderP.getStatusCd().equals("10") && (authLvl.equals("S") || orderP.getInsertUserId().equals(userId))) { // 작성중 & (SUPER or 등록자) => 작성완료 가능 %>
-									<input type="button" class="dtlBtn" value="작성완료" onclick="confirmAccept();">&nbsp;
+							<% if (mode.equals("R") && orderP.getStatusCd().equals("10") && (authLvl.equals("S") || orderP.getInsertUserId().equals(userId))) { // 작성중 & (SUPER or 등록자) => 구매확정 가능 %>
+									<input type="submit" class="dtlBtn" value="구매확정" onclick="confirmAccept();">&nbsp;
 							<% } %> 
-							<% if (mode.equals("R") && orderP.getStatusCd().equals("20") && (authLvl.equals("S") || userWhId.equals("mr"))) { // 작성완료 & (SUPER or MR직원) => 입고처리 가능 %>
+							<% if (mode.equals("R") && orderP.getStatusCd().equals("20") && (authLvl.equals("S") || userWhId.equals("mr"))) { // 구매확정 & (SUPER or MR직원) => 입고처리 가능 %>
 									<input type="button" class="dtlBtn" value="입고처리" onclick="moveTo('poRcvList.jsp?mode=R&orderNo=<%=orderNo%>&pg=<%=pg%>');">&nbsp;
 							<% } %> 
 							<% if (mode.equals("R") && orderP.getStatusCd().equals("30") && (authLvl.equals("S") || userWhId.equals("mr"))) { // 입고중 & (SUPER or MR직원) => 입고완료처리 가능 %>

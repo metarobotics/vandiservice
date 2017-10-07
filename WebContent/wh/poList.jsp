@@ -67,7 +67,7 @@
 </head>
 <body>
 <center>
-	   <div class="table-title"><h1>구매목록</h1></div>
+	   <div class="table-title"><h1>자재구매목록</h1></div>
 
 <table cellpadding="0" cellspacing="0" border="0">
 <tr>

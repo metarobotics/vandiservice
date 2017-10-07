@@ -10,7 +10,14 @@
 	request.setCharacterEncoding("UTF-8");
 	
 	//parameter
-	String mode = request.getParameter("mode"); //CUD + A(Accept.작성완료->주문), G(GET.입고처리), F(Finish.입고완료)
+	String mode = request.getParameter("mode"); //CUD + A(Accept.작성완료->구매확정:수정&완료처리), G(GET.입고처리), F(Finish.입고완료)
+//System.out.println("mode="+mode);	
+	String hidMode = request.getParameter("hidMode"); //구매확정 버튼의 경우 "A" setting (mode는 "U")
+//System.out.println("hidMode="+hidMode);	
+	if(hidMode != null && hidMode.equals("A"))
+		mode = "A";
+//System.out.println("mode="+mode);	
+	
 	String modeStr = "";
 	if(mode.equals("C")) 
 	{
@@ -26,7 +33,7 @@
 	}
 	else if(mode.equals("A"))
 	{
-		modeStr = "작성완료";//주문
+		modeStr = "구매확정";
 	}
 	else if(mode.equals("G"))
 	{
@@ -40,7 +47,7 @@
 	
 	OrderP orderP = null;
 	
-	if(mode.equals("C") || mode.equals("U")) 
+	if(mode.equals("C") || mode.equals("U") || mode.equals("A")) 
 	{
 		
 		int orderNo = 0;
@@ -100,7 +107,7 @@
 		// orderPItem
 		//
 		
-		if(mode.equals("U"))
+		if(mode.equals("U") || mode.equals("A"))
 		{
 			orderPDao.deleteOrderPItem(orderNo);
 		}
@@ -127,6 +134,11 @@
 			orderPDao.insertOrderPItem(orderPItem);
 		}
 		
+		if(mode.equals("A")) // 구매확정 (상태변경)
+		{
+			orderPDao.acceptOrderP(orderNo);
+		}			
+		
 	}
 	else if(mode.equals("D"))
 	{
@@ -135,13 +147,13 @@
 		orderPDao.deleteOrderP(orderNo);
 		orderPDao.deleteOrderPItem(orderNo);
 	}
-	else if(mode.equals("A")) // 주문 -> 작성완료 
+	/*else if(mode.equals("A")) // 주문 -> 작성완료 
 	{
 		int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 
 		//orderPDao.modifyOrderP(orderP); // 수정 후 작성완료 ????
 		orderPDao.acceptOrderP(orderNo);
-	}	
+	}*/	
 	else if(mode.equals("G")) // 입고처리 
 	{
 		int orderNo = Integer.parseInt(request.getParameter("orderNo"));
@@ -151,7 +163,8 @@
 	else if(mode.equals("F")) // 입고완료 
 	{
 		int orderNo = Integer.parseInt(request.getParameter("orderNo"));
-		
+System.out.println(orderNo);
+
 		orderPDao.finishOrderP(orderNo);
 	}	
 	

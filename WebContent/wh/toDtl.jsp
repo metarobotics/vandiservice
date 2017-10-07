@@ -19,6 +19,8 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 <%
+	String userId =  (String)session.getAttribute("userId");
+
 	String mode = request.getParameter("mode");
 	String pg = request.getParameter("pg");
 
@@ -311,12 +313,21 @@
 		
 	// 완료 
 	function confirmFinish() {
-		<% if(mode.equals("R")) { %>
-		if(confirm('완료처리 하시겠습니까?'))
+		
+		if(backOrderFg)
 		{
-			moveTo('toWrite.jsp?mode=F&orderNo=<%=orderNo%>&srcWhNo=<%=orderT.getSrcWhNo()%>');
+			alert("출고지 재고가 부족하여 배송완료 처리가 불가능합니다.\n입고처리를 먼저 하여 재고를 올려주세요.");
+			return false;
 		}
-		<% } %>
+		else
+		{
+			<% if(mode.equals("R")) { %>
+			if(confirm('완료처리 하시겠습니까?'))
+			{
+				moveTo('toWrite.jsp?mode=F&orderNo=<%=orderNo%>&srcWhNo=<%=orderT.getSrcWhNo()%>');
+			}
+			<% } %>
+		}
 	}	
 		
 	
@@ -497,7 +508,10 @@
 							<% if (mode.equals("R") && orderT.getStatusCd().equals("10")){ // 주문상태 => 수정 삭제 가능 %>
 									<input type="submit" class="dtlBtn" value="수정">&nbsp;
 									<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
-							<% } %> 
+		     				<% } else if(mode.equals("R") && userId.equals("bona")) { %>
+									<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
+		     				<% } %>
+							
 							<% if (mode.equals("R") && orderT.getStatusCd().equals("10") && userWhId.equals("mr")) { // 접수이고  MR 직원인 경우 확정 가능 %>
 									<input type="button" class="dtlBtn" value="접수" onclick="confirmAccept();">&nbsp;
 							<% } %> 

@@ -247,7 +247,7 @@ String mode = request.getParameter("mode");
 					<td width="35%" class="cell-l">
  
  	<% if(mode.equals("C")) { %>   
-					<input type=text size=10 disabled value='' style="border: 0px; text-align: left;" >
+					<input type=text size=10 disabled value='<%= MrUtil.getPOrderNoStr(orderNo) %>' style="border: 0px; text-align: left;" >
 					<input type=hidden name=orderNo id=orderNo value='<%= orderNo %>' >
 					<input type=hidden name=rcvSeq id=rcvSeq >
 	<% } else if(mode.equals("R")) { %>
@@ -266,9 +266,9 @@ String mode = request.getParameter("mode");
 					
 					
 	<% if(mode.equals("C")) { %>   
-					<input type=date name=rcvDt id=rcvDt size=10 value='<%= MrUtil.getDateStr() %>' >
+					<input type=date name=rcvDt id=rcvDt size=10 value='<%= MrUtil.getDateStr() %>' readonly>
 	<% } else if(mode.equals("R")) { %>
-					<input type=date name=rcvDt id=rcvDt size=10 value='<%= rcvDt %>' >
+					<input type=date name=rcvDt id=rcvDt size=10 value='<%= rcvDt %>' readonly>
 	<% } %>   		
 
 					</td>
@@ -380,8 +380,11 @@ String mode = request.getParameter("mode");
 	     				<% if(mode.equals("C")) { %>
 	     					<input type="submit" class="dtlBtn" value="등록">&nbsp;
 	     				<% }else if(mode.equals("R") && (authLvl.equals("S") || authLvl.equals("A"))) { %>
+	     					<!--  history 들어가면서... 수정삭제 불가. -->
+	     					<!-- 
 	     					<input type="submit" class="dtlBtn" value="수정">&nbsp;
-	     					<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp; 
+	     					<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
+	     					 --> 
 	     				<% } %>
 	     					<input type="button" class="dtlBtn" value="닫기" onclick="window.close();">&nbsp; 
 	

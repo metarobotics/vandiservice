@@ -5,6 +5,7 @@
 <%@ page import="wh.*" %>
 <jsp:useBean id="orderTDao" class="wh.OrderTDAO"/>
 <jsp:useBean id="itemDao" class="wh.ItemDAO"/>
+<jsp:useBean id="itemStockHistDao" class="wh.ItemStockHistDAO"/>
 
 <%
 	// session 
@@ -56,10 +57,10 @@
 		String orderDt = request.getParameter("orderDt").toString();
 		
 		
-		out.print("\n1:"+request.getParameter("srcWh"));
-		out.print("\n2:"+request.getParameter("destWh"));
-		out.print("\n3:"+orderNo);
-		out.print("\n4:"+Integer.parseInt(request.getParameter("subtotal")));
+		//out.print("\n1:"+request.getParameter("srcWh"));
+		//out.print("\n2:"+request.getParameter("destWh"));
+		//out.print("\n3:"+orderNo);
+		//out.print("\n4:"+Integer.parseInt(request.getParameter("subtotal")));
 		
 		//out.print("\n5:"+Integer.parseInt(request.getParameter("tax")));
 		//out.print("\n6:"+Integer.parseInt(request.getParameter("totalAmt")));
@@ -151,12 +152,34 @@
 		int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 		int srcWhNo = Integer.parseInt(request.getParameter("srcWhNo"));
 
-		orderTDao.finishOrderT(orderNo);
-		orderTDao.minusWhItemCnt(orderNo, srcWhNo, userId);
+		// 배송완료 처리 가능여부 체크 - 출고지 재고가 주문수량보다 적으면 배송완료 불가. 그 전에 입고처리부터 해야함.  
+		//if(orderTDao.chkFinishPossible(orderNo))
+		//{
+			orderTDao.finishOrderT(orderNo);
+			
+			// 배송완료시 자재재고history쌓기
+			// beforCnt를 whItem에서 가져오므로 minusWhItemCnt와 순서 바뀌면 안됨. 
+			orderTDao.writeItemStockHist(orderNo, srcWhNo, userId);
+			
+			// 창고 자재갯수 감소 
+			orderTDao.minusWhItemCnt(orderNo, srcWhNo, userId);
+		//}
+		//else
+		//{
+		//	returnVal = false;
+			
+			
+			//<script>
+			//alert("출고지 재고가 부족하여 배송완료 처리가 불가능합니다.\n입고처리를 먼저 하여 재고를 올려주세요.");
+			//window.history.back();
+			//</script>
+			
+		//}
 	}	
 	
 %>
 <script>
-	alert("<%= modeStr %>되었습니다.");
-	document.location.href="toList.jsp";
+		alert("<%= modeStr %>되었습니다.");
+		document.location.href="toList.jsp";
 </script>
+

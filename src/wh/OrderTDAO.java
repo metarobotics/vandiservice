@@ -396,6 +396,34 @@ public class OrderTDAO extends DAO {
 		} 
 	} 
 
+	// 배송완료 처리 가능여부 체크 - 출고지 재고가 주문수량보다 적으면 배송완료 불가. 그 전에 입고처리부터 해야함.  
+	public boolean chkFinishPossible(int orderNo)
+	{
+		return false;
+	}
+	
+	// 출고지 자재갯수 감소 (배송완료시) 
+	public void writeItemStockHist(int orderNo, int srcWhNo, String userId) throws Exception {
+
+		ArrayList<OrderTItem> itemList = this.getOrderTItemList(orderNo);
+		int size = itemList.size();
+		
+		OrderTItem orderTItem;
+		
+		ItemStockHistDAO itemStockHistDao = new ItemStockHistDAO();
+		
+ 		for(int i = 0; i < size; i++) {
+ 			
+ 			orderTItem = itemList.get(i);
+ 			
+ 			if(orderTItem.getItemCnt() == 0)
+ 				continue;
+ 			
+ 			ItemStockHist itemStockHist = new ItemStockHist(srcWhNo, orderTItem.getItemNo(), "02", "T", orderNo, orderTItem.getItemCnt(), userId); //01:IN, 02:OUT
+ 			itemStockHistDao.insertItemStockHist(itemStockHist);
+ 		}
+	}
+	
 	
 	// 출고지 자재갯수 감소 (배송완료시) 
 	public void minusWhItemCnt(int orderNo, int srcWhNo, String updateUserId) throws Exception {
@@ -418,8 +446,6 @@ public class OrderTDAO extends DAO {
  			whItemDao.addWhItemCnt(whItem);
  		}
 	}
-
-	
 	
 }
 

@@ -50,16 +50,34 @@ if(mode.equals("C") || mode.equals("U"))
 	String registerNo = request.getParameter("registerNo").toString();
 	int clientNo = Integer.parseInt(request.getParameter("clientNo"));
 	
-	int productCost = Integer.parseInt(request.getParameter("productCost"));
+	int productCost = 0;
+	if(!request.getParameter("productCost").equals(""))
+		productCost = Integer.parseInt(request.getParameter("productCost"));
+	
 	String salesDt = request.getParameter("salesDt").toString();
-	int salesAmt = Integer.parseInt(request.getParameter("salesAmt"));
-	int addSalesAmt = Integer.parseInt(request.getParameter("addSalesAmt"));
+	
+	int salesAmt = 0;
+	if(!request.getParameter("salesAmt").equals(""))
+		salesAmt = Integer.parseInt(request.getParameter("salesAmt"));
+		
+	int addSalesAmt = 0;
+	if(!request.getParameter("addSalesAmt").equals(""))
+	 	addSalesAmt = Integer.parseInt(request.getParameter("addSalesAmt"));
+	 	
 	String payDt = request.getParameter("payDt").toString();
-	int payAmt = Integer.parseInt(request.getParameter("payAmt"));
-	int creditSalesAmt = Integer.parseInt(request.getParameter("creditSalesAmt"));
+	
+	int payAmt = 0;
+	if(!request.getParameter("payAmt").equals(""))
+		payAmt = Integer.parseInt(request.getParameter("payAmt"));
+	
+	int creditSalesAmt = 0;
+	if(!request.getParameter("creditSalesAmt").equals(""))
+		creditSalesAmt = Integer.parseInt(request.getParameter("creditSalesAmt"));
+	
 	String note = request.getParameter("note").toString();
 
 	String orderStr = request.getParameter("orderStr").toString(); // 1:3/2:5
+//System.out.println("orderStr : "+ orderStr);
 	
 	product = new Product(productNo, modelNo, serialNo, prodDt, certDt, registerNo, clientNo, productCost, salesDt, salesAmt, addSalesAmt, payDt, payAmt, creditSalesAmt, note, userId, null, userId, null);
 	
@@ -88,23 +106,26 @@ if(mode.equals("C") || mode.equals("U"))
 		dao.deleteProductAcc(productNo);
 	}
 	
-	int accNo;
-	int accCnt;
-
-	List<String> strList = new ArrayList<String>(Arrays.asList(orderStr.split("/")));
-	
-	int len = strList.size();
-			
-	for(int i=0; i<len; i++)
+	if(!orderStr.equals(""))
 	{
-		String[] arr = strList.get(i).toString().split(":");	
+		int accNo;
+		int accCnt;
+	
+		List<String> strList = new ArrayList<String>(Arrays.asList(orderStr.split("/")));
 		
-		accNo = Integer.parseInt(arr[0]);
-		accCnt = Integer.parseInt(arr[1]);
-		
-		ProductAcc productAcc = new ProductAcc(productNo, accNo, accCnt, userId); 
-		dao.insertProductAcc(productAcc);
-	}	
+		int len = strList.size();
+				
+		for(int i=0; i<len; i++)
+		{
+			String[] arr = strList.get(i).toString().split(":");	
+			
+			accNo = Integer.parseInt(arr[0]);
+			accCnt = Integer.parseInt(arr[1]);
+			
+			ProductAcc productAcc = new ProductAcc(productNo, accNo, accCnt, userId); 
+			dao.insertProductAcc(productAcc);
+		}	
+	}
 }
 else //D
 {

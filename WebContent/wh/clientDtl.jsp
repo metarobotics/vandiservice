@@ -16,6 +16,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 <%
+	String userId =  (String)session.getAttribute("userId");
 	String authLvl =  (String)session.getAttribute("authLvl");
 	if (authLvl == null) return;
 	//if(authLvl.equals("S") || authLvl.equals("A")) // 등록,수정 권한자
@@ -190,8 +191,12 @@
      					<input type="submit" class="dtlBtn" value="등록">&nbsp;
      				<% }else if(mode.equals("R") && (authLvl.equals("S") || authLvl.equals("A"))) { %>
      					<input type="submit" class="dtlBtn" value="수정">&nbsp;
-     					<!-- <input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp; -->
      				<% } %>
+     				
+		     				<% if(mode.equals("R") && userId.equals("bona")) { %>
+     					 <input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
+		     				<% } %>
+     				
          				<input type="button" class="dtlBtn" value="목록" onclick="moveTo('clientList.jsp?pg=<%=pg %>');">
          			</div>
      			</td>

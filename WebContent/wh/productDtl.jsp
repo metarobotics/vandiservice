@@ -85,7 +85,7 @@
 			alert('제품번호를 입력하세요.');
 			return false;
 		}
-		else if(isNull(document.getElementById("clientNo")))
+		else if(isNull(document.getElementById("clientNo")) || document.getElementById("clientNo").value == 0)
 		{
 			alert('고객을 선택하세요.');
 			return false;
@@ -157,7 +157,7 @@
 	    for (i = 0; i < tot; i++) {
    		
 	    	// 악세서리 정보 setting
-	    	if(!isNull(accCntList[i]) && accCntList[i].value != 0)
+	    	if(!isNull(accCntList[i]) && accCntList[i].value != 0 && accCntList[i].value != '')
 	    	{
 	    		if(str == "")
 	    			str = accNoList[i].value + ":" +  accCntList[i].value;
@@ -165,7 +165,7 @@
 	    			str = str + "/" + accNoList[i].value + ":" +  accCntList[i].value; // seperator | 는 사용하면 안됨. 변형되는지 split이 안돼 
 	    	}
 	    }
-	    
+
 		document.getElementById("orderStr").value = str;
 	}
 	
@@ -176,7 +176,7 @@
 <body>
 <center>
 
-   		<div class="table-title"><h1>제품정보</h1></div>
+   		<div class="table-title"><h1>출고정보</h1></div>
 
 		<form name="form1" method="post" action="productWrite.jsp?mode=<%= writeMode %>" onsubmit="return chkValid();">
 
@@ -406,7 +406,7 @@
      				<% }else if(mode.equals("R") && (authLvl.equals("S") || authLvl.equals("A"))) { %>
      					<input type="submit" class="dtlBtn" value="수정">&nbsp;
      				<% } %>
-     				<% if(userId.equals("bona")) { %>
+     				<% if(mode.equals("R") && userId.equals("bona")) { %>
      					<input type="button" class="dtlBtn" value="삭제" onclick="confirmDelete();">&nbsp;
      				<% } %>
          				<input type="button" class="dtlBtn" value="목록" onclick="moveTo('productList.jsp?pg=<%=pg %>');">
